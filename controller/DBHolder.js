@@ -97,11 +97,13 @@ var _commitTransaction = function (result) {
 
 var readTags = function (result) {
     return new Promise(function(resolve,reject) {
-        require('fs').readFile('../data/tags', "utf-8", function (err, data) {
+        /*require('fs').readFile('../data/tags', "utf-8", function (err, data) {
             if (err) return reject(err);
             exports.tags=eval('('+data+')');
             resolve();
-        });
+        });*/
+        exports.tags=['默认','html']
+        resolve;
     })
 };
 
