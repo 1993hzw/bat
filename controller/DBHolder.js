@@ -29,7 +29,7 @@ var comment={
 
 var _open_db=function(){
     return new Promise(function(resolve,reject){
-        var db=new sqlite.Database("../data/myblog.sqlite3",function(err){
+        var db=new sqlite.Database("myblog.sqlite3",function(err){
                  if(err) return reject("vv"+err);
                  resolve({db:db});
         })
