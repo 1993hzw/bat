@@ -18,7 +18,7 @@ return v.year+"-"+v.month+"-"+v.date+" "+ v.hour+":"+ v.minute+":"+ v.second;
 <body>
 <div>
     <div class="top-container">
-        <img src="img/logo.png" class="logo">
+        <img src="/img/logo.png" class="logo">
         <div class="name">走向远方</div>
         <% if(isLogined){ %>
         <a href="/blogs/publish"><div class="btn-new">+</div></a>
@@ -48,7 +48,7 @@ return v.year+"-"+v.month+"-"+v.date+" "+ v.hour+":"+ v.minute+":"+ v.second;
             <div>
                 <div class="seperator">热门文章</div>
                 <% for(var i=0; i< hotblogs.length;i++){ %>
-                    <a href="/blogs?id=<%= hotblogs[i].f_id %>"><div class="hotblogs-itme">《<%= hotblogs[i].f_title %>》</div></a>
+                    <a href="/blogs/<%= hotblogs[i].f_id %>"><div class="hotblogs-itme">《<%= hotblogs[i].f_title %>》</div></a>
                 <% } %>
             </div>
 
@@ -58,7 +58,7 @@ return v.year+"-"+v.month+"-"+v.date+" "+ v.hour+":"+ v.minute+":"+ v.second;
                     <% for(var i=0; i< comments.length;i++){ %>
                     <div class="comments-item">
                         <div class="time"><%= getTime(comments[i].f_insert_time) %></div>
-                        <div style="font-size: 12px;color: gray"><a class="title" href="/blogs?id=<%= comments[i].f_blog_id %>">《<%=
+                        <div style="font-size: 12px;color: gray"><a class="title" href="/blogs/<%= comments[i].f_blog_id %>">《<%=
                             titles[comments[i].f_blog_id] %>》</a>：
                         </div>
                         <div class="comment"><%= comments[i].f_content %></div>

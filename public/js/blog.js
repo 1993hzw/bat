@@ -37,7 +37,7 @@ $(document).ready(function () {
 
 var del = function () {
     var id = $("#blog").text();
-    $.get("/blogs/delete", {id: id}, function (res) {
+    $.get("/api/delete", {id: id}, function (res) {
         var v = eval('(' + res + ')');
         if (v.state > 0) {
             location.href = "/blogs";
@@ -50,7 +50,7 @@ var del = function () {
 var commentsLength=0;
 var getComments = function () {
     var id = $("#blog").text();
-    $.get("/blogs/get_comments", {id: id,offset:commentsLength}, function (res) {
+    $.get("/api/get_comments", {id: id,offset:commentsLength}, function (res) {
         var v = eval('(' + res + ')');
         if (v.state > 0) {
             var rows= v.rows;
@@ -83,7 +83,7 @@ var addComment = function () {
         isSending=false;
         return $('.tip-comment').text('评论不能为空').css({color:"red"})
     }
-    $.post("/blogs/add_comment", {id: id, comment: comment,contact:contact}, function (res) {
+    $.post("/api/add_comment", {id: id, comment: comment,contact:contact}, function (res) {
         var v = eval('(' + res + ')');
         if (v.state > 0) {
             var content = formatComment(v.time,comment)

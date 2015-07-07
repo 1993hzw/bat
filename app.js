@@ -34,6 +34,9 @@ app.use('/', routes);
 app.use('/blogs',blogs);
 app.use('/admin',admin);
 
+app.use('/test',require('./routes/test/index'))
+app.use('/api',require('./routes/api/index'))
+
 
 
 // catch 404 and forward to error handler

@@ -50,9 +50,10 @@ comments.add(data)
         console.log(err)
     })*/
 
-//comments.drop();
+comments.drop()
+    .catch(console.log)
 
-comments.replay("enen",4)
+/*comments.replay("enen",4)
     .then(function(){
       comments.getCommentsByBlogID(1)
         .then(function(rows){
@@ -64,6 +65,6 @@ comments.replay("enen",4)
     })
     .catch(function(err){
         console.log(err)
-    })
+    })*/
 
 

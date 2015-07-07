@@ -138,7 +138,7 @@ $(document).ready(function(){
               }else if(tag.length>15){
                      $("#tip").html('<span style="color: red;font-size: 18px">标签名长度不能大于15</span>')
               }else{
-                     $.post("/blogs/add_tag",{tag:tag},function(res){
+                     $.post("/api/add_tag",{tag:tag},function(res){
                             var v=eval('('+res+')');
                             if(v.state>0){
                                    $('#dialog').css({display:"none"})
@@ -193,11 +193,11 @@ var publish=function(){
        var tag=_trim($('.selector-tag').val());
        if(markdown==null||markdown=="")
           return alert("内容不能为空");
-       $.post('/blogs/publish',{title:title,markdown:markdown,tag:tag},function(res){
+       $.post('/api/publish',{title:title,markdown:markdown,tag:tag},function(res){
               var v=eval('('+res+')');
               if(v.state>0){
                      if(v.id){
-                            location.href="/blogs?id="+ v.id;
+                            location.href="/blogs/"+ v.id;
                      }else{
                             location.href="/";
                      }
@@ -218,11 +218,11 @@ var finish=function(){
        var tag=_trim($('.selector-tag').val());
        if(markdown==null||markdown=="")
               return alert("内容不能为空");
-       $.post('/blogs/save',{id:$("#blog").text(),title:title,markdown:markdown,tag:tag},function(res){
+       $.post('/api/save',{id:$("#blog").text(),title:title,markdown:markdown,tag:tag},function(res){
               var v=eval('('+res+')');
               if(v.state>0){
                      if(v.id){
-                            location.href="/blogs?id="+ v.id;
+                            location.href="/blogs/"+ v.id;
                      }else{
                             location.href="/";
                      }
