@@ -103,7 +103,7 @@ var readTags = function (result) {
             resolve();
         });*/
         exports.tags=['默认','html']
-        resolve;
+        resolve();
     })
 };
 
