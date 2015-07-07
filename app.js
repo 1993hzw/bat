@@ -1,3 +1,5 @@
+APP_PATH=__dirname;
+
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -12,7 +14,6 @@ var blogs=require("./routes/blogs");
 var admin=require("./routes/admin");
 
 var app = express();
-
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');

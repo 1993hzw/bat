@@ -17,7 +17,7 @@ router.post('/', function(req, res, next) {
         }
     }
     if(!config){
-        fs.readFile("../data/config","utf-8",function(err,data){
+        fs.readFile(APP_PATH+"/data/config","utf-8",function(err,data){
             if(err){
                 console.log(err)
                 return res.json({state:-1})

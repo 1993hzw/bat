@@ -29,7 +29,7 @@ var comment={
 
 var _open_db=function(){
     return new Promise(function(resolve,reject){
-        var db=new sqlite.Database("myblog.sqlite3",function(err){
+        var db=new sqlite.Database(APP_PATH+"/data/myblog.sqlite3",function(err){
                  if(err) return reject("vv"+err);
                  resolve({db:db});
         })
@@ -97,13 +97,11 @@ var _commitTransaction = function (result) {
 
 var readTags = function (result) {
     return new Promise(function(resolve,reject) {
-        /*require('fs').readFile('../data/tags', "utf-8", function (err, data) {
+        require('fs').readFile(APP_PATH+'/data/tags', "utf-8", function (err, data) {
             if (err) return reject(err);
             exports.tags=eval('('+data+')');
             resolve();
-        });*/
-        exports.tags=['默认','html']
-        resolve();
+        });
     })
 };
 
