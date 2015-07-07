@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>文章</title>
+    <link rel="stylesheet" href="/css/list.css">
+    <script src="/js/jquery1.3.2.js"></script>
+    <script src="/js/list.js"></script>
+</head>
+<body>
+<div>
+    <div id="cur-tag-id" style="display: none"><%= curTag %></div>
+    <div class="topbar-container">
+        <a href="/" class="logo"><img src="img/logo.png" style="height: 60px;float: left"></a>
+        <div class="btn-list">文章</div>
+        <% if(isLogined){ %>
+        <a href="/blogs/publish"><div class="btn-new">+</div></a>
+        <% } %>
+        <div class="clearFloat"></div>
+        </div>
+    </div>
+    <div class="main-container">
+        <div class="tags-container">
+            <% if('全部'==curTag){ %>
+            <div class="cur-tag"><%= curTag %></div>
+            <% }else{ %>
+            <div class="cur-tag"><%= tags[curTag] %></div>
+            <% } %>
+            <div class="other-tags-container">
+                <% if('全部'!=curTag){ %>
+                   <a href="/blogs?tag=全部"><div class="tag-item">全部</div></a>
+                <% } %>
+                <% for(var i=0;i < tags.length;i++){ %>
+                  <% if(tags[i]!=tags[curTag]){ %>
+                    <a href="/blogs?tag=<%= i %>"><div class="tag-item"><%= tags[i] %></div></a>
+                  <% } %>
+                <% } %>
+            </div>
+            <div class="clearFloat"></div>
+        </div>
+        <div class="blogs-list-container"></div>
+        <div class="more-blogs-container"><div class="btn-more">点击加载更多</div></div>
+    </div>
+</div>
+</body>
+</html>

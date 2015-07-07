@@ -1,0 +1,199 @@
+* {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    word-wrap: break-word;/*允许长单词换行到下一行：*/
+    /*word-break:break-all; /!*任意*!/*/
+}
+
+body {
+    padding: 0;
+    margin: 0;
+    border: 0;
+    border: none;
+    outline: none;
+    width: 100%;
+    height: 100%;
+    font-size: 14px;
+    font-family: "Microsoft YaHei", Verdana, sans-serif, "SimSun";
+}
+a{
+    color: black;
+    outline: none;
+    text-decoration: none;
+}
+
+.clearFloat{
+    clear: both;
+}
+
+.top-container{
+    width: 100%;
+    height: 100px;
+    /*background: url("/img/bg.jpg");*/
+    /*background:-moz-linear-gradient(top,#01203d,#93c5ea);/!*火狐*!/
+    background:-webkit-gradient(linear, 0% 0%, 0% 100%,from(#01203d), to(#93c5ea));/!*谷歌*!/
+    background-image: -webkit-gradient(linear,left bottom,left top,color-start(0, #01203d),color-stop(1, #93c5ea));/!* Safari & Chrome*!/
+    filter:  progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='#01203d', endColorstr='#93c5ea'); /!*IE6 & IE7*!/
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='#01203d', endColorstr='#93c5ea')"; /!* IE8 *!/
+*/
+    background: #eee;
+    border-bottom: 2px solid black;
+}
+.logo{
+    height: 100%;
+    float: left;
+    margin-left: 30px;
+}
+.name{
+    float: left;
+    height: 100%;
+    font-weight: bold;
+    font-size: 38px;
+    text-align: center;
+    padding-top: 50px;
+    margin-left: 30px;
+}
+.btn-new{
+    display: table;
+    font-size: 40px;
+    float: right;
+    line-height: 15px;
+    margin-top: 79px;
+    margin-right: 20px;
+}
+.btn-new:hover{
+    cursor: pointer;
+    font-weight: bolder;
+}
+.content-container{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 1000px;
+    width: 100%;
+}
+.left{
+    display: inline-block;
+    border-right: 1px solid #ddd;
+}
+.right{
+    float: right;
+    padding: 0;
+    margin: 0;
+    display: inline-block;
+    width: 250px;
+}
+.blogs-tags-container{
+    display: inline-block;
+    padding-left: 30px;
+}
+.tag-item{
+    margin: 5px;
+    padding: 8px 10px 8px 10px;
+    background: lightgreen;
+    display: table;
+    float: left;
+    color: #222;
+}
+.tag-item:hover{
+    background: green;
+}
+
+.blog-item{
+    width: 100%;
+    height: auto;
+    /*background: bisque;*/
+    padding: 30px;
+    padding-left: 10px;
+    padding-right:10px ;
+    border-bottom: 1px dashed #ddd;
+}
+.blog-title{
+    font-size: 30px;
+    /*font-weight: bolder;*/
+}
+.blog-title:hover{
+    font-weight: bolder;
+}
+.blog-brief{
+    padding-top: 10px;
+}
+.blog-details{
+    padding-top: 10px;
+      color: grey;
+}
+.blog-tags{
+     padding-right: 10px;
+}
+.blog-time{
+     padding-left: 10px;
+}
+.seperator{
+    color: gainsboro;
+    padding: 10px;
+    font-size: 12px;
+}
+.hotblogs-itme{
+    color: cornflowerblue;
+    padding-bottom: 10px;
+}
+.hotblogs-itme:hover{
+    cursor: pointer;
+    color: deepskyblue;
+}
+.comments-container{
+
+    padding-bottom: 20px;
+
+}
+.comments-item{
+    padding: 5px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px dashed #DDD;
+}
+.time{
+    color: gray;
+}
+.title{
+    color: cornflowerblue;
+    padding: 5px;
+    padding-left: 0px;
+    padding-right: 0;
+    font-size: 12px;
+    line-height: 18px;
+    /*background: #eeffff;*/
+}
+.title:hover{
+    color: deepskyblue;
+}
+.comment{
+    padding: 10px;
+    padding-top: 5px;
+    padding-left: 0;
+    padding-right: 0;
+    /*background: #eeffff;*/
+}
+.about-me{
+    padding: 10px;
+    padding-bottom: 20px;
+    line-height: 20px;
+    /*background: floralwhite;*/
+}
+
+@media (max-width: 800px) {
+    .right{
+        float: none;
+        width: 100%;
+    }
+    .left{
+        border-right: 0;
+    }
+    .logo{
+        margin-left: 10px;
+    }
+    .btn-new{
+        margin-right: 10px;
+    }
+}

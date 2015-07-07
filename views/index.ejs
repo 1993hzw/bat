@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<% var getTime=function(obj){
+var v=eval('('+obj+')');
+return v.year+"-"+v.month+"-"+v.date+" "+ v.hour+":"+ v.minute+":"+ v.second;
+}
+%>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>首页</title>
+    <link rel="stylesheet" href="/css/index.css">
+    <!--<link rel="stylesheet" href="/css/normalize.css">-->
+    <script src="/js/jquery1.3.2.js"></script>
+    <script src="/js/index.js"></script>
+</head>
+<body>
+<div>
+    <div class="top-container">
+        <img src="img/logo.png" class="logo">
+        <div class="name">走向远方</div>
+        <% if(isLogined){ %>
+        <a href="/blogs/publish"><div class="btn-new">+</div></a>
+        <% } %>
+    </div>
+    <div class="content-container">
+        <div class="left">
+            <div class="seperator">分类</div>
+            <div class="blogs-tags-container">
+                <a href="/blogs">
+                    <div class="tag-item">全部</div>
+                </a>
+                <% for(var i=0;i < tags.length;i++){ %>
+                <a href="/blogs?tag=<%= i %> ">
+                    <div class="tag-item"><%= tags[i] %></div>
+                </a>
+                <% } %>
+                <div style="clear: both"></div>
+            </div>
+            <div style="display: table;padding-top: 20px">
+                <div class="seperator">最新文章</div>
+                <div class="blogs-list-container">
+                </div>
+            </div>
+        </div>
+        <div class="right">
+            <div>
+                <div class="seperator">热门文章</div>
+                <% for(var i=0; i< hotblogs.length;i++){ %>
+                    <a href="/blogs?id=<%= hotblogs[i].f_id %>"><div class="hotblogs-itme">《<%= hotblogs[i].f_title %>》</div></a>
+                <% } %>
+            </div>
+
+            <div>
+                <div class="seperator">最新评论</div>
+                <div class="comments-container">
+                    <% for(var i=0; i< comments.length;i++){ %>
+                    <div class="comments-item">
+                        <div class="time"><%= getTime(comments[i].f_insert_time) %></div>
+                        <div style="font-size: 12px;color: gray"><a class="title" href="/blogs?id=<%= comments[i].f_blog_id %>">《<%=
+                            titles[comments[i].f_blog_id] %>》</a>：
+                        </div>
+                        <div class="comment"><%= comments[i].f_content %></div>
+                    </div>
+                    <% } %>
+                </div>
+            </div>
+            <div>
+                <div class="seperator">关于我</div>
+                <div class="about-me">
+                    昵称：<b>走向远方</b>
+                    <br>
+                    邮箱：<b>154330138@qq.com</b>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>
