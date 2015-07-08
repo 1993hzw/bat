@@ -16,7 +16,7 @@ $(document).ready(function(){
            if(v.state>0){
                tip.text("上传成功");
            }else{
-               tip.text("上传失败");
+               tip.text("上传失败:"+ v.error);
            }
            isBusy=false;
        })

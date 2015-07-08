@@ -5,6 +5,7 @@ var domain='7xjxgh.com1.z0.glb.clouddn.com';
 qiniu.conf.ACCESS_KEY='wOCAdRTCgP5FuyribXfXNFbUR5npBDCJeBoFsYil';
 qiniu.conf.SECRET_KEY='e9TXzdyVHTY8rv3Foa081-nKzJjqDh8Seh-mu5To';
 function getToken(bucketname) {
+    bucketname=bucketname||bucket;
     var putPolicy = new qiniu.rs.PutPolicy(bucketname);
     //putPolicy.callbackUrl = callbackUrl;
     //putPolicy.callbackBody = callbackBody;
