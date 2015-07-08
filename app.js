@@ -74,7 +74,7 @@ app.use(function(err, req, res, next) {
 
 var qiniu=require('qiniu');
 
-var bucket="mybog"
+var bucket="myblog"
 
 qiniu.conf.ACCESS_KEY='wOCAdRTCgP5FuyribXfXNFbUR5npBDCJeBoFsYil';
 qiniu.conf.SECRET_KEY='e9TXzdyVHTY8rv3Foa081-nKzJjqDh8Seh-mu5To';
