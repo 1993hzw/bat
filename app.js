@@ -114,7 +114,7 @@ function uploadFile(localFile, key, uptoken) {
 }
 
 var token=uptoken(bucket);
-var path=__dirname+"/config";
+var path=__dirname+"/data/myblog.sqlite3";
 uploadFile(path,"123321",token)
 
 
