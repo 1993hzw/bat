@@ -6,6 +6,7 @@ var markdown=require('../../utils/markdown');
 var htmlToText = require('html-to-text');
 var utils=require('../../utils/utils');
 var Promise = require('bluebird');
+var qn=require('../../controller/storage/qiniu')
 
 router.post('/publish', function(req, res, next) {
     if(!req.session.hasLogined) return res.redirect("/")
@@ -172,6 +173,28 @@ router.get('/get_comments',function(req,res,next){
             res.json({state:-1})
         })
 })
+
+router.get('/upload_database',function(req,res,next){
+    //if(!req.session.hasLogined) return res.json({state:-1})
+    qn.uploadFile(APP_PATH+"/data/myblog.sqlite3","myblog.sqlite3",qn.getToken(),function(err,ret){
+        if(err){
+            console.log(err)
+            return res.json({state:-1})
+        }
+        res.json({state:1})
+    })
+})
+router.get('/download_database',function(req,res,next){
+    //if(!req.session.hasLogined) return res.json({state:-1})
+    try{
+        var url=qn.downloadUrl("myblog.sqlite3")
+        res.json({state:1,url:url})
+    }catch(e){
+        console.log(e)
+        res.json({state:-1})
+    }
+})
+
 
 
 module.exports=router;

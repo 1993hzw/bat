@@ -31,7 +31,8 @@ router.post('/', function(req, res, next) {
 });
 
 router.get('/', function(req, res, next) {
-      res.render("admin/login");
+    //if(!req.session.hasLogined) return res.render("admin/login");
+    res.render("admin/admin");
 })
 
 module.exports = router;
