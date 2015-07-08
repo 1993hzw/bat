@@ -1,12 +1,13 @@
-var router=require('express').Router();var dbHolder=require('../../controller/DBHolder');
+var router=require('express').Router();
+var dbHolder=require('../../controller/DBHolder');
 var blogs=require('../../controller/blogs');
-var tags=require('../../controller/tags');
 var comments=require('../../controller/comments');
 var markdown=require('../../utils/markdown');
 var htmlToText = require('html-to-text');
 var utils=require('../../utils/utils');
 var Promise = require('bluebird');
 var qn=require('../../controller/storage/qiniu')
+var configs=require('../../controller/configs');
 
 router.post('/publish', function(req, res, next) {
     if(!req.session.hasLogined) return res.redirect("/")
@@ -93,7 +94,7 @@ router.get('/get_last',function(req,res,next){
     if(!off||off<0) off=0;
     blogs.getLast(off,5)
         .then(function(rows){
-            res.json({rows:rows,tags:dbHolder.tags});
+            res.json({rows:rows,tags:configs.tags});
         })
         .catch(function(err){
             res.end(err);
@@ -103,10 +104,10 @@ router.get('/get_last',function(req,res,next){
 router.get('/get_blogs',function(req,res,next){
     var tag=req.query.tag;
     var off=req.query.offset;
-    if(utils.checkIsInArray(tag,dbHolder.tags)) {
+    if(utils.checkIsInArray(tag,configs.tags)) {
         blogs.getByTag(tag,off,5)
             .then(function (rows) {
-                res.json({rows:rows,tags:dbHolder.tags})
+                res.json({rows:rows,tags:configs.tags})
             })
             .catch(function (err) {
                 console.log(err);
@@ -114,7 +115,7 @@ router.get('/get_blogs',function(req,res,next){
     }else{
         blogs.getLast(off,5)
             .then(function (rows) {
-                res.json({rows:rows,tags:dbHolder.tags})
+                res.json({rows:rows,tags:configs.tags})
             })
             .catch(function (err) {
                 console.log(err);
@@ -126,16 +127,16 @@ router.post('/add_tag',function(req,res,next){
     if(!req.session.hasLogined) return res.redirect("/")
     var tag=req.body.tag.trim();
     if(!tag) return res.json({state:-1})
-    for(var i=0;i<dbHolder.tags.length;i++){
-        if(dbHolder.tags[i]==tag) return res.json({state:-2});
+    for(var i=0;i<configs.tags.length;i++){
+        if(configs.tags[i]==tag) return res.json({state:-2});
     }
-    dbHolder.tags[dbHolder.tags.length]=tag;
-    require('fs').writeFile('data/tags',JSON.stringify(dbHolder.tags),"utf-8",function(err){
+    configs.tags[configs.tags.length]=tag;
+    require('fs').writeFile('data/tags',JSON.stringify(configs.tags),"utf-8",function(err){
         if(err){
-            dbHolder.tags.length--;
+            configs.tags.length--;
             return res.json({state:-1});
         }
-        res.json({state:1,tags:dbHolder.tags})
+        res.json({state:1,tags:configs.tags})
     })
 })
 
@@ -195,32 +196,37 @@ router.get('/download_database',function(req,res,next){
     }
 })
 
-var fs =require("fs");
 var config=undefined;
 router.post('/login',function(req,res,next){
     var verify= function () {
         var user=req.body.user;
         var passwd=req.body.passwd;
         if(!user||!passwd||user.trim()==""||passwd.trim()=="") return res.json({state:-1})
-        if(user===config.user&&parseInt(passwd)===config.passwd){
+        if(user===config.user&&passwd===config.passwd){
+            console.log("admin logined")
             req.session.hasLogined=true;
             res.json({state:1})
         }else{
             res.json({state:-2})
         }
     }
-    if(!config){
-        fs.readFile(APP_PATH+"/data/config","utf-8",function(err,data){
-            if(err){
-                console.log(err)
-                return res.json({state:-1})
-            }
-            config=eval('('+data+')');
+    if(config) return verify();
+    configs.get("admin")
+        .then(function(val){
+            if(val!=undefined) return config=JSON.parse(val);
+            var v={user:'hzw',passwd:'835156567q'};
+            return configs.put("admin",JSON.stringify(v))
+                .then(function(){
+                    config=v;
+                })
+        })
+        .then(function(){
             verify();
         })
-    }else{
-        verify()
-    }
+        .catch(function(err){
+            console.log("get admin "+err)
+            res.json({state:1})
+        })
 })
 
 

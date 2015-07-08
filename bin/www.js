@@ -7,6 +7,31 @@ var app = require('../app');
 var debug = require('debug')('myblog:server');
 var http = require('http');
 
+/*
+  init configs
+ */
+var dbHolder = require('../controller/DBHolder')
+var configs = require('../controller/configs')
+dbHolder.initDB()
+    .then(function () {
+      return configs.get("tags")
+    })
+    .then(function (val) {
+      if (val != undefined)
+        return configs.tags = JSON.parse(val);
+      var tags = ["默认", "js", "html", "c/c++", "java", 'aa'];
+      return configs.put("tags", JSON.stringify(tags))
+          .then(function () {
+            configs.tags = tags
+          })
+    })
+    .then(function () {
+      console.log("init db success!")
+    })
+    .catch(function (err) {
+      console.log(err)
+    })
+
 /**
  * Get port from environment and store in Express.
  */

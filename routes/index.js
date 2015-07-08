@@ -1,9 +1,10 @@
 var express = require('express');
 var router = express.Router();
+var dbHolder=require('../controller/DBHolder');
 var comments=require('../controller/comments');
 var blogs=require('../controller/blogs');
-var dbHolder=require('../controller/DBHolder');
 var Promise=require('bluebird');
+var configs=require('../controller/configs');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -30,7 +31,7 @@ router.get('/', function(req, res, next) {
                     for(var i=0;i<rows.length;i++){
                         obj[rows[i].f_id]=rows[i].f_title;
                     }
-                    result.tags=dbHolder.tags;
+                    result.tags=configs.tags;
                     result.titles=obj;
                     res.render('index', result);
                 })

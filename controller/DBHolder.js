@@ -27,11 +27,29 @@ var comment={
     contact:"f_contact"
 }
 
+var config={
+    tableName:"t_config",
+    id:"f_id",
+    insert_time:"f_insert_time",
+    modify_time:"f_modify_time",
+    key:"f_key",
+    value:"f_value"
+}
+
 var _open_db=function(){
     return new Promise(function(resolve,reject){
         var db=new sqlite.Database(APP_PATH+"/data/myblog.sqlite3",function(err){
                  if(err) return reject("vv"+err);
                  resolve({db:db});
+        })
+    });
+}
+
+var _open_db_config=function(){
+    return new Promise(function(resolve,reject){
+        var db=new sqlite.Database(APP_PATH+"/data/config.sqlite3",function(err){
+            if(err) return reject("vv"+err);
+            resolve({db:db});
         })
     });
 }
@@ -77,6 +95,22 @@ var _createCommentTable=function(result){
     })
 }
 
+var _createConfigTable=function(result){
+    return new Promise(function(resolve,reject){
+        var sql='create table if not exists '+config.tableName+'(' +
+            config.insert_time+' text,' +
+            config.modify_time+' text,' +
+            config.key+' text,'+
+            config.value+' text,'+
+            'primary key ('+config.key+')' +
+            ')';
+        result.db.run(sql,function(err){
+            if(err) return reject(err);
+            resolve(result);
+        })
+    })
+}
+
 var _beginTransaction = function (result) {
     return new Promise(function(resolve,reject){
         result.db.run("BEGIN TRANSACTION",function(err){
@@ -95,7 +129,7 @@ var _commitTransaction = function (result) {
     });
 };
 
-var readTags = function (result) {
+var readTags = function () {
     return new Promise(function(resolve,reject) {
         require('fs').readFile(APP_PATH+'/data/tags', "utf-8", function (err, data) {
             if (err) return reject(err);
@@ -106,22 +140,19 @@ var readTags = function (result) {
 };
 
 var initDB=function(){
-    _open_db()
+    return  _open_db()
         .then(_createBlogTable)
         .then(_createCommentTable)
-        .then(readTags)
         .then(function(){
-            console.log("init db success!")
+            return _open_db_config();
         })
-        .catch(function(err){
-            console.log(err)
-        })
+        .then(_createConfigTable)
 }
-initDB();
-
+exports.initDB=initDB;
 exports.blog=blog;
 exports.beginTransaction=_beginTransaction;
 exports.commitTransaction=_commitTransaction;
 exports.openDB=_open_db;
-
+exports.openDBConfig=_open_db_config;
+exports.config=config;
 exports.comment=comment;

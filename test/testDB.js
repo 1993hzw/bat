@@ -1,7 +1,26 @@
+var app = require('../app');
 var blogs=require("../controller/blogs");
 var comments=require("../controller/comments");
 var dbHolder=require('../controller/DBHolder');
 var Promise=require('bluebird');
+var configs=require("../controller/configs");
+
+configs.put("passwd","123456")
+    .then(function(){
+        return configs.get("name")
+            .then(function(val){
+                console.log(val)
+            })
+    })
+    .then(function(){
+        return configs.getAll()
+                .then(function(rows){
+                    console.log(rows)
+                });
+    })
+    .catch(function(err){
+        console.log(err)
+    })
 
 /*var data={};
 data[blogs.fields.title]="title";
