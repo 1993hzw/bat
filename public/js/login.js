@@ -35,10 +35,10 @@ function verify(){
     }else if(passwd==""){
         $(".tip").html("密码不能为空")
     }else{
-        $.post("/admin",{user:user,passwd:passwd},function(res){
+        $.post("/api/login",{user:user,passwd:passwd},function(res){
             var v=eval('('+res+')');
             if(v.state>0){
-                   location.href='/'
+                   location.href='/admin'
             }else{
                 $(".tip").html('名称或密码错误');
             }

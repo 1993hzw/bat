@@ -27,7 +27,7 @@ $(document).ready(function(){
         $.get('/api/download_database',{},function(res){
             var v=eval('('+res+')');
             if(v.state>0){
-                tip.html("点击下载：<a href='"+ v.url+"'>"+ v.url+"</a>");
+                tip.html("点击下载：<a style='color:blue' href='"+ v.url+"'>"+ v.url+"</a>");
             }else{
                 tip.text("生成下载链接失败");
             }

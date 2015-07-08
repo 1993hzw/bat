@@ -11,6 +11,9 @@ $(document).ready(function(){
     $(window).resize(function(){
         setLayout();
     })
+    $('.logo').bind('dblclick',function(){
+        location.href="/admin"
+    })
 });
 
 var setLayout=function(){

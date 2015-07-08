@@ -175,7 +175,7 @@ router.get('/get_comments',function(req,res,next){
 })
 
 router.get('/upload_database',function(req,res,next){
-    //if(!req.session.hasLogined) return res.json({state:-1})
+    if(!req.session.hasLogined) return res.json({state:-1})
     qn.uploadFile(APP_PATH+"/data/myblog.sqlite3","myblog.sqlite3",qn.getToken(qn.bucket),function(err,ret){
         if(err){
             console.log(err)
@@ -185,7 +185,7 @@ router.get('/upload_database',function(req,res,next){
     })
 })
 router.get('/download_database',function(req,res,next){
-    //if(!req.session.hasLogined) return res.json({state:-1})
+    if(!req.session.hasLogined) return res.json({state:-1})
     try{
         var url=qn.downloadUrl("myblog.sqlite3")
         res.json({state:1,url:url})
@@ -195,6 +195,33 @@ router.get('/download_database',function(req,res,next){
     }
 })
 
+var fs =require("fs");
+var config=undefined;
+router.post('/login',function(req,res,next){
+    var verify= function () {
+        var user=req.body.user;
+        var passwd=req.body.passwd;
+        if(!user||!passwd||user.trim()==""||passwd.trim()=="") return res.json({state:-1})
+        if(user===config.user&&parseInt(passwd)===config.passwd){
+            req.session.hasLogined=true;
+            res.json({state:1})
+        }else{
+            res.json({state:-2})
+        }
+    }
+    if(!config){
+        fs.readFile(APP_PATH+"/data/config","utf-8",function(err,data){
+            if(err){
+                console.log(err)
+                return res.json({state:-1})
+            }
+            config=eval('('+data+')');
+            verify();
+        })
+    }else{
+        verify()
+    }
+})
 
 
 module.exports=router;

@@ -27,7 +27,7 @@ function uploadFile(localFile, key, uptoken,cb) {
 
 function downloadUrl(key) {
     var baseUrl = qiniu.rs.makeBaseUrl(domain, key);
-    var policy = new qiniu.rs.GetPolicy();
+    var policy = new qiniu.rs.GetPolicy(120);//120s
     return policy.makeRequest(baseUrl);
 }
 

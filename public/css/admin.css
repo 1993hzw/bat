@@ -22,7 +22,11 @@ a{
     outline: none;
     text-decoration: none;
 }
-
+.seperator{
+    color: gainsboro;
+    padding: 10px;
+    font-size: 12px;
+}
 .clearFloat{
     clear: both;
 }
@@ -68,6 +72,7 @@ a{
 }
 
 .btn{
+    display: inline-block;
     max-width: 100px;
     width: 100%;
     margin: 5px;
@@ -80,9 +85,19 @@ a{
     background: deepskyblue;
 }
 .tip{
+    left: 0;
+    bottom: 0;
+    position: fixed;
     padding: 10px;
-    background: #ddd;
-    text-align: center;
+    background: #111;
+    font-size: 16px;
+    color: white;
+    text-align: left;
+    padding: 5px;
+    height: 100px;
+    width: 100%;
+    overflow-y: auto;
+
 }
 
 @media (max-width: 800px) {
