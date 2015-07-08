@@ -176,7 +176,7 @@ router.get('/get_comments',function(req,res,next){
 
 router.get('/upload_database',function(req,res,next){
     if(!req.session.hasLogined) return res.json({state:-1})
-    qn.uploadFile(APP_PATH+"/data/myblog.sqlite3","myblog.sqlite3",qn.getToken(qn.bucket),function(err,ret){
+    qn.uploadFile(APP_PATH+"/data/myblog.sqlite3","myblog.sqlite3",qn.getToken(qn.bucket+':myblog.sqlite3'),function(err,ret){
         if(err){
             console.log(err)
             return res.json({state:-1,error:JSON.stringify(err)})
