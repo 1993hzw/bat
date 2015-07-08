@@ -1,4 +1,4 @@
-var dbholder = require('./dbholder');
+var dbholder = require('./DBHolder');
 var promise = require('bluebird');
 var utils = require('../utils/utils');
 var fields = dbholder.config;
