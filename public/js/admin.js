@@ -14,9 +14,9 @@ $(document).ready(function(){
        $.get('/api/upload_database',{},function(res){
            var v=eval('('+res+')');
            if(v.state>0){
-               tip.text("上传成功");
+               tip.html(new Date()+":上传成功:"+ v.msg +"<br>"+tip.html());
            }else{
-               tip.text("上传失败:"+ v.error);
+               tip.html(new Date()+":上传失败:"+ v.msg+"<br>"+tip.html());
            }
            isBusy=false;
        })
@@ -27,9 +27,12 @@ $(document).ready(function(){
         $.get('/api/download_database',{},function(res){
             var v=eval('('+res+')');
             if(v.state>0){
-                tip.html("点击下载：<a style='color:blue' href='"+ v.url+"'>"+ v.url+"</a>");
+                var html=new Date()+":";
+                for(var i=0;i< v.urls.length;i++)
+                    html+='点击下载：<a style="color:blue" href="'+ v.urls[i]+'">'+ v.urls[i]+'</a><br>'
+                tip.html(html+tip.html());
             }else{
-                tip.text("生成下载链接失败");
+                tip.text("生成下载链接失败<br>"+tip.html());
             }
             isBusy=false;
         })

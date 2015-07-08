@@ -177,19 +177,35 @@ router.get('/get_comments',function(req,res,next){
 
 router.get('/upload_database',function(req,res,next){
     if(!req.session.hasLogined) return res.json({state:-1})
-    qn.uploadFile(APP_PATH+"/data/myblog.sqlite3","myblog.sqlite3",qn.getToken(qn.bucket+':myblog.sqlite3'),function(err,ret){
-        if(err){
-            console.log(err)
-            return res.json({state:-1,error:JSON.stringify(err)})
-        }
-        res.json({state:1})
+    var result=[];
+    var upload=function(name){
+        return new Promise(function(resolve,reject) {
+            qn.uploadFile(APP_PATH + "/data/"+name, name, qn.getToken(qn.bucket + ':'+name), function (err, ret) {
+                if (err) return reject(err);
+                result[result.length]=ret;
+                resolve(result)
+            })
+        })
+    }
+
+    upload("myblog.sqlite3")
+    .then(function(){
+       return  upload("config.sqlite3")
+     })
+    .then(function(){
+        res.json({state:1,msg:JSON.stringify(result)})
     })
+    .catch(function(err){
+        res.json({state:-1,msg:JSON.stringify(err)})
+    })
+
 })
 router.get('/download_database',function(req,res,next){
     if(!req.session.hasLogined) return res.json({state:-1})
     try{
         var url=qn.downloadUrl("myblog.sqlite3")
-        res.json({state:1,url:url})
+        var url2=qn.downloadUrl("config.sqlite3")
+        res.json({state:1,urls:[url,url2]})
     }catch(e){
         console.log(e)
         res.json({state:-1})
