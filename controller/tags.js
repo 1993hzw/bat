@@ -1,5 +1,5 @@
+var dbHolder = require('./DBHolder');
 var Promise = require('bluebird');
-var dbHolder = require('./DBholder');
 var utils = require('../utils/utils');
 var fields = dbHolder.tag;
 
