@@ -104,6 +104,7 @@ body {
     line-height: 15px;
     margin-top: 38px;
     margin-right: 30px;
+    color: black;
 }
 .btn-new:hover{
     cursor: pointer;
