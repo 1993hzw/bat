@@ -4,10 +4,11 @@ var dbHolder = require('../../controller/DBHolder');
 var blogs = require('../../controller/blogs');
 var utils = require('../../utils/utils');
 var Promise = require('bluebird');
-var configs=require('../../controller/configs');
+var maps=require('../../controller/maps');
+var DC=require('../../controller/data-center');
 
 var renderList = function (req, res, next, curTag) {
-    Promise.resolve(configs.tags)
+    Promise.resolve(DC.tags)
         .then(function (rows) {
             return Promise.resolve({tags: rows});
         })
@@ -24,7 +25,7 @@ var renderList = function (req, res, next, curTag) {
 
 router.get('/', function (req, res, next) {
     var tag = req.query.tag;
-    if (utils.checkIsInArray(tag, configs.tags)) {
+    if (utils.checkIsInArray(tag, DC.tags)) {
         return renderList(req, res, next, tag);
     } else {
         return renderList(req, res, next, "全部")
@@ -48,7 +49,7 @@ router.get(/^\/[0-9]+$/, function (req, res, next) {
                 time: time,
                 isLogined: req.session.hasLogined
             };
-            data.tags = configs.tags;
+            data.tags = DC.tags;
             res.render('blogs/blog', data);
         })
         .then(function () {
@@ -62,7 +63,7 @@ router.get(/^\/[0-9]+$/, function (req, res, next) {
 
 router.get('/publish', function (req, res, next) {
     if (!req.session.hasLogined) return res.redirect("/")
-    res.render('blogs/publish', {id: -1, tags: configs.tags});
+    res.render('blogs/publish', {id: -1, tags: DC.tags});
 });
 router.get('/edit', function (req, res, next) {
     if (!req.session.hasLogined) return res.redirect("/")
@@ -81,7 +82,7 @@ router.get('/edit', function (req, res, next) {
                 time: time,
                 isLogined: req.session.hasLogined
             };
-            data.tags = configs.tags;
+            data.tags = DC.tags;
             res.render('blogs/publish', data);
         })
         .catch(function (err) {

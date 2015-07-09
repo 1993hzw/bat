@@ -27,13 +27,21 @@ var comment={
     contact:"f_contact"
 }
 
-var config={
-    tableName:"t_config",
+var map={
+    tableName:"t_map",
     id:"f_id",
     insert_time:"f_insert_time",
     modify_time:"f_modify_time",
     key:"f_key",
     value:"f_value"
+}
+
+var tag={
+    tableName:"t_tag",
+    id:"f_id",
+    insert_time:"f_insert_time",
+    modify_time:"f_modify_time",
+    name:"f_name"
 }
 
 var _open_db=function(){
@@ -97,12 +105,12 @@ var _createCommentTable=function(result){
 
 var _createConfigTable=function(result){
     return new Promise(function(resolve,reject){
-        var sql='create table if not exists '+config.tableName+'(' +
-            config.insert_time+' text,' +
-            config.modify_time+' text,' +
-            config.key+' text,'+
-            config.value+' text,'+
-            'primary key ('+config.key+')' +
+        var sql='create table if not exists '+map.tableName+'(' +
+            map.insert_time+' text,' +
+            map.modify_time+' text,' +
+            map.key+' text,'+
+            map.value+' text,'+
+            'primary key ('+map.key+')' +
             ')';
         result.db.run(sql,function(err){
             if(err) return reject(err);
@@ -110,6 +118,23 @@ var _createConfigTable=function(result){
         })
     })
 }
+
+var _createTagTable=function(result){
+    return new Promise(function(resolve,reject){
+        var sql='create table if not exists '+tag.tableName+'(' +
+            tag.id+' integer,' +
+            tag.insert_time+' text,' +
+            tag.modify_time+' text,' +
+            tag.name+' text,'+
+            'primary key ('+tag.id+')' +
+            ')';
+        result.db.run(sql,function(err){
+            if(err) return reject(err);
+            resolve(result);
+        })
+    })
+}
+
 
 var _beginTransaction = function (result) {
     return new Promise(function(resolve,reject){
@@ -129,30 +154,22 @@ var _commitTransaction = function (result) {
     });
 };
 
-var readTags = function () {
-    return new Promise(function(resolve,reject) {
-        require('fs').readFile(APP_PATH+'/data/tags', "utf-8", function (err, data) {
-            if (err) return reject(err);
-            exports.tags=eval('('+data+')');
-            resolve();
-        });
-    })
-};
-
 var initDB=function(){
     return  _open_db()
         .then(_createBlogTable)
         .then(_createCommentTable)
+        .then(_createTagTable)
         .then(function(){
             return _open_db_config();
         })
         .then(_createConfigTable)
 }
 exports.initDB=initDB;
-exports.blog=blog;
 exports.beginTransaction=_beginTransaction;
 exports.commitTransaction=_commitTransaction;
 exports.openDB=_open_db;
 exports.openDBConfig=_open_db_config;
-exports.config=config;
+exports.blog=blog;
+exports.map=map;
 exports.comment=comment;
+exports.tag=tag;

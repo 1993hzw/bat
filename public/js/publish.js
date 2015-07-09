@@ -135,8 +135,10 @@ $(document).ready(function(){
               var tag=_trim($('.input-tag').val());
               if(tag==""){
                      $("#tip").html('<span style="color: red;font-size: 18px">标签名不能为空</span>')
+                     isClickEnter=false;
               }else if(tag.length>15){
                      $("#tip").html('<span style="color: red;font-size: 18px">标签名长度不能大于15</span>')
+                     isClickEnter=false;
               }else{
                      $.post("/api/add_tag",{tag:tag},function(res){
                             var v=eval('('+res+')');
@@ -144,7 +146,7 @@ $(document).ready(function(){
                                    $('#dialog').css({display:"none"})
                                    $('.input-tag').val("").click();
                                    var html="";
-                                   for(var i=0;i < v.tags.length-1;i++){
+                                   for(var i in v.tags){
                                      html+='<option value="'+i+'"> &nbsp;'+ v.tags[i] +'</option>'
                                    }
                                   html+='<option selected value="'+i+'"> &nbsp;'+ v.tags[i] +'</option>'

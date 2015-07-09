@@ -7,7 +7,9 @@ var htmlToText = require('html-to-text');
 var utils=require('../../utils/utils');
 var Promise = require('bluebird');
 var qn=require('../../controller/storage/qiniu')
-var configs=require('../../controller/configs');
+var maps=require('../../controller/maps');
+var DC=require('../../controller/data-center');
+var tags=require('../../controller/tags');
 
 router.post('/publish', function(req, res, next) {
     if(!req.session.hasLogined) return res.redirect("/")
@@ -94,7 +96,7 @@ router.get('/get_last',function(req,res,next){
     if(!off||off<0) off=0;
     blogs.getLast(off,5)
         .then(function(rows){
-            res.json({rows:rows,tags:configs.tags});
+            res.json({rows:rows,tags:DC.tags});
         })
         .catch(function(err){
             res.end(err);
@@ -104,10 +106,10 @@ router.get('/get_last',function(req,res,next){
 router.get('/get_blogs',function(req,res,next){
     var tag=req.query.tag;
     var off=req.query.offset;
-    if(utils.checkIsInArray(tag,configs.tags)) {
+    if(utils.checkIsInArray(tag,DC.tags)) {
         blogs.getByTag(tag,off,5)
             .then(function (rows) {
-                res.json({rows:rows,tags:configs.tags})
+                res.json({rows:rows,tags:DC.tags})
             })
             .catch(function (err) {
                 console.log(err);
@@ -115,7 +117,7 @@ router.get('/get_blogs',function(req,res,next){
     }else{
         blogs.getLast(off,5)
             .then(function (rows) {
-                res.json({rows:rows,tags:configs.tags})
+                res.json({rows:rows,tags:DC.tags})
             })
             .catch(function (err) {
                 console.log(err);
@@ -127,17 +129,40 @@ router.post('/add_tag',function(req,res,next){
     if(!req.session.hasLogined) return res.redirect("/")
     var tag=req.body.tag.trim();
     if(!tag) return res.json({state:-1})
-    for(var i=0;i<configs.tags.length;i++){
-        if(configs.tags[i]==tag) return res.json({state:-2});
+    for(var i in DC.tags){
+        if(DC.tags[i]==tag) return res.json({state:-2});
     }
-    configs.tags[configs.tags.length]=tag;
-    require('fs').writeFile('data/tags',JSON.stringify(configs.tags),"utf-8",function(err){
-        if(err){
-            configs.tags.length--;
+    var tagObj={};
+    var result;
+    dbHolder.initDB()
+        .then(function(res){
+            result=res;
+            return dbHolder.beginTransaction(result)
+        })
+        .then(function () {
+            return tags.add(tag);
+        })
+        .then(function(){
+            return tags.getAll()
+        })
+        .then(function(rows){
+            return dbHolder.commitTransaction(result)
+                .then(function(){
+                    return Promise.resolve(rows)
+                })
+        })
+        .then(function(rows){
+            result.db.close();
+            for(var i=0;i<rows.length;i++)
+                tagObj[i]=rows[i].f_name;
+            DC.tags=tagObj;
+            res.json({state:1,tags:DC.tags})
+        })
+        .catch(function(err){
+            console.log(err);
+            if(result&&result.db)  result.db.close();
             return res.json({state:-1});
-        }
-        res.json({state:1,tags:configs.tags})
-    })
+        })
 })
 
 router.post('/add_comment',function(req,res,next){
@@ -227,11 +252,11 @@ router.post('/login',function(req,res,next){
         }
     }
     if(config) return verify();
-    configs.get("admin")
+    maps.get("admin")
         .then(function(val){
             if(val!=undefined) return config=JSON.parse(val);
             var v={user:'hzw',passwd:'835156567q'};
-            return configs.put("admin",JSON.stringify(v))
+            return maps.put("admin",JSON.stringify(v))
                 .then(function(){
                     config=v;
                 })
@@ -245,5 +270,66 @@ router.post('/login',function(req,res,next){
         })
 })
 
+router.post('/rename_tag',function(req,res,next){
+    var tagSrc=req.body.tagSrc;
+    var tagDst=req.body.tagDst;
+    var hasFound=false;
+    if(!tagSrc||tagSrc=='默认'||!tagDst||tagDst.length>15) return res.json({state:-1});
+    for(var i in DC.tags){
+        if(DC.tags[i]==tagSrc){
+            if(i==0) return res.json({state:-1});
+            DC.tags[i]=tagDst;
+            tags.modifyById(i,tagDst)
+                .then(function(){
+                     res.json({state:1});
+                })
+                .catch(function(err){
+                    console.log(err)
+                     res.json({state:-1});
+                })
+            hasFound=true;
+            break;
+        }
+    }
+    if(!hasFound) return res.json({state:-1});
+})
+
+router.post('/delete_tag',function(req,res,next){
+    var tagSrc=req.body.tagSrc;
+    if(!tagSrc||tagSrc=='默认') return res.json({state:-1})
+    var tagSrcId;
+    for(var i in DC.tags){
+        if(tagSrc==DC.tags[i]){
+             tagSrcId=i;
+            break;
+        }
+    }
+    if(tagSrcId==undefined||tagSrcId==0) return res.json({state:-1})
+    var result;
+    dbHolder.openDB()
+        .then(dbHolder.beginTransaction)
+        .then(function(res){
+            result=res;
+            return blogs.modifyTags(tagSrcId,0,result);
+        })
+        .then(function(){
+            return tags.deleteById(tagSrcId,result)
+        })
+        .then(function(){
+           return dbHolder.commitTransaction(result);
+        })
+        .then(function(){
+            result.db.close();
+            delete DC.tags[i];
+            console.log(DC.tags)
+            res.json({state:1});
+        })
+        .catch(function(err) {
+            console.log(err)
+            if(result&&result.db)  result.db.close();
+            return res.json({state: -1});
+        })
+
+})
 
 module.exports=router;

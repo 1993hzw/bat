@@ -12,8 +12,8 @@
 <body>
 <div>
     <div class="topbar-container">
-        <a href="/" class="logo"><img src="/img/logo.png" style="height: 60px;float: left;border: 0"></a>
-        <div style="float:left;font-weight: bold;font-size: 25px;line-height: 25px;margin-top: 35px;margin-left: 20px">后台管理</div>
+        <a href="/" ><img src="/img/logo.png" class="logo" ></a>
+        <div style="float:left;font-weight: bold;font-size: 25px;line-height: 25px;margin-top: 30px;margin-left: 20px">后台管理</div>
         <a href="/blogs/publish"><div class="btn-new">+</div></a>
         <div class="clearFloat"></div>
     </div>
@@ -22,9 +22,101 @@
         <input type="button" value="上传数据库" class="btn upload">
         <input type="button" value="下载数据库" class="btn download">
     </div>
-    <div class="tip"></div>
+    <div class="seperator">标签</div>
+    <div>
+        <% for(var i in tags){ %>
+         <div class="tag-item">
+            <div class="tag-option">
+                <span class="tag-option-item rename" onclick="renameTag(<%= i %>,'<%= tags[i] %>')">重命名</span>
+                <span class="tag-option-item delete" onclick="deleteTag(<%= i %>,'<%= tags[i] %>')">删除</span>
+            </div>
+            <div class="tag-name"><%= tags[i] %></div>
+         </div>
+        <% } %>
+        <div class="clearFloat"></div>
+    </div>
+</div>
+<div class="tip"></div>
 </div>
 
+<style>
+    #dialog-input-tag{
+        display: none;
+    }
+    #dialog-del-tag{
+        display: none;
+     }
+    .dialog-bg{
+        filter: alpha(opacity=50);
+        -moz-opacity:0.5;
+        opacity: 0.5;
+        position: fixed;background:black;top: 0;left: 0;width: 100%;height: 100%;
+    }
+    .dialog-container{
+        position: fixed;background:transparent;top: 0;left: 0;width: 100%;height: 100%;
+    }
+    .dialog-body{
+        margin-top: 100px;margin-left:auto;margin-right:auto;display: table;color: black;text-align: center
+    }
+    .dialog-content{
+        padding-top: 20px;
+        background: white;width: 300px;height: 120px;font-size: 20px;font-weight: bold;border-bottom: 2px solid #ddd;
+    }
+    .input-tag{
+        font-size: 20px;
+        padding-left: 5px;
+        margin-top: 5px;
+        width: 80%;
+        border: 1px solid gray;
+        height: 40px;
+        line-height: 40px;
+    }
+    .dialog-btn-container{
+        display: table;line-height: 40px
+    }
+    .dialog-btn{
+        float: left;
+        border: 0;
+        padding: 0;
+        margin: 0;
+        background: cornflowerblue;width: 150px;height: 40px;font-size: 20px;
+    }
+    .dialog-btn:hover{
+        background: deepskyblue;
+        cursor: pointer;
+    }
+</style>
+<div id="dialog-input-tag">
+    <div class="dialog-bg"></div>
+    <div class="dialog-container">
+        <div class="dialog-body">
+            <div id="content-input" class="dialog-content">
+                <div style="font-size: 16px">（原标签名：<span class="original-tag"></span>）</div>
+                <div id="tip-input">请输入新标签名</div>
+                <input type="text" class="input-tag">
+            </div>
+            <div class="dialog-btn-container">
+                <div id="cancel-input" class="dialog-btn">取消</div>
+                <div id="enter-input" class="dialog-btn">确定</div>
+            </div>
+        </div>
+    </div>
 </div>
+<div id="dialog-del-tag">
+    <div class="dialog-bg"></div>
+    <div class="dialog-container">
+        <div class="dialog-body">
+            <div id="content-del" class="dialog-content">
+                <div>确定删除标签：<br><span class="original-dtag"></span></div>
+                <div style="color: #aaa;font-size: 16px;font-weight: normal">(标签下文章将移至默认标签下)</div>
+            </div>
+            <div class="dialog-btn-container">
+                <div id="cancel-del" class="dialog-btn">取消</div>
+                <div id="enter-del" class="dialog-btn">确定</div>
+            </div>
+        </div>
+    </div>
+</div>
+
 </body>
 </html>

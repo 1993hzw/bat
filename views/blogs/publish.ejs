@@ -42,7 +42,7 @@
             <div class="tag-container">
                 <!--<input type="button" class="selector-tag" value="tag">-->
                 <select class="selector-tag">
-                    <% for(var i=0;i < tags.length;i++){ %>
+                    <% for(var i in tags){ %>
                     <% if(isEdit&&tag==i){ %>
                     <option selected value="<%= i %>"> &nbsp;<%= tags[i] %></option>
                     <% }else{ %>

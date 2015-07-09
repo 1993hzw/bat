@@ -32,7 +32,7 @@
                 <% if('全部'!=curTag){ %>
                    <a href="/blogs?tag=全部"><div class="tag-item">全部</div></a>
                 <% } %>
-                <% for(var i=0;i < tags.length;i++){ %>
+                <% for(var i in tags){ %>
                   <% if(tags[i]!=tags[curTag]){ %>
                     <a href="/blogs?tag=<%= i %>"><div class="tag-item"><%= tags[i] %></div></a>
                   <% } %>

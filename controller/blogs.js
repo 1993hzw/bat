@@ -249,6 +249,34 @@ var modifyById = function (id, data, result) {
 
 }
 
+var modifyTags = function (tagSrc,tagDst, result) {
+    var _update = function (result) {
+        return new Promise(function (resolve, reject) {
+            var sql = "update " + fields.tableName ;
+                sql+=' set '+fields.tags+'=?'
+                 sql+= " where " + fields.tags + "=?";
+            console.log(sql+" "+tagSrc+" "+tagDst)
+            result.db.run(sql, [tagDst,tagSrc], function (err) {
+                if (err) return reject(err);
+                resolve(result);
+            })
+        })
+    }
+    if (result) {
+        return _update(result)
+            .then(function () {
+                return Promise.resolve();
+            })
+    } else {
+        return dbHolder.openDB()
+            .then(_update)
+            .then(function () {
+                return Promise.resolve();
+            })
+    }
+
+}
+
 var deleteById = function (id, result) {
     var _delete = function (result) {
         return new Promise(function (resolve, reject) {
@@ -309,3 +337,4 @@ exports.getTitleByArray = getTitleByArray;
 exports.modifyById = modifyById;
 exports.deleteById = deleteById;
 exports.visitsIncrement = visitsIncrement;
+exports.modifyTags=modifyTags;

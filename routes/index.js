@@ -4,7 +4,8 @@ var dbHolder=require('../controller/DBHolder');
 var comments=require('../controller/comments');
 var blogs=require('../controller/blogs');
 var Promise=require('bluebird');
-var configs=require('../controller/configs');
+var maps=require('../controller/maps');
+var DC=require('../controller/data-center');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -31,7 +32,7 @@ router.get('/', function(req, res, next) {
                     for(var i=0;i<rows.length;i++){
                         obj[rows[i].f_id]=rows[i].f_title;
                     }
-                    result.tags=configs.tags;
+                    result.tags=DC.tags;
                     result.titles=obj;
                     res.render('index', result);
                 })

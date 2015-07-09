@@ -3,24 +3,39 @@ var blogs=require("../controller/blogs");
 var comments=require("../controller/comments");
 var dbHolder=require('../controller/DBHolder');
 var Promise=require('bluebird');
-var configs=require("../controller/configs");
+var maps=require("../controller/maps");
+var tags=require('../controller/tags');
 
-configs.put("passwd","123456")
+tags.deleteById(3)
     .then(function(){
-        return configs.get("name")
+        return tags.getAll();
+    })
+    .then(function(rows){
+        var arr={};
+        for(var i=0;i<rows.length;i++)
+          arr[i]=rows[i].f_name;
+        console.log(arr);
+    })
+    .catch(function(err){
+        console.log(err)
+    })
+
+/*maps.put("passwd","123456")
+    .then(function(){
+        return maps.get("name")
             .then(function(val){
                 console.log(val)
             })
     })
     .then(function(){
-        return configs.getAll()
+        return maps.getAll()
                 .then(function(rows){
                     console.log(rows)
                 });
     })
     .catch(function(err){
         console.log(err)
-    })
+    })*/
 
 /*var data={};
 data[blogs.fields.title]="title";
@@ -50,7 +65,7 @@ blogs.add(data)
         console.log(err);
     });*/
 
-var comment=dbHolder.comment;
+//var comment=dbHolder.comment;
 
 /*var data={};
 data[comment.blogId]=1;
@@ -68,9 +83,9 @@ comments.add(data)
     .catch(function(err){
         console.log(err)
     })*/
-
+/*
 comments.drop()
-    .catch(console.log)
+    .catch(console.log)*/
 
 /*comments.replay("enen",4)
     .then(function(){

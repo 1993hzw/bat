@@ -35,11 +35,13 @@ a{
     width: 100%;
     background: #eee;
     border-bottom: 2px solid black;
+    height: 60px;
 }
 .logo{
     float: left;
     height: 100%;
     margin-left: 20px;
+    border: none;
 }
 
 .btn-list{
@@ -84,21 +86,56 @@ a{
 .btn:hover{
     background: deepskyblue;
 }
+
+ .tag-item{
+     margin: 5px;
+     float: left;
+     display: block;
+ }
+.tag-option{
+    display: table;
+}
+.tag-option-item{
+    border: 1px solid #aaa;
+    background: #ddd;
+    font-size: 12px;
+    padding: 1px;
+    padding-left: 5px;
+    padding-right: 5px;
+    color: #444;
+}
+.tag-option-item:hover{
+    background: #eee;
+    cursor: pointer;
+    color: black;
+}
+.tag-name{
+    display: table;
+    width: 100%;
+    background: forestgreen;
+    padding: 3px;
+    font-size: 18px;
+    text-align: center;
+}
+
+
+
 .tip{
     left: 0;
     bottom: 0;
     position: fixed;
     padding: 10px;
     background: #111;
-    font-size: 16px;
+    font-size: 14px;
     color: white;
     text-align: left;
     padding: 5px;
-    height: 100px;
+    height: 150px;
     width: 100%;
     overflow-y: auto;
-
 }
+
+
 
 @media (max-width: 800px) {
 

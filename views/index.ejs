@@ -31,7 +31,7 @@ return v.year+"-"+v.month+"-"+v.date+" "+ v.hour+":"+ v.minute+":"+ v.second;
                 <a href="/blogs">
                     <div class="tag-item">全部</div>
                 </a>
-                <% for(var i=0;i < tags.length;i++){ %>
+                <% for(var i in tags){ %>
                 <a href="/blogs?tag=<%= i %> ">
                     <div class="tag-item"><%= tags[i] %></div>
                 </a>
