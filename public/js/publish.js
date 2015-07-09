@@ -147,9 +147,9 @@ $(document).ready(function(){
                                    $('.input-tag').val("").click();
                                    var html="";
                                    for(var i in v.tags){
-                                     html+='<option value="'+i+'"> &nbsp;'+ v.tags[i] +'</option>'
+                                     html+='<option selected value="'+i+'"> &nbsp;'+ v.tags[i] +'</option>'
                                    }
-                                  html+='<option selected value="'+i+'"> &nbsp;'+ v.tags[i] +'</option>'
+                                  //html+='<option selected value="'+i+'"> &nbsp;'+ v.tags[i] +'</option>'
                                    html+='<option style="color: gray;" value="-1">&nbsp;+新增 </option>'
                                    $('.selector-tag').html(html);
 

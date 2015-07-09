@@ -154,7 +154,7 @@ router.post('/add_tag',function(req,res,next){
         .then(function(rows){
             result.db.close();
             for(var i=0;i<rows.length;i++)
-                tagObj[i]=rows[i].f_name;
+                tagObj[rows[i].f_id]=rows[i].f_name;
             DC.tags=tagObj;
             res.json({state:1,tags:DC.tags})
         })
@@ -276,8 +276,11 @@ router.post('/rename_tag',function(req,res,next){
     var hasFound=false;
     if(!tagSrc||tagSrc=='默认'||!tagDst||tagDst.length>15) return res.json({state:-1});
     for(var i in DC.tags){
+        if(DC.tags[i]==tagDst) return res.json({state:-2});
+    }
+    for(var i in DC.tags){
         if(DC.tags[i]==tagSrc){
-            if(i==0) return res.json({state:-1});
+            if(i==1) return res.json({state:-1});
             DC.tags[i]=tagDst;
             tags.modifyById(i,tagDst)
                 .then(function(){
@@ -304,13 +307,13 @@ router.post('/delete_tag',function(req,res,next){
             break;
         }
     }
-    if(tagSrcId==undefined||tagSrcId==0) return res.json({state:-1})
+    if(tagSrcId==undefined||tagSrcId==1) return res.json({state:-1})
     var result;
     dbHolder.openDB()
         .then(dbHolder.beginTransaction)
         .then(function(res){
             result=res;
-            return blogs.modifyTags(tagSrcId,0,result);
+            return blogs.modifyTags(tagSrcId,1,result);
         })
         .then(function(){
             return tags.deleteById(tagSrcId,result)

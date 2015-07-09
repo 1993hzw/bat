@@ -44,22 +44,6 @@ a{
     border: none;
 }
 
-.btn-list{
-    margin-left: 30px;
-    text-align: center;
-    font-weight: bolder;
-    font-size: 20px;
-    line-height: 30px;
-    margin-top: 30px;
-    float: left;
-    width: 80px;
-    height: 50%;
-    color: white;
-    background: black;
-    margin-right: 20px;
-}
-.btn-list:hover{
-}
 .btn-new{
     display: table;
     font-size: 40px;
@@ -94,6 +78,8 @@ a{
  }
 .tag-option{
     display: table;
+    height: 20px;
+    min-width: 80px;
 }
 .tag-option-item{
     border: 1px solid #aaa;
@@ -112,15 +98,25 @@ a{
 .tag-name{
     display: table;
     width: 100%;
-    background: forestgreen;
+    background: lightgreen;
     padding: 3px;
     font-size: 18px;
     text-align: center;
 }
 
+.add-tag{
+    font-weight: bold;
+    font-size: 38px;
+    background: #eee;
+    padding-left: 10px;
+    padding-right: 10px
+}
+.add-tag:hover{
+    background: #ccc;
+    cursor: pointer;
+}
 
-
-.tip{
+#console{
     left: 0;
     bottom: 0;
     position: fixed;

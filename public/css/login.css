@@ -27,9 +27,22 @@ a{
     clear: both;
 }
 
+.topbar-container{
+    width: 100%;
+    background: #eee;
+    border-bottom: 2px solid black;
+    height: 60px;
+}
+.logo{
+    float: left;
+    height: 100%;
+    margin-left: 20px;
+    border: none;
+}
+
 .form-login{
     margin: auto;
-    margin-top: 200px;
+    margin-top: 150px;
     display:table;
     max-width: 300px;
     width: 100%;

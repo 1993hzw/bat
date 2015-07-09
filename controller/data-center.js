@@ -18,7 +18,7 @@ var init=function(){
         })
         .then(function(rows){
             for(var i=0;i<rows.length;i++)
-                tagObj[i]=rows[i].f_name;
+                tagObj[rows[i].f_id]=rows[i].f_name;
         })
         .then(function () {
             console.log("init db success!");

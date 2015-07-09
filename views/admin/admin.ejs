@@ -27,25 +27,27 @@
         <% for(var i in tags){ %>
          <div class="tag-item">
             <div class="tag-option">
+                <% if(i!=1){ %>
                 <span class="tag-option-item rename" onclick="renameTag(<%= i %>,'<%= tags[i] %>')">重命名</span>
                 <span class="tag-option-item delete" onclick="deleteTag(<%= i %>,'<%= tags[i] %>')">删除</span>
+                <% } %>
             </div>
             <div class="tag-name"><%= tags[i] %></div>
          </div>
         <% } %>
+        <div class="tag-item">
+            <div class="add-tag" onclick="addTag()">+</div>
+        </div>
         <div class="clearFloat"></div>
     </div>
 </div>
-<div class="tip"></div>
+<div id="console"></div>
 </div>
 
 <style>
-    #dialog-input-tag{
+    #dialog{
         display: none;
     }
-    #dialog-del-tag{
-        display: none;
-     }
     .dialog-bg{
         filter: alpha(opacity=50);
         -moz-opacity:0.5;
@@ -86,37 +88,20 @@
         cursor: pointer;
     }
 </style>
-<div id="dialog-input-tag">
+<div id="dialog">
     <div class="dialog-bg"></div>
     <div class="dialog-container">
         <div class="dialog-body">
-            <div id="content-input" class="dialog-content">
-                <div style="font-size: 16px">（原标签名：<span class="original-tag"></span>）</div>
-                <div id="tip-input">请输入新标签名</div>
-                <input type="text" class="input-tag">
+            <div id="content" class="dialog-content">
             </div>
             <div class="dialog-btn-container">
-                <div id="cancel-input" class="dialog-btn">取消</div>
-                <div id="enter-input" class="dialog-btn">确定</div>
+                <div id="cancel" class="dialog-btn">取消</div>
+                <div id="enter" class="dialog-btn">确定</div>
             </div>
         </div>
     </div>
 </div>
-<div id="dialog-del-tag">
-    <div class="dialog-bg"></div>
-    <div class="dialog-container">
-        <div class="dialog-body">
-            <div id="content-del" class="dialog-content">
-                <div>确定删除标签：<br><span class="original-dtag"></span></div>
-                <div style="color: #aaa;font-size: 16px;font-weight: normal">(标签下文章将移至默认标签下)</div>
-            </div>
-            <div class="dialog-btn-container">
-                <div id="cancel-del" class="dialog-btn">取消</div>
-                <div id="enter-del" class="dialog-btn">确定</div>
-            </div>
-        </div>
-    </div>
-</div>
+
 
 </body>
 </html>
