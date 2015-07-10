@@ -162,4 +162,8 @@ body {
     .btn-new{
         margin-right: 10px;
     }
+    .blog-item{
+        padding-left: 10px;
+        padding-right: 10px;
+    }
 }

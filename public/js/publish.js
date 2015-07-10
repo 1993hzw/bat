@@ -62,7 +62,7 @@ var obj;
 var isPreview=true;
 var isPc=true;
 $(document).ready(function(){
-       isPc=checkIsPC;
+       isPc=checkIsPC();
        var textarea=$(".textarea");
        var preview=$(".preview");
 
