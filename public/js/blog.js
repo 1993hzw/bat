@@ -57,6 +57,7 @@ var getComments = function () {
             for(var i=0;i<rows.length;i++){
                 var content = formatComment(getTime(rows[i].f_insert_time),formatHTML(rows[i].f_content))
                 var replay=(rows[i].f_replay)?formatReplay(getTime(rows[i].f_modify_time),formatHTML(rows[i].f_replay)):"";
+               //var replay=formatReplay("sfsdf","sdf")
                 $('.others-container').append(content+replay);
             }
             commentsLength+= rows.length;

@@ -245,13 +245,12 @@ body {
 }
 .replay{
     float: right;
-    margin-top: 5px;
     margin-bottom: 5px;
 }
 .infos-container{
     padding: 5px;
     background-color: #eeffff;
-    display: table;
+    display: inline-table;
 }
 .details-container{
     margin: 0;
@@ -294,7 +293,6 @@ body {
     height: 20px;
     float: right;
     background: greenyellow;
-
 }
 
 .btn-more{
