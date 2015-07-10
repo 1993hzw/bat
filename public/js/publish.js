@@ -2,38 +2,48 @@ var isResizing=false;
 var downX;
 var isRender=false;
 var setLayout=function(){
-
        if(isPreview){
               var height=$(window).height();
               var width=$(window).width();
               var editHeight=height-$('.topbar-container').height();
               //var titleHeight=$(".title-container").height();
+
               $(".edit-container").height(editHeight).width(width);
-              $(".textarea").height(editHeight).width(width/2-10);
-              $(".preview-container").height(editHeight).width(width/2-10);
+              if(isPc){
+                     $(".inupt-container").height(editHeight).width(width/2-10);
+                     $(".preview-container").height(editHeight).width(width/2-10);
+              }else{
+                     $(".inupt-container").height(editHeight).width(0);
+                     $(".preview-container").height(editHeight).width(width-20);
+              }
               $(".input-title-container").width(width-$(".tag-container").width())
        }else{
               var height=$(window).height();
               var width=$(window).width();
               var editHeight=height-$('.topbar-container').height();
               $(".edit-container").height(editHeight).width(width);
-              $(".textarea").height(editHeight).width(width-50);
+              $(".inupt-container").height(editHeight).width(width-50);
               $(".preview-container").height(editHeight).width(30);
               $(".input-title-container").width(width-$(".tag-container").width())
               $(".preview").html("")
        }
 }
 var resize= function (e) {
+       if(!isPc) return;
        if(!isPreview) return;
        if(isRender) return;
         isRender=true;
-       var textarea=$(".textarea");
+       var textarea=$(".inupt-container");
        var preview=$(".preview-container");
        var width;
-       if(e.clientX<200) {
-              width=200;
-       }else if(($(window).width()-e.clientX-10)<200){
-              width=$(window).width()-200;
+       var span=20;
+       if(e.clientX<span) {
+              width=span;
+              isResizing=false;
+       }else if(($(window).width()-e.clientX-10)<span){
+              width=$(window).width()-span;
+              if(e.clientX+5>=$(window).width())
+              isResizing=false;
        }else{
             width=e.clientX;
        }
@@ -50,7 +60,9 @@ var lastTagVal=0;
 var isRender=false,isInput=false;
 var obj;
 var isPreview=true;
+var isPc=true;
 $(document).ready(function(){
+       isPc=checkIsPC;
        var textarea=$(".textarea");
        var preview=$(".preview");
 
@@ -91,10 +103,10 @@ $(document).ready(function(){
               }else
                      preview.scrollTop(preview[0].scrollHeight*percent)
        })
-
-       $(window).resize(function(){
-              setLayout();
-       });
+       if(isPc)
+              $(window).resize(function(){
+                     setLayout();
+              });
 
        $(".resize-border").bind("mousedown", function (e) {
               if(!e) return;
@@ -183,6 +195,7 @@ $(document).ready(function(){
               }
        })
        lastTagVal=$('.selector-tag').val()
+       if(!isPc) $(".btn-preview").click()
 })
 
 var isPublishing=false;
@@ -245,4 +258,13 @@ function formatHTML(html){
 
 function _trim(str) {
        return str.replace(/(?:^[ \t\n\r]+)|(?:[ \t\n\r]+$)/g, '');
+}
+function checkIsPC() {
+       if(/AppleWebKit.*Mobile/i.test(navigator.userAgent) ||
+           (/MIDP|SymbianOS|NOKIA|SAMSUNG|LG|NEC|TCL|Alcatel|BIRD|DBTEL|Dopod|PHILIPS|HAIER|LENOVO|MOT-|Nokia|SonyEricsson|SIE-|Amoi|ZTE/.test(navigator.userAgent)))
+       {
+              return false;
+       }else{
+              return true;
+       }
 }

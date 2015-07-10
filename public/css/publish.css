@@ -99,16 +99,8 @@ body {
     color: white;
 
 }
-.btn-list{
-    margin-left: 30px;
-    background: #444;
-
-}
-.btn-list:hover{
-    background: black;
-}
 .btn-new,.btn-edit{
-    margin-left: 5px;
+    margin-left: 30px;
     background: black;
 }
 
@@ -217,7 +209,11 @@ body {
     overflow-x: hidden;
 }
 .btn-preview-container{
-    width: 100%;height: 100%;position: relative;top: -100%;left: 0;background: transparent
+    display: block;
+    position: relative;
+    top: -100%;
+    left: 0px;
+    background: transparent;
 }
 .btn-preview{
     filter: alpha(opacity=80);
@@ -256,5 +252,11 @@ body {
     }
     .tag-container{
         width: 100px;
+    }
+    .btn-new,.btn-edit{
+        margin-left: 10px;
+    }
+    .logo{
+        margin-left: 10px;
     }
 }

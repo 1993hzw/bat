@@ -134,11 +134,11 @@ a{
     padding: 10px;
     font-size: 12px;
 }
-.hotblogs-itme{
+.hotblogs-item{
     color: cornflowerblue;
     padding-bottom: 10px;
 }
-.hotblogs-itme:hover{
+.hotblogs-item:hover{
     cursor: pointer;
     color: deepskyblue;
 }

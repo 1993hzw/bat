@@ -152,3 +152,14 @@ body {
     cursor: pointer;
     background: navajowhite;
 }
+@media(max-width: 800px){
+    .logo{
+        margin-left: 10px
+    }
+    .btn-list{
+        margin-left: 10px;
+    }
+    .btn-new{
+        margin-right: 10px;
+    }
+}

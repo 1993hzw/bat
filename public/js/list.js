@@ -6,9 +6,10 @@ $(document).ready(function(){
         $(".btn-more").text("加载中")
         getBlogs();
     })
-    $(window).resize(function(){
-        setLayout()
-    })
+    if(checkIsPC())
+        $(window).resize(function(){
+            setLayout()
+        })
     setLayout()
     setTimeout(function(){
         //setLayout()
@@ -50,4 +51,13 @@ var getBlogs=function(){
 var getTime=function(obj){
     var v=eval('('+obj+')');
     return v.year+"-"+v.month+"-"+v.date+" "+ v.hour+":"+ v.minute+":"+ v.second;
+}
+function checkIsPC() {
+    if(/AppleWebKit.*Mobile/i.test(navigator.userAgent) ||
+        (/MIDP|SymbianOS|NOKIA|SAMSUNG|LG|NEC|TCL|Alcatel|BIRD|DBTEL|Dopod|PHILIPS|HAIER|LENOVO|MOT-|Nokia|SonyEricsson|SIE-|Amoi|ZTE/.test(navigator.userAgent)))
+    {
+        return false;
+    }else{
+        return true;
+    }
 }

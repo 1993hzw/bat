@@ -47,9 +47,11 @@ return v.year+"-"+v.month+"-"+v.date+" "+ v.hour+":"+ v.minute+":"+ v.second;
         <div class="right">
             <div>
                 <div class="seperator">热门文章</div>
+                <div style="padding-top:10px;padding-bottom: 20px">
                 <% for(var i=0; i< hotblogs.length;i++){ %>
-                    <a href="/blogs/<%= hotblogs[i].f_id %>"><div class="hotblogs-itme">《<%= hotblogs[i].f_title %>》</div></a>
+                    <a href="/blogs/<%= hotblogs[i].f_id %>"><div class="hotblogs-item">《<%= hotblogs[i].f_title %>》</div></a>
                 <% } %>
+                </div>
             </div>
 
             <div>
