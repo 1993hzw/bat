@@ -43,4 +43,19 @@ router.get('/', function(req, res, next) {
 
 });
 
+router.post('/upload',function(req,res,next){
+    res.end("ok")
+    /*if (req.files && req.files.codecsv != 'undifined') {
+        var temp_path = req.files.codecsv.path;
+        if (temp_path) {
+            fs.readFile(temp_path, 'utf-8', function(err, content) {
+                //文件的内容
+                console.log('content',content);
+                // 删除临时文件
+                fs.unlink(temp_path);
+            });
+        }
+    }*/
+})
+
 module.exports = router;

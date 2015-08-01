@@ -37,8 +37,8 @@ $(document).ready(function () {
 
 var del = function () {
     var id = $("#blog").text();
-    $.get("/api/delete", {id: id}, function (res) {
-        var v = eval('(' + res + ')');
+    $.get("/api/delete", {id: id,t:Math.random()}, function (res) {
+        var v = JSON.parse(res);
         if (v.state > 0) {
             location.href = "/blogs";
         } else {
@@ -50,14 +50,19 @@ var del = function () {
 var commentsLength=0;
 var getComments = function () {
     var id = $("#blog").text();
-    $.get("/api/get_comments", {id: id,offset:commentsLength}, function (res) {
-        var v = eval('(' + res + ')');
+    $.get("/api/get_comments", {id: id,offset:commentsLength,t:Math.random()}, function (res) {
+        var v = JSON.parse(res);
         if (v.state > 0) {
             var rows= v.rows;
             for(var i=0;i<rows.length;i++){
                 var content = formatComment(getTime(rows[i].f_insert_time),formatHTML(rows[i].f_content))
-                var replay=(rows[i].f_replay)?formatReplay(getTime(rows[i].f_modify_time),formatHTML(rows[i].f_replay)):"";
-               //var replay=formatReplay("sfsdf","sdf")
+
+                var replay=rows[i].f_reply;
+                if(replay==undefined){
+                    replay="";
+                }else{
+                    replay=formatReplay(getTime(rows[i].f_modify_time),formatHTML(replay));
+                }
                 $('.others-container').append(content+replay);
             }
             commentsLength+= rows.length;
@@ -85,7 +90,7 @@ var addComment = function () {
         return $('.tip-comment').text('评论不能为空').css({color:"red"})
     }
     $.post("/api/add_comment", {id: id, comment: comment,contact:contact}, function (res) {
-        var v = eval('(' + res + ')');
+        var v = JSON.parse(res);
         if (v.state > 0) {
             var content = formatComment(v.time,comment)
             $('.others-container').prepend(content);
@@ -131,13 +136,20 @@ var formatReplay=function(time,content){
         '</div>';
 }
 
-function formatHTML(html){
-    return html.replace( /&/g, "&amp;" )
-        .replace( /</g, "&lt;" )
-        .replace( />/g, "&gt;" )
-        .replace( /"/g, "&quot;" )
-        .replace( /'/g, "&#39;" );
-}
+var formatHTML=function(){
+    var character={
+        '&':'&amp;',
+        '<':'&lt;',
+        '>':'&gt;',
+        '"':'&quot;',
+        '\'':'&#39;'
+    }
+    return function(html){
+        return html.replace(/[&<>"']/g,function(c){
+            return character[c];
+        })
+    }
+}();
 
 var getTime=function(obj){
     var v=eval('('+obj+')');

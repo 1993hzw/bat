@@ -36,7 +36,7 @@ function verify(){
         $(".tip").html("密码不能为空")
     }else{
         $.post("/api/login",{user:user,passwd:passwd},function(res){
-            var v=eval('('+res+')');
+            var v=JSON.parse(res);
             if(v.state>0){
                    location.href='/admin'
             }else{

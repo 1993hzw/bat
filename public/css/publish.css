@@ -5,7 +5,7 @@ a:active{ color:#faa700; }
 a:focus{ outline: thin dotted; }
 a:hover, a:active{ outline: 0; }
 
-p{margin:1em 0;}
+p{margin:0.5em 0;}
 
 img{max-width:100%;}
 
@@ -75,7 +75,13 @@ body {
 .topbar-container{
     width: 100%;
     line-height: 60px;
-   }
+    border-bottom: 1px solid #ddd;
+    background:-moz-linear-gradient(top,#add8e6,#fefefe);
+    background:-webkit-gradient(linear, 0% 0%, 0% 100%,from(#add8e6), to(#fefefe));
+    background-image: -webkit-gradient(linear,left bottom,left top,color-start(0, #add8e6),color-stop(1, #fefefe));
+    filter:  progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='#add8e6', endColorstr='#fefefe');
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='#add8e6', endColorstr='#fefefe')";
+}
 .bar{
     width: 100%;
     background: #eee;
@@ -159,9 +165,9 @@ body {
 .tag-container{
     float: left;
     background: transparent;
-    width: 150px;
+    min-width: 100px;
     height: 100%;
-    border-bottom: 2px solid black;
+    border-bottom: 1px solid black;
 }
 .selector-tag{
     background: white;
@@ -179,7 +185,23 @@ body {
     background: whitesmoke;
     border: none;
 }
-
+.upload-img{
+    padding-left: 6px;
+    padding-right: 6px;
+    line-height: 30px;
+    position: relative;
+    top: -100%;
+    float: right;
+    font-size: 18px;
+    font-weight: bolder;
+    background: cornflowerblue;
+    filter: alpha(opacity=80);
+    -moz-opacity:0.8;
+    opacity: 0.8;
+}
+.upload-img:hover{
+    background: deepskyblue;
+}
 .resize-border {
     border: none;
     float: left;
@@ -233,6 +255,7 @@ body {
     overflow-x: hidden;
     padding: 10px;
     font-size: 18px;
+    border: none;
     outline: none;
     width: 100%;
     height: 100%;
@@ -251,7 +274,7 @@ body {
         /*display: none;*/
     }
     .tag-container{
-        width: 100px;
+        min-width: 100px;
     }
     .btn-new,.btn-edit{
         margin-left: 10px;

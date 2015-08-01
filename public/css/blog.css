@@ -5,7 +5,7 @@ a:active{ color:#faa700; }
 a:focus{ outline: thin dotted; }
 a:hover, a:active{ outline: 0; }
 
-p{margin:1em 0;}
+p{margin:0.3em 0;line-height: 20px;letter-spacing:1.5px}
 
 img{max-width:100%;}
 
@@ -22,7 +22,8 @@ blockquote{color:#666666;margin:0;padding-left: 3em;border-left: 0.5em #EEE soli
 hr { display: block; height: 2px; border: 0; border-top: 1px solid #aaa;border-bottom: 1px solid #eee; margin: 1em 0; padding: 0; }
 
 pre{
-    line-height: 16px;
+    line-height: 20px;
+    letter-spacing:1.5px
 }
 pre, code{
     color: #000;
@@ -72,8 +73,14 @@ body {
 
 .topbar-container{
     width: 100%;
-    background: #eee;
-    border-bottom: 2px solid black;
+   /* background: #eee;
+    border-bottom: 2px solid black;*/
+    border-bottom: 1px solid #ddd;
+    background:-moz-linear-gradient(top,#add8e6,#fefefe);
+    background:-webkit-gradient(linear, 0% 0%, 0% 100%,from(#add8e6), to(#fefefe));
+    background-image: -webkit-gradient(linear,left bottom,left top,color-start(0, #add8e6),color-stop(1, #fefefe));
+    filter:  progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='#add8e6', endColorstr='#fefefe');
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='#add8e6', endColorstr='#fefefe')";
 }
 .logo{
     float: left;
@@ -115,7 +122,7 @@ body {
     display: table;
     margin-left: auto;
     margin-right: auto;
-    max-width: 900px;
+    max-width: 1000px;
     width: 100%;
 }
 .title-container{

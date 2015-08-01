@@ -16,6 +16,7 @@ body {
     height: 100%;
     font-size: 14px;
     font-family: "Microsoft YaHei", Verdana, sans-serif, "SimSun";
+    overflow: hidden;
 }
 a{
     color: black;
@@ -28,6 +29,7 @@ a{
     font-size: 12px;
 }
 .clearFloat{
+    float: none;
     clear: both;
 }
 .name {
@@ -40,9 +42,14 @@ a{
 }
 .topbar-container{
     width: 100%;
-    background: #eee;
-    border-bottom: 2px solid black;
     height: 60px;
+    border-bottom: 1px solid #ddd;
+    background:-moz-linear-gradient(top,#add8e6,#fefefe);
+    background:-webkit-gradient(linear, 0% 0%, 0% 100%,from(#add8e6), to(#fefefe));
+    background-image: -webkit-gradient(linear,left bottom,left top,color-start(0, #add8e6),color-stop(1, #fefefe));
+    filter:  progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='#add8e6', endColorstr='#fefefe');
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='#add8e6', endColorstr='#fefefe')";
+
 }
 .logo{
     float: left;
@@ -122,12 +129,38 @@ a{
     background: #ccc;
     cursor: pointer;
 }
+.content{
+    width: 100%;
+    height: 200px;
+    overflow-y: auto;
+}
+.comment-container{
+    display: table;
+    padding: 5px;
+    padding-right: 20px;
+    /*border: 1px solid #aaa;*/
+}
+.brief{
+    display: table;
+    padding: 1px;
+    max-width: 50%;
+    min-width: 200px;
+    background: greenyellow;
+}
+.brief:hover{
+    text-decoration: underline;
+    cursor: pointer;
+}
+.comment-item {
+    margin-bottom: 1px;
+    margin-left: 5px;
+
+}
 
 #console{
     left: 0;
     bottom: 0;
     position: fixed;
-    padding: 10px;
     background: #111;
     font-size: 14px;
     color: white;
@@ -137,10 +170,116 @@ a{
     width: 100%;
     overflow-y: auto;
 }
-
-
-
-
+#comment-details{
+    top: 0;
+    left: auto;
+    right: auto;
+    position: fixed;
+    width: 100%;
+    padding: 10px;
+    display: none;
+    /*display: table;*/
+}
+.comment-details-bg{
+    filter: alpha(opacity=50);
+    -moz-opacity: 0.5;
+    opacity: 0.5;
+    position: fixed;
+    background: black;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+#comment-main-container{
+    position: fixed;
+    background: transparent;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+.comment-details-container {
+    display: table;
+    margin: auto;
+    min-width: 400px;
+    background: white;
+    padding: 10px;
+    margin-top: 50px;
+}
+.btn-close-comment{
+    float: right;
+    font-size: 18px;
+}
+.btn-close-comment:hover{
+    cursor: pointer;
+    font-weight: bold;
+}
+.comment-details-time{
+    padding-bottom: 5px;
+    display: inline;
+}
+.comment-details-title{
+   padding-bottom: 5px;
+    color: cornflowerblue;
+}
+.comment-details-title:hover{
+    color: deepskyblue;
+}
+.comment-details-content{
+   padding: 10px;
+    border-top: 1px dashed #bbb;
+    border-bottom: 1px dashed #bbb;
+}
+.comment-details-options{
+    padding-top: 10px;
+}
+.comment-details-options span{
+    font-size: 12px;
+    color: #aaaaaa;
+}
+.comment-details-options span:hover{
+    color: black;
+    cursor: pointer;
+}
+.textarea-replay{
+    width: 100%;
+    height: 100px;
+    border: 1px solid #aaa;
+    outline: none;
+    margin-top: 10px;
+    overflow-y: auto;
+}
+.btn-replay{
+    float: right;
+    border: none;
+    outline: none;
+    width: 100px;
+    height: 30px;
+    background: cornflowerblue;
+}
+.btn-replay:hover{
+    cursor: pointer;
+    background: deepskyblue;
+}
+.comment-details-options span{
+    padding: 10px;
+}
+.more-blogs-container{
+    display: none;
+    text-align: center;
+    padding-left: 10px;
+}
+.btn-more{
+    padding: 3px;
+    display: table;
+    color: #333;
+    background: antiquewhite;
+}
+.btn-more:hover{
+    cursor: pointer;
+    background: navajowhite;
+}
 @media(max-width: 800px){
     .logo{
         margin-left: 10px

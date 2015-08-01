@@ -32,7 +32,7 @@ var setLayout=function(){
 var getBlogs=function(){
     var list=$('.blogs-list-container');
     $.get('/api/get_last',{t:Math.random()},function(res){
-            var v=eval('('+res+')');
+            var v=JSON.parse(res);
             var rows= v.rows;
              for(var i=0;i<rows.length;i++){
                  list.append('<div class="blog-item">'+
@@ -45,7 +45,7 @@ var getBlogs=function(){
 }
 
 var getTime=function(obj){
-    var v=eval('('+obj+')');
+    var v=JSON.parse(obj);
     return v.year+"-"+v.month+"-"+v.date+" "+ v.hour+":"+ v.minute+":"+ v.second;
 }
 

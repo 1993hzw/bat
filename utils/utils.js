@@ -12,7 +12,7 @@ var getTimeJosn=function(){
 }
 
 var resolveTimeJson=function(obj){
-    var v=eval('('+obj+')');
+    var v=JSON.parse(obj);
     return v.year+"-"+v.month+"-"+v.date+" "+ v.hour+":"+ v.minute+":"+ v.second;
 }
 

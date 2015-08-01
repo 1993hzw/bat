@@ -30,7 +30,7 @@ var length=0;
 var getBlogs=function(){
     var list=$('.blogs-list-container');
     $.get('/api/get_blogs',{t:Math.random(),tag:$('#cur-tag-id').text(),offset:length},function(res){
-        var v=eval('('+res+')');
+        var v=JSON.parse(res);
         var rows= v.rows;
         for(var i=0;i<rows.length;i++){
             list.append('<div class="blog-item">'+

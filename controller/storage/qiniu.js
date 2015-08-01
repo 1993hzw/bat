@@ -12,7 +12,7 @@ function getToken(bucketname) {
     //putPolicy.returnUrl = returnUrl;
     //putPolicy.returnBody = returnBody;
     //putPolicy.asyncOps = asyncOps;
-    putPolicy.expires = 300;//s
+    putPolicy.expires = 1100;//s
     return putPolicy.token();
 }
 function uploadFile(localFile, key, uptoken,cb) {

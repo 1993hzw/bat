@@ -1,8 +1,14 @@
 var router=require('express').Router();
+var qiniu=require('../../controller/storage/qiniu');
 
-router.get("/:uu?",function(req,res,next){
-    console.log(req.params)
-    res.end("hello ")
+router.get("/",function(req,res,next){
+    var token=qiniu.getToken("resources")
+    res.render('upload',{domain:'7xkd2p.com1.z0.glb.clouddn.com',token:token})
+})
+
+router.get("/token",function(req,res,next){
+    var token=qiniu.getToken("resources");
+    res.json({"uptoken": token});
 })
 
 module.exports=router;

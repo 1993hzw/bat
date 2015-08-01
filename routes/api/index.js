@@ -199,6 +199,21 @@ router.get('/get_comments',function(req,res,next){
             res.json({state:-1})
         })
 })
+router.get('/get_comment_by_id',function(req,res,next){
+    var id=req.query.id;
+    if(!id||id<0) return res.json({state:-1});
+    comments.getCommentByID(id)
+        .then(function(comments){
+           return  blogs.getTitleByArray([comments[0][dbHolder.comment.blogId]])
+                .then(function(rows){
+                    res.json({state:1,rows:comments,title:rows[0][dbHolder.blog.title]})
+                })
+        })
+        .catch(function(err){
+            console.log(err)
+            res.json({state:-1})
+        })
+})
 
 router.get('/upload_database',function(req,res,next){
     if(!req.session.hasLogined) return res.json({state:-1})
@@ -334,5 +349,42 @@ router.post('/delete_tag',function(req,res,next){
         })
 
 })
+
+router.get('/get_comment_brief_noreplay',function(req,res,next){
+    var off=req.query.offset;
+    off=off||0;
+    comments.getLastCommentsNoReplay(off,10)
+        .then(function(rows){
+            res.json({state:1,rows:rows});
+        })
+        .catch(function(err){
+            console.log(err);
+            res.json({state:-1});
+        })
+})
+
+router.post('/del_comment',function(req,res,next){
+    var id=req.body.id;
+    if(!id|id<0) return res.json({state:-1});
+    comments.deleteById(id)
+        .then(res.json({state:1}))
+        .catch(function(err){
+            console.log(err);
+            res.json({state:-1});
+        })
+})
+ router.post('/replay', function (req,res,next) {
+     var id=req.body.id;
+     var replay=req.body.replay;
+     if(!id|id<0||!replay) return res.json({state:-1});
+     comments.replay(replay.substr(0,500),id)
+         .then(function(){
+             return res.json({state:1});
+         })
+         .catch(function(err){
+             console.log(err);
+             return res.json({state:-1});
+         })
+ })
 
 module.exports=router;

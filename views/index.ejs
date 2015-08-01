@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <% var getTime=function(obj){
-var v=eval('('+obj+')');
+var v=JSON.parse(obj);
 return v.year+"-"+v.month+"-"+v.date+" "+ v.hour+":"+ v.minute+":"+ v.second;
 }
 %>
@@ -47,9 +47,9 @@ return v.year+"-"+v.month+"-"+v.date+" "+ v.hour+":"+ v.minute+":"+ v.second;
         <div class="right">
             <div>
                 <div class="seperator">热门文章</div>
-                <div style="padding-top:10px;padding-bottom: 20px">
+                <div class="hotblogs-container">
                 <% for(var i=0; i< hotblogs.length;i++){ %>
-                    <a href="/blogs/<%= hotblogs[i].f_id %>"><div class="hotblogs-item">《<%= hotblogs[i].f_title %>》</div></a>
+                    <a href="/blogs/<%= hotblogs[i].f_id %>"><div class="hotblogs-item"><%= hotblogs[i].f_title %></div></a>
                 <% } %>
                 </div>
             </div>
@@ -60,8 +60,8 @@ return v.year+"-"+v.month+"-"+v.date+" "+ v.hour+":"+ v.minute+":"+ v.second;
                     <% for(var i=0; i< comments.length;i++){ %>
                     <div class="comments-item">
                         <div class="time"><%= getTime(comments[i].f_insert_time) %></div>
-                        <div style="font-size: 12px;color: gray"><a class="title" href="/blogs/<%= comments[i].f_blog_id %>">《<%=
-                            titles[comments[i].f_blog_id] %>》</a>：
+                        <div style="font-size: 12px;color: gray"><a class="title" href="/blogs/<%= comments[i].f_blog_id %>"><%=
+                            titles[comments[i].f_blog_id] %></a>：
                         </div>
                         <div class="comment"><%= comments[i].f_content %></div>
                     </div>
