@@ -1,4 +1,3 @@
-var isLoading=false;
 $(document).ready(function(){
     getBlogs();
     $(".btn-more").click(function () {
@@ -27,7 +26,10 @@ var setLayout= function () {
 }
 
 var length=0;
+var isLoading=false;
 var getBlogs=function(){
+    if(isLoading) return;
+    isLoading=true;
     var list=$('.blogs-list-container');
     $.get('/api/get_blogs',{t:Math.random(),tag:$('#cur-tag-id').text(),offset:length},function(res){
         var v=JSON.parse(res);

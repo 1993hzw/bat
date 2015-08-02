@@ -4,16 +4,16 @@ var dbHolder=require('../controller/DBHolder');
 var comments=require('../controller/comments');
 var blogs=require('../controller/blogs');
 var Promise=require('bluebird');
-var maps=require('../controller/maps');
+var utils=require('../utils/utils');
 var DC=require('../controller/data-center');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-    comments.getLastComments(0,5)
+    comments.getLastComments(0,5)//最新评论
         .then(function(rows){
             return Promise.resolve({comments:rows,isLogined:req.session.hasLogined})
         })
-        .then(function(result){
+        .then(function(result){//热门文章
             //hotblogs
            return blogs.getHots(0,5)
                 .then(function(rows){
@@ -21,21 +21,32 @@ router.get('/', function(req, res, next) {
                    return Promise.resolve(result)
                 })
         })
-        .then(function(result){
+        .then(function(result){//获取评论的文章题目
             var arr=[];
             for(var i=0;i<result.comments.length;i++){
                 arr[i]=result.comments[i].f_blog_id;
             }
-            blogs.getTitleByArray(arr)
+           return blogs.getTitleByArray(arr)
                 .then(function(rows){
                     var obj={}
                     for(var i=0;i<rows.length;i++){
                         obj[rows[i].f_id]=rows[i].f_title;
                     }
-                    result.tags=DC.tags;
                     result.titles=obj;
-                    res.render('index', result);
+                   return Promise.resolve(result);
                 })
+        })
+        .then(function(result){//获取最新文章
+            return blogs.getLast(0,5)
+                .then(function(rows){
+                    result.rows=rows;
+                    return Promise.resolve(result);
+                })
+        })
+        .then(function(result){
+            result.tags=DC.tags;
+            result.getTime=utils.getTime;
+            res.render('index', result);
         })
         .catch(function(err){
             console.log(err)

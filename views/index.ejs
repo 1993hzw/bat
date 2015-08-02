@@ -42,6 +42,16 @@ return v.year+"-"+v.month+"-"+v.date+" "+ v.hour+":"+ v.minute+":"+ v.second;
             <div style="display: table;padding-top: 20px">
                 <div class="seperator">最新文章</div>
                 <div class="blogs-list-container">
+
+                    <% for(var i=0;i<rows.length;i++){ %>
+                    <div class="blog-item">
+                        <div class="blog-title"><a href="/blogs/<%= rows[i].f_id %>"><%= rows[i].f_title %></a></div>
+                        <div class="blog-brief"><%= rows[i].f_brief %></div>
+                        <div class="blog-details"><span class="blog-tags"><%= tags[rows[i].f_tags] %></span>|
+                            <span class="blog-time"><%= getTime(rows[i].f_insert_time) %></span></div>
+                        </div>
+                    <% } %>
+
                 </div>
             </div>
         </div>

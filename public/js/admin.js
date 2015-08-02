@@ -185,7 +185,10 @@ function addTag(){
     $('#dialog').css({display:"block"})
 }
 var briefLength=0;
+var isLoading=false;
 function getCommentBrief(){
+    if(isLoading) return;
+    isLoading=true;
     var content=$('.comment-container');
     $.get('/api/_get_comment_brief_noreplay',{offset:briefLength,t:Math.random()},function(res){
         var v=JSON.parse(res);
@@ -207,6 +210,7 @@ function getCommentBrief(){
         }else{
             alert("get brief err");
         }
+        isLoading=false;
     })
 }
 function getComment(id){
