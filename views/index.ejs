@@ -10,14 +10,15 @@ return v.year+"-"+v.month+"-"+v.date+" "+ v.hour+":"+ v.minute+":"+ v.second;
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>首页</title>
-    <link rel="stylesheet" href="/css/index.css">
-    <!--<link rel="stylesheet" href="/css/normalize.css">-->
-    <script src="/js/jquery1.3.2.js"></script>
-    <script src="/js/index.js"></script>
+    <style type="text/css">
+        <%- include ../public/css/common.css%>
+        <%- include ../public/css/index.css%>
+    </style>
+
 </head>
 <body>
 <div>
-    <div class="top-container">
+    <div class="top-container bg">
         <img src="/img/logo.png" class="logo">
         <div class="name">走向远方</div>
         <% if(isLogined){ %>
@@ -80,6 +81,11 @@ return v.year+"-"+v.month+"-"+v.date+" "+ v.hour+":"+ v.minute+":"+ v.second;
     </div>
 
 </div>
+
+<script src="/js/jquery1.3.2.js"></script>
+<script type="text/javascript">
+    <%- include ../public/js/index.js%>
+</script>
 
 </body>
 </html>

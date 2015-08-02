@@ -5,14 +5,16 @@
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>文章</title>
-    <link rel="stylesheet" href="/css/list.css">
-    <script src="/js/jquery1.3.2.js"></script>
-    <script src="/js/list.js"></script>
+    <style type="text/css">
+        <%- include ../../public/css/common.css%>
+        <%- include ../../public/css/list.css%>
+    </style>
+
 </head>
 <body>
 <div>
     <div id="cur-tag-id" style="display: none"><%= curTag %></div>
-    <div class="topbar-container">
+    <div class="topbar-container bg">
         <a href="/" class="logo"><img src="/img/logo.png" style="height: 60px;float: left;border: 0"></a>
         <div class="btn-list">文章</div>
         <% if(isLogined){ %>
@@ -44,5 +46,10 @@
         <div class="more-blogs-container"><div class="btn-more">点击加载更多</div></div>
     </div>
 </div>
+
+<script src="/js/jquery1.3.2.js"></script>
+<script type="text/javascript">
+    <%- include ../../public/js/list.js%>
+</script>
 </body>
 </html>

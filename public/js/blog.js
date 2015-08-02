@@ -37,7 +37,7 @@ $(document).ready(function () {
 
 var del = function () {
     var id = $("#blog").text();
-    $.get("/api/delete", {id: id,t:Math.random()}, function (res) {
+    $.get("/api/_delete", {id: id,t:Math.random()}, function (res) {
         var v = JSON.parse(res);
         if (v.state > 0) {
             location.href = "/blogs";
