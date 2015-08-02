@@ -153,7 +153,7 @@ $(document).ready(function () {
             $("#tip").html('<span style="color: red;font-size: 18px">标签名长度不能大于15</span>')
             isClickEnter = false;
         } else {
-            $.post("/api/add_tag", {tag: tag}, function (res) {
+            $.post("/api/_add_tag", {tag: tag}, function (res) {
                 var v = JSON.parse(res);
                 if (v.state > 0) {
                     $('#dialog').css({display: "none"})
@@ -209,7 +209,7 @@ var publish = function () {
     var tag = _trim($('.selector-tag').val());
     if (markdown == null || markdown == "")
         return alert("内容不能为空");
-    $.post('/api/publish', {title: title, markdown: markdown, tag: tag}, function (res) {
+    $.post('/api/_publish', {title: title, markdown: markdown, tag: tag}, function (res) {
         var v = JSON.parse(res);
         if (v.state > 0) {
             if (v.id) {
@@ -234,7 +234,7 @@ var finish = function () {
     var tag = _trim($('.selector-tag').val());
     if (markdown == null || markdown == "")
         return alert("内容不能为空");
-    $.post('/api/save', {id: $("#blog").text(), title: title, markdown: markdown, tag: tag}, function (res) {
+    $.post('/api/_save', {id: $("#blog").text(), title: title, markdown: markdown, tag: tag}, function (res) {
         var v = JSON.parse(res);
         if (v.state > 0) {
             if (v.id) {

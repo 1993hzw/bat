@@ -5,13 +5,14 @@
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>首页</title>
-    <link rel="stylesheet" href="/css/login.css">
-    <script src="/js/jquery1.3.2.js"></script>
-    <script src="/js/login.js"></script>
+    <style type="text/css">
+        <%- include ../../public/css/common.css%>
+        <%- include ../../public/css/login.css%>
+    </style>
 </head>
 <body>
 <div>
-    <div class="topbar-container">
+    <div class="topbar-container bg">
         <a href="/" ><img src="/img/logo.png" class="logo" ></a>
         <div class="name">后台管理</div>
         <div class="clearFloat"></div>
@@ -25,5 +26,11 @@
     </form>
 
 </div>
+
+<script src="/js/jquery1.3.2.js"></script>
+<script type="text/javascript">
+    <%- include ../../public/js/login.js%>
+</script>
+
 </body>
 </html>

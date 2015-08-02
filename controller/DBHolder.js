@@ -159,16 +159,16 @@ var initDB=function(){
         .then(_createBlogTable)
         .then(_createCommentTable)
         .then(_createTagTable)
-        .then(function(){
+        /*.then(function(){
             return _open_db_config();
-        })
+        })*/
         .then(_createConfigTable)
 }
 exports.initDB=initDB;
 exports.beginTransaction=_beginTransaction;
 exports.commitTransaction=_commitTransaction;
 exports.openDB=_open_db;
-exports.openDBConfig=_open_db_config;
+//exports.openDBConfig=_open_db_config;
 exports.blog=blog;
 exports.map=map;
 exports.comment=comment;

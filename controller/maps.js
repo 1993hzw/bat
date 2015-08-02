@@ -24,7 +24,7 @@ var put = function (key,value,result) {
                      })
     }else{
         var result;
-        return dbholder.openDBConfig()
+        return dbholder.openDB()
                .then(function(res){
                   result=res;
                 return promise.resolve(result);
@@ -54,7 +54,7 @@ var get = function (key,result) {
                 return promise.resolve(v);
             })
     }else{
-        return dbholder.openDBConfig()
+        return dbholder.openDB()
             .then(_select)
             .then(function (result) {
                 var v=result.rows.length>0?result.rows[0].f_value:undefined;
@@ -81,7 +81,7 @@ var modify = function (key,value, result) {
                 return promise.resolve();
             })
     } else {
-        return dbholder.openDBConfig()
+        return dbholder.openDB()
             .then(_update)
             .then(function () {
                 return promise.resolve();
@@ -107,7 +107,7 @@ var getall=function(result){
                 return promise.resolve(result.rows);
             })
     }else{
-        return dbholder.openDBConfig()
+        return dbholder.openDB()
             .then(_select)
             .then(function (result) {
                 return promise.resolve(result.rows);

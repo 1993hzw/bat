@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding" defaultCharsetForPropertiesFiles="UTF-8">
-    <file url="file://$PROJECT_DIR$/node_modules/html-to-text" charset="GBK" />
     <file url="file://$PROJECT_DIR$/public/css/bootstrap.min.css" charset="GBK" />
     <file url="file://$PROJECT_DIR$/public/js/markdown.js" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/public/test.html" charset="UTF-8" />

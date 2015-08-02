@@ -36,7 +36,7 @@ function setLayout(){
 function upload(){
     if(isBusy) return;
     isBusy=true;
-    $.get('/api/upload_database',{t:Math.random()},function(res){
+    $.get('/api/_upload_database',{t:Math.random()},function(res){
         var v=JSON.parse(res);
         var console=$('#console');
         if(v.state>0){
@@ -51,7 +51,7 @@ function upload(){
 function download(){
     if(isBusy) return;
     isBusy=true;
-    $.get('/api/download_database',{t:Math.random()},function(res){
+    $.get('/api/_download_database',{t:Math.random()},function(res){
         var v=JSON.parse(res);
         var console=$('#console');
         if(v.state>0){
@@ -83,7 +83,7 @@ var rename=function(name){
         tip.html('<span style="color: red;font-size: 18px">标签名长度不能大于15</span>')
         isBusy=false;
     }else {
-        $.post('/api/rename_tag', {tagSrc: name, tagDst: tag}, function (res) {
+        $.post('/api/_rename_tag', {tagSrc: name, tagDst: tag}, function (res) {
             var v = JSON.parse(res);
             if (v.state > 0) {
                 location.href = "/admin";
@@ -102,7 +102,7 @@ var rename=function(name){
 var del=function(name){
     if(isBusy) return;
     isBusy=true;
-    $.post('/api/delete_tag',{tagSrc:name},function(res){
+    $.post('/api/_delete_tag',{tagSrc:name},function(res){
         var v=JSON.parse(res);
         if(v.state>0){
             location.href="/admin";
@@ -129,7 +129,7 @@ var add=function(){
         tip.html('<span style="color: red;font-size: 18px">标签名长度不能大于15</span>')
         isBusy=false;
     }else {
-        $.post("/api/add_tag", {tag: tag}, function (res) {
+        $.post("/api/_add_tag", {tag: tag}, function (res) {
             var v = JSON.parse(res);
             if (v.state > 0) {
                 location.href="/admin"
@@ -187,7 +187,7 @@ function addTag(){
 var briefLength=0;
 function getCommentBrief(){
     var content=$('.comment-container');
-    $.get('/api/get_comment_brief_noreplay',{offset:briefLength,t:Math.random()},function(res){
+    $.get('/api/_get_comment_brief_noreplay',{offset:briefLength,t:Math.random()},function(res){
         var v=JSON.parse(res);
         if(v.state>0){
             var html=""
@@ -214,7 +214,7 @@ function getComment(id){
     var comment=$('#comment-main-container');
     comment.html("");
 
-    $.get('/api/get_comment_by_id',{id:id,t:Math.random()},function(res){
+    $.get('/api/_get_comment_by_id',{id:id,t:Math.random()},function(res){
         var v=JSON.parse(res);
         if(v.state>0){
             var c= v.rows[0];
@@ -243,7 +243,7 @@ function delComment(id){
     var html='<div>确定删除评论吗?</div>'
     $('#content').html(html);
     enter.click(function(){
-        $.post('/api/del_comment',{id:id},function(res){
+        $.post('/api/_del_comment',{id:id},function(res){
             var v=JSON.parse(res);
             if(v.state>0){
                 location.href="";
@@ -258,7 +258,7 @@ function replay(id){
     var replay=_trim($('.textarea-replay').val());
     if(replay=="") return alert("回复不能为空");
     if(replay.length>500) return alert("回复不能超过五百字");
-    $.post('/api/replay',{id:id,replay:replay},function(res){
+    $.post('/api/_replay',{id:id,replay:replay},function(res){
         var v=JSON.parse(res);
         if(v.state>0){
             $('#comment'+id).css({display:"none"})
