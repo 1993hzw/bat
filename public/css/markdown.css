@@ -5,7 +5,7 @@ a:active{ color:#faa700; }
 a:focus{ outline: thin dotted; }
 a:hover, a:active{ outline: 0; }
 
-p{margin:0em 0;line-height: 20px;letter-spacing:1px}
+p{margin:0em 0;line-height: 20px;}
 
 img{max-width:100%;}
 
@@ -23,7 +23,7 @@ hr { display: block; height: 2px; border: 0; border-top: 1px solid #aaa;border-b
 
 pre{
     line-height: 20px;
-    letter-spacing:1px;
+    /*letter-spacing:0.5px;*/
 }
 pre, code{
     color: #000;

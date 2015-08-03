@@ -44,6 +44,7 @@ router.get(/^\/[0-9]+$/, function (req, res, next) {
             var data = {
                 id: blog[fields.id],
                 title: blog[fields.title],
+                brief: blog[fields.brief],
                 html: blog[fields.html],
                 tag: blog[fields.tags],
                 time: time,

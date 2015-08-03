@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <meta name="keywords" content="<%= tags[tag] %>" />
+    <meta name="description" content="<%= brief.replace(/\n/g,'。') %>" />
+
     <title>文章</title>
     <link rel="stylesheet" href="/css/highlight/github.css">
     <style type="text/css">
@@ -75,8 +79,8 @@
 
 </div>
 
-<script src="/js/jquery1.3.2.js"></script>
-<script src="/js/highlight/highlight.pack.js"></script>
+<script src="/js/external/jquery1.3.2.js"></script>
+<script src="/js/external/highlight.pack.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
 <script type="text/javascript">
     <%- include ../../public/js/blog.js%>

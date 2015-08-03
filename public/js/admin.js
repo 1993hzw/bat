@@ -199,7 +199,6 @@ function getCommentBrief(){
                     '<div class="brief" onclick="getComment('+ v.rows[i].f_id+')">'+ v.rows[i].f_content.substring(0,100)+'</div>'+
                     '</div>';
             }
-            console.log(html)
             content.append(html);
             briefLength+=v.rows.length;
             if(v.rows.length<10){

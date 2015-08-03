@@ -140,9 +140,11 @@ $(document).ready(function () {
     $('.selector-tag').change(function () {
         var v = _trim($('.selector-tag').val() + "");
         if (v == -1) {
-            $('#dialog').css({display: "block"})
+            $('#dialog')
+                .html()
+                .css({display: "block"})
         } else {
-            lastTagVal = v;
+            lastTagVal = v;//记住标签，防止显示新增标签
         }
     })
     $('#cancel').click(function () {
@@ -274,15 +276,6 @@ var formatHTML = function () {
     }
 }();
 
-/*function formatHTML(html){
-
- return html.replace( /&/g, "&amp;" )
- .replace( /</g, "&lt;" )
- .replace( />/g, "&gt;" )
- .replace( /"/g, "&quot;" )
- .replace( /'/g, "&#39;" );
- }*/
-
 function _trim(str) {
     return str.replace(/(?:^[ \t\n\r]+)|(?:[ \t\n\r]+$)/g, '');
 }
@@ -303,7 +296,7 @@ $(function() {
                 { title : "Image files", extensions : "jpg,bmp,png" }
                 //{ title : "Zip files", extensions : "zip" }
             ],
-            max_file_size : '400kb', //最大只能上传400kb的文件
+            max_file_size : '2mb', //最大只能上传400kb的文件
             prevent_duplicates : true //不允许选取重复文件
         },
         runtimes: 'html5,flash,html4',
@@ -316,17 +309,7 @@ $(function() {
         chunk_size: '4mb',
         uptoken_url: '/test/token',
         domain: '7xkd2p.com1.z0.glb.clouddn.com',
-        // downtoken_url: '/downtoken',
         unique_names: true,
-        // save_key: true,
-        // x_vars: {
-        //     'id': '1234',
-        //     'time': function(up, file) {
-        //         var time = (new Date()).getTime();
-        //         // do something with 'time'
-        //         return time;
-        //     },
-        // },
         auto_start: true,
         init: {
             'FilesAdded': function(up, files) {
@@ -342,21 +325,15 @@ $(function() {
                 console.log('complete')
             },
             'FileUploaded': function(up, file, info) {
+                //图片上传成功返回url
                 addImgUrl(file.target_name);
                 console.log(file)
             },
             'Error': function(up, err, errTip) {
                 console.log(errTip)
             }
-            // ,
-            // 'Key': function(up, file) {
-            //     var key = "";
-            //     // do something with key
-            //     return key
-            // }
         }
     });
-
 
 });
 

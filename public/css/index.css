@@ -75,7 +75,7 @@
 }
 .blog-title{
     display: table;
-    font-size: 30px;
+    font-size: 25px;
     /*font-weight: bolder;*/
     min-width: 150px;
 }
@@ -109,7 +109,8 @@
 }
 .hotblogs-item{
     color: cornflowerblue;
-    padding-bottom: 10px;
+    padding-bottom: 5px;
+    font-size: 14px;
 }
 .hotblogs-item:hover{
     cursor: pointer;
@@ -134,7 +135,7 @@
     padding: 5px;
     padding-left: 0px;
     padding-right: 0;
-    font-size: 12px;
+    font-size: 14px;
     line-height: 18px;
     /*background: #eeffff;*/
 }
