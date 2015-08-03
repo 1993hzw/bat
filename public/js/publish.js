@@ -141,7 +141,6 @@ $(document).ready(function () {
         var v = _trim($('.selector-tag').val() + "");
         if (v == -1) {
             $('#dialog')
-                .html()
                 .css({display: "block"})
         } else {
             lastTagVal = v;//记住标签，防止显示新增标签
