@@ -16,7 +16,7 @@ var setLayout = function () {
             $(".inupt-container").height(editHeight).width(0);
             $(".preview-container").height(editHeight).width(width - 20);
         }
-        $(".input-title-container").width(width - $(".tag-container").width())
+        $(".input-title-container").width(width - $(".tag-container").width()-5)
     } else {
         var height = $(window).height();
         var width = $(window).width();
@@ -66,13 +66,23 @@ $(document).ready(function () {
     var textarea = $(".textarea");
     var preview = $(".preview");
 
+   /* marked.setOptions({
+        highlight: function (code,lang) {
+            return hljs.highlightBlock(code,lang);
+        }
+    });*/
+
+
     var render = function () {
         if (!isInput) return;
         isRender = true;
         setTimeout(function () {
-            var html = markdown.toHTML(textarea.val(), "Maruku");
+            var html = marked(textarea.val());
             //alert(html)
             preview.html(html);
+            $('pre code').each(function(i, block) {
+                hljs.highlightBlock(block);
+            });
             render();
         }, 500)
     }
@@ -91,7 +101,7 @@ $(document).ready(function () {
 
     });
     setLayout();
-    preview.html(markdown.toHTML(textarea.val()), "Maruku");
+    preview.html(marked(textarea.val()));
 
     textarea.scroll(function () {
         var textarea = $(".textarea");
@@ -187,7 +197,7 @@ $(document).ready(function () {
             setLayout();
             $('.resize-border').css({borderLeft: "2px dashed gray", borderRight: "2px dashed gray"})
             $('.btn-preview').text(" > ")
-            var html = markdown.toHTML(textarea.val(), "Maruku");
+            var html = marked(textarea.val());
             preview.html(html);
         } else {
             setLayout();
@@ -288,12 +298,20 @@ function checkIsPC() {
 
 $(function() {
     var uploader = Qiniu.uploader({
+        filters: {
+            mime_types : [ //只允许上传图片和zip文件
+                { title : "Image files", extensions : "jpg,bmp,png" }
+                //{ title : "Zip files", extensions : "zip" }
+            ],
+            max_file_size : '400kb', //最大只能上传400kb的文件
+            prevent_duplicates : true //不允许选取重复文件
+        },
         runtimes: 'html5,flash,html4',
         browse_button: 'pickfiles',
         container: 'container',
         drop_element: 'container',
-        max_file_size: '100mb',
-        flash_swf_url: 'js/plupload/Moxie.swf',
+        max_file_size: '2mb',
+        flash_swf_url: '/js/Moxie.swf',
         dragdrop: true,
         chunk_size: '4mb',
         uptoken_url: '/test/token',
@@ -309,48 +327,25 @@ $(function() {
         //         return time;
         //     },
         // },
-        auto_start: false,
+        auto_start: true,
         init: {
             'FilesAdded': function(up, files) {
-                /*  $('table').show();
-                 $('#success').hide();
-                 plupload.each(files, function(file) {
-                 var progress = new FileProgress(file, 'fsUploadProgress');
-                 progress.setStatus("等待...");
-                 });*/
                 console.log("add")
             },
             'BeforeUpload': function(up, file) {
-                /* var progress = new FileProgress(file, 'fsUploadProgress');
-                 var chunk_size = plupload.parseSize(this.getOption('chunk_size'));
-                 if (up.runtime === 'html5' && chunk_size) {
-                 progress.setChunkProgess(chunk_size);
-                 }*/
                 console.log("before")
             },
             'UploadProgress': function(up, file) {
-                /*  var progress = new FileProgress(file, 'fsUploadProgress');
-                 var chunk_size = plupload.parseSize(this.getOption('chunk_size'));
-
-                 progress.setProgress(file.percent + "%", file.speed, chunk_size);*/
                 console.log(file.percent+"%")
             },
             'UploadComplete': function() {
-                //$('#success').show();
                 console.log('complete')
-                //console.log("sss")
             },
             'FileUploaded': function(up, file, info) {
-                /* var progress = new FileProgress(file, 'fsUploadProgress');
-                 progress.setComplete(up, info);*/
-                //console.log(info)
-                console.log('inf')
+                addImgUrl(file.target_name);
+                console.log(file)
             },
             'Error': function(up, err, errTip) {
-                /*$('table').show();
-                 var progress = new FileProgress(err.file, 'fsUploadProgress');
-                 progress.setError();
-                 progress.setStatus(errTip);*/
                 console.log(errTip)
             }
             // ,
@@ -364,3 +359,12 @@ $(function() {
 
 
 });
+
+function addImgUrl(name){
+    var domain='http://7xkd2p.com1.z0.glb.clouddn.com/';
+    var container = $('.textarea');
+    var text=container.val();
+    container.val(text+'\n'+'![]('+domain+name+')');
+    $('.preview').html(marked(container.val()));
+
+}

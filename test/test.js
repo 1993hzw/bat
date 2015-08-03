@@ -1,37 +1,28 @@
-var find=function(){
+var marked = require('marked');
 
-    var fs = require('fs');
+var markdownString = '```js\n console.log("hello"); \n```';
 
-    var path = "d:\\";
-
-    function explorer(path){
-        fs.readdir(path, function(err,files){
-            if(err){
-                console.log("error:\n"+err);
-                return;
-            }
-
-            files.forEach(function(file){
-                fs.stat(path+"\\"+file,function(err,stat){
-                    if(err){
-                        console.log(err);
-                        return;
-                    }
-
-                    if(stat.isDirectory()){
-                        console.log(path+"\\"+file+"\\");
-                        explorer(path+"\\"+file);
-                    }else{
-                        console.log(path+"\\"+file);
-                    }
-
-                });
-            });
-
+/*// Async highlighting with pygmentize-bundled
+marked.setOptions({
+    highlight: function (code, lang, callback) {
+        require('pygmentize-bundled')({ lang: lang, format: 'html' }, code, function (err, result) {
+            callback(err, result.toString());
         });
     }
+});*/
 
-    explorer(path);
-}
+// Using async version of marked
+marked(markdownString, function (err, content) {
+    if (err) throw err;
+    console.log(content);
+});
 
-find();
+// Synchronous highlighting with highlight.js
+marked.setOptions({
+    highlight: function (code) {
+        //console.log('sdf '+code)
+        return require('highlight.js').highlightAuto(code).value;
+    }
+});
+
+console.log(marked(markdownString));

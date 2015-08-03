@@ -11,8 +11,8 @@ $(function() {
         container: 'container',
         drop_element: 'container',
         max_file_size: '100mb',
-        flash_swf_url: 'js/plupload/Moxie.swf',
-        dragdrop: true,
+        flash_swf_url: '/js/Moxie.swf',
+        dragdrop: false,
         chunk_size: '4mb',
         uptoken_url: '/test/token',
         domain: $('#domain').val(),
@@ -27,7 +27,7 @@ $(function() {
         //         return time;
         //     },
         // },
-        auto_start: false,
+        auto_start: true,
         init: {
             'FilesAdded': function(up, files) {
               /*  $('table').show();
@@ -53,14 +53,14 @@ $(function() {
             },
             'UploadComplete': function() {
                 //$('#success').show();
-                alert('go')
+                alert('succss')
                 //console.log("sss")
             },
             'FileUploaded': function(up, file, info) {
                /* var progress = new FileProgress(file, 'fsUploadProgress');
                 progress.setComplete(up, info);*/
                 //console.log(info)
-                alert('inf')
+                alert(info)
             },
             'Error': function(up, err, errTip) {
                 /*$('table').show();

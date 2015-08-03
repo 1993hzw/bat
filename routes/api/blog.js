@@ -9,6 +9,7 @@ var Promise = require('bluebird');
 var qn=require('../../controller/storage/qiniu')
 var DC=require('../../controller/data-center');
 var tags=require('../../controller/tags');
+var marked = require('marked');
 
 //发布文章
 router.post('/_publish', function(req, res, next) {
@@ -18,7 +19,7 @@ router.post('/_publish', function(req, res, next) {
     var title=(req.body.title==null||req.body.title=="")?"(未命名)":req.body.title;
     data[fields.title]=title;
     data[fields.markdown]=req.body.markdown;
-    data[fields.html]=markdown.toHtml(req.body.markdown,"Maruku");
+    data[fields.html]=marked(req.body.markdown);
     var brief = htmlToText.fromString(data[fields.html], {wordwrap: 130}).substr(0,150);
     data[fields.brief]=brief;
     var tag=(req.body.tag==null||req.body.tag=="")?"默认":req.body.tag;
@@ -49,7 +50,7 @@ router.post('/_save', function(req, res, next) {
     var title=(req.body.title==null||req.body.title=="")?"(未命名)":req.body.title;
     data[fields.title]=title;
     data[fields.markdown]=req.body.markdown;
-    data[fields.html]=markdown.toHtml(req.body.markdown,"Maruku");
+    data[fields.html]=marked(req.body.markdown);
     var brief = htmlToText.fromString(data[fields.html], {wordwrap: 130}).substr(0,150);
     data[fields.brief]=brief;
     var tag=(req.body.tag==null||req.body.tag=="")?"默认":req.body.tag;

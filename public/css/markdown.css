@@ -23,7 +23,7 @@ hr { display: block; height: 2px; border: 0; border-top: 1px solid #aaa;border-b
 
 pre{
     line-height: 20px;
-    letter-spacing:1px
+    letter-spacing:1px;
 }
 pre, code{
     color: #000;
@@ -46,3 +46,7 @@ img { border: 0; -ms-interpolation-mode: bicubic; vertical-align: middle; }
 table { border-collapse: collapse; border-spacing: 0; }
 td, th { vertical-align: top; padding: 4px 10px; border: 1px solid #bbb; }
 tr:nth-child(even) td, tr:nth-child(even) th { background: #eee; }
+
+pre code{
+    overflow-x: auto;
+}

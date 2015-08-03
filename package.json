@@ -19,6 +19,8 @@
     "bluebird": "~2.9.30",
     "dblite": "~0.7.6",
     "qiniu": "~6.1.8",
-    "formidable": "~1.0.17"
+    "formidable": "~1.0.17",
+    "marked": "~0.3.5",
+    "highlight.js": "~8.7.0"
   }
 }
