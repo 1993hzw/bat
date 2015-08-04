@@ -16,11 +16,20 @@ router.post('/_publish', function(req, res, next) {
     if(!req.session.hasLogined) return res.redirect("/")
     var fields=dbHolder.blog;
     var data={};
+    var brief;
     var title=(req.body.title==null||req.body.title=="")?"(未命名)":req.body.title;
     data[fields.title]=title;
     data[fields.markdown]=req.body.markdown;
-    data[fields.html]=marked(req.body.markdown);
-    var brief = htmlToText.fromString(data[fields.html], {wordwrap: 130}).substr(0,150);
+    data[fields.mode]=req.body.mode;
+
+    if(req.body.mode==1){//markdown
+        data[fields.html]=marked(req.body.markdown);
+         brief = htmlToText.fromString(data[fields.html], {wordwrap: 130}).substr(0,150);
+    }else{//文本模式,对内容进行html标签转义
+        data[fields.html]='<pre style="background: white;border: none;padding-top: 0px;">'+utils.formatHTML(req.body.markdown)+'</pre>';
+         brief = data[fields.html].substr(0,150);
+    }
+
     data[fields.brief]=brief;
     var tag=(req.body.tag==null||req.body.tag=="")?"默认":req.body.tag;
     data[fields.tags]=tag;
@@ -47,14 +56,25 @@ router.post('/_save', function(req, res, next) {
     var id=req.body.id;
     if(!id||id<=0) return res.json({state:-1});
     var data={};
+    var brief;
     var title=(req.body.title==null||req.body.title=="")?"(未命名)":req.body.title;
     data[fields.title]=title;
     data[fields.markdown]=req.body.markdown;
     data[fields.html]=marked(req.body.markdown);
-    var brief = htmlToText.fromString(data[fields.html], {wordwrap: 130}).substr(0,150);
+    data[fields.mode]=req.body.mode;
+
+    if(req.body.mode==1){//markdown
+        data[fields.html]=marked(req.body.markdown);
+        brief = htmlToText.fromString(data[fields.html], {wordwrap: 130}).substr(0,150);
+    }else{//文本模式
+        data[fields.html]='<pre style="background: white;border: none;padding-top: 0px;">'+utils.formatHTML(req.body.markdown)+'</pre>';
+        brief = data[fields.html].substr(0,150);
+    }
+
     data[fields.brief]=brief;
     var tag=(req.body.tag==null||req.body.tag=="")?"默认":req.body.tag;
     data[fields.tags]=tag;
+
     blogs.modifyById(id,data)
         .then(function(){
             return res.json({state:1,id:id})

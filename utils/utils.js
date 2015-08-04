@@ -24,6 +24,22 @@ var checkIsInArray=function(elem,array){
     return array[elem];
 }
 
+var formatHTML = function () {
+    var character = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        '\'': '&#39;'
+    }
+    return function (html) {
+        return html.replace(/[&<>"']/g, function (c) {
+            return character[c];
+        })
+    }
+}();
+
+exports.formatHTML=formatHTML;
 exports.getTime=getTimeJosn;
 exports.resolveTimeJson=resolveTimeJson;
 exports.checkIsInArray=checkIsInArray;

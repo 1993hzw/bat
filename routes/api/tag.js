@@ -17,7 +17,7 @@ router.post('/_add_tag',function(req,res,next){
     }
     var tagObj={};
     var result;
-    dbHolder.initDB()
+    dbHolder.openDB()
         .then(function(res){
             result=res;
             return dbHolder.beginTransaction(result)

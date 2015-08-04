@@ -1,6 +1,7 @@
 var isResizing = false;
 var downX;
 var isRender = false;
+var mode=1;//编辑模式
 var setLayout = function () {
     if (isPreview) {
         var height = $(window).height();
@@ -66,20 +67,11 @@ $(document).ready(function () {
     var textarea = $(".textarea");
     var preview = $(".preview");
 
-   /* marked.setOptions({
-        highlight: function (code,lang) {
-            return hljs.highlightBlock(code,lang);
-        }
-    });*/
-
-
     var render = function () {
         if (!isInput) return;
         isRender = true;
         setTimeout(function () {
-            var html = marked(textarea.val());
-            //alert(html)
-            preview.html(html);
+            previewPassage(preview,textarea);
             $('pre code').each(function(i, block) {
                 hljs.highlightBlock(block);
             });
@@ -101,8 +93,7 @@ $(document).ready(function () {
 
     });
     setLayout();
-    preview.html(marked(textarea.val()));
-
+    previewPassage(preview,textarea);
     textarea.scroll(function () {
         var textarea = $(".textarea");
         var preview = $(".preview");
@@ -198,16 +189,36 @@ $(document).ready(function () {
             setLayout();
             $('.resize-border').css({borderLeft: "2px dashed gray", borderRight: "2px dashed gray"})
             $('.btn-preview').text(" > ")
-            var html = marked(textarea.val());
-            preview.html(html);
+           previewPassage(preview,textarea);
         } else {
             setLayout();
             $('.resize-border').css({border: "none"})
             $('.btn-preview').text(" < ")
         }
     })
-    lastTagVal = $('.selector-tag').val()
-    if (!isPc) $(".btn-preview").click()
+    //监听编辑模式
+    $('.mode').change(function(){
+        var m=$('.mode').val();
+        if(m==1){//markdown
+          mode=1;
+            $('#container').show();
+            $('.inupt-container').css({background:'whitesmoke'})
+        }else if(m==2){//文本模式
+          mode=2;
+            $('#container').hide();
+            $('.inupt-container').css({background:'white'})
+
+        }else{
+            $('.mode').val(1);
+            $('.inupt-container').css({background:'whitesmoke'})
+        }
+        previewPassage(preview,textarea);
+
+    })
+
+    lastTagVal = $('.selector-tag').val();
+    if (!isPc) $(".btn-preview").click();
+    $('.mode').change();
 })
 
 var isPublishing = false;
@@ -220,7 +231,7 @@ var publish = function () {
     var tag = _trim($('.selector-tag').val());
     if (markdown == null || markdown == "")
         return alert("内容不能为空");
-    $.post('/api/_publish', {title: title, markdown: markdown, tag: tag}, function (res) {
+    $.post('/api/_publish', {title: title, markdown: markdown, tag: tag,mode:mode}, function (res) {
         var v = JSON.parse(res);
         if (v.state > 0) {
             if (v.id) {
@@ -245,7 +256,7 @@ var finish = function () {
     var tag = _trim($('.selector-tag').val());
     if (markdown == null || markdown == "")
         return alert("内容不能为空");
-    $.post('/api/_save', {id: $("#blog").text(), title: title, markdown: markdown, tag: tag}, function (res) {
+    $.post('/api/_save', {id: $("#blog").text(), title: title, markdown: markdown, tag: tag,mode:mode}, function (res) {
         var v = JSON.parse(res);
         if (v.state > 0) {
             if (v.id) {
@@ -260,6 +271,16 @@ var finish = function () {
 
 }
 
+var previewPassage=function(preview,textarea){
+    preview=preview||$('.preview');
+    textarea=textarea||$('.textarea');
+    if(mode==2){//纯文本
+        preview.html('<pre style="background: white;border: none;padding-top: 0px;">'+formatHTML(textarea.val())+'</pre>');
+    }else{
+        preview.html(marked(textarea.val()));
+    }
+}
+
 var formatHTML = function () {
     var character = {
         '&': '&amp;',
@@ -269,7 +290,7 @@ var formatHTML = function () {
         '\'': '&#39;'
     }
     return function (html) {
-        html.replace(/[&<>"']/g, function (c) {
+        return html.replace(/[&<>"']/g, function (c) {
             return character[c];
         })
     }
@@ -329,7 +350,7 @@ $(function() {
                 console.log(file)
             },
             'Error': function(up, err, errTip) {
-                console.log(errTip)
+                console.log(errTip);
             }
         }
     });
@@ -337,10 +358,10 @@ $(function() {
 });
 
 function addImgUrl(name){
+    if(mode!=2) return ;
     var domain='http://7xkd2p.com1.z0.glb.clouddn.com/';
     var container = $('.textarea');
     var text=container.val();
     container.val(text+'\n'+'![]('+domain+name+')');
-    $('.preview').html(marked(container.val()));
-
+    previewPassage(undefined,container);
 }
