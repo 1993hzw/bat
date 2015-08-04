@@ -100,7 +100,7 @@
     background: whitesmoke;
     border: none;
 }
-.upload-img{
+/*.upload-img{
     cursor: pointer;
     padding-left: 7px;
     padding-right: 7px;
@@ -117,7 +117,7 @@
 }
 .upload-img:hover{
     background: deepskyblue;
-}
+}*/
 .resize-border {
     border: none;
     float: left;
@@ -181,6 +181,34 @@
     width: 100%;
     height: 100%;
     background: transparent;
+}
+
+.toolsbar-container{
+    width: 100%;
+    position: fixed;
+    top: 0;
+    background: transparent;
+}
+.toolsbar{
+    padding: 10px 10px 10px 20px;
+    margin: 0 auto;
+    background: white;
+    display: table;
+    border: 2px solid grey;
+    border-radius: 10px;
+}
+.tool-item{
+    float: left;
+    margin-right: 10px;
+}
+.item-btn{
+    cursor: pointer;
+    text-align:center;
+    border: 1px solid #999;
+    min-width: 100px;
+}
+.item-btn:hover{
+    background: #eee;
 }
 
 @media(max-width: 800px) {

@@ -1,5 +1,9 @@
 <!DOCTYPE html>
-<% if(id<=0){ var isEdit=false;}else{ var isEdit=true;} %>
+<% if (id <= 0) {
+    var isEdit = false;
+} else {
+    var isEdit = true;
+} %>
 <html>
 <head lang="en">
     <meta charset="UTF-8">
@@ -17,43 +21,43 @@
 </head>
 <body>
 <div>
-     <% if(isEdit){ %>
-      <div id="blog" style="display:none"><%= id %></div>
-     <% } %>
+    <% if(isEdit){ %>
+    <div id="blog" style="display:none"><%= id %></div>
+    <% } %>
     <div class="topbar-container">
         <div class="bg">
-        <a href="/">
-            <a href="/" class="logo"><img src="/img/logo.png" style="height: 60px;float: left"></a>
-        </a>
-       <!-- <a href="/blogs">
-            <div class="btn-list">文章</div>
-        </a>-->
-        <% if(!isEdit){ %>
-        <div class="btn-new">新建</div>
-        <% }else{ %>
-        <div class="btn-edit">编辑</div>
-        <% } %>
-        <div class="options-container">
+            <a href="/">
+                <a href="/" class="logo"><img src="/img/logo.png" style="height: 60px;float: left"></a>
+            </a>
+            <!-- <a href="/blogs">
+                 <div class="btn-list">文章</div>
+             </a>-->
             <% if(!isEdit){ %>
-            <input type="button" class="btn-publish" value="发&nbsp;布">
+            <div class="btn-new">新建</div>
             <% }else{ %>
-            <input type="button" class="btn-finish" value="保&nbsp;存">
+            <div class="btn-edit">编辑</div>
             <% } %>
-        </div>
-        <div class="clearFloat"></div>
+            <div class="options-container">
+                <% if(!isEdit){ %>
+                <input type="button" class="btn-publish" value="发&nbsp;布">
+                <% }else{ %>
+                <input type="button" class="btn-finish" value="保&nbsp;存">
+                <% } %>
+            </div>
+            <div class="clearFloat"></div>
         </div>
         <div class="title-container">
             <div class="tag-container">
                 <!--<input type="button" class="selector-tag" value="tag">-->
                 <select class="selector-tag">
                     <% for(var i in tags){ %>
-                    <% if(isEdit&&tag==i){ %>
+                    <% if(isEdit && tag == i){ %>
                     <option selected value="<%= i %>"> &nbsp;<%= tags[i] %></option>
                     <% }else{ %>
-                    <option value="<%= i %>" > &nbsp;<%= tags[i] %></option>
+                    <option value="<%= i %>"> &nbsp;<%= tags[i] %></option>
                     <% } %>
                     <% } %>
-                    <option style="color: gray;" value="-1">&nbsp;+新增 </option>
+                    <option style="color: gray;" value="-1">&nbsp;+新增</option>
                 </select>
             </div>
             <div class="input-title-container">
@@ -68,20 +72,18 @@
     </div>
     <div class="edit-container">
         <div class="inupt-container">
-                <% if(isEdit){ %>
-                <textarea class="textarea"><%= markdown %></textarea>
-                <% }else{ %>
-                <textarea class="textarea"></textarea>
-                <% } %>
-            <div class="upload-img" id="container">
-                <span id="pickfiles">+</span>
-            </div>
+            <% if(isEdit){ %>
+            <textarea class="textarea"><%= markdown %></textarea>
+            <% }else{ %>
+            <textarea class="textarea"></textarea>
+            <% } %>
+
         </div>
         <div class="resize-border"></div>
         <div id="preview-container" class="preview-container">
             <div class="preview"></div>
             <div class="btn-preview-container">
-                <div class="btn-preview"> > </div>
+                <div class="btn-preview"> ></div>
             </div>
         </div>
         <div class="clearFloat"></div>
@@ -102,7 +104,30 @@
             </div>
         </div>
     </div>
+    <div class="toolsbar-container">
+        <div class="toolsbar">
+            <div class="tool-item">
+                <select class="mode">
+                    <% if(isEdit){ %>
+                     <option value="1" selected>markdown</option>
+                        <% if(mode == 2){ %>
+                        <option value="2" selected>文本模式</option>
+                        <% }else{ %>
+                        <option value="2">文本模式</option>
+                        <% } %>
+                    <% }else{ %>
+                    <option value="1" selected>markdown</option>
+                    <option value="2">文本模式</option>
+                    <% } %>
+                </select>
+            </div>
 
+            <div class="tool-item item-btn upload-img" id="container">
+                <span id="pickfiles">插入图片</span>
+            </div>
+            <div class="clearFloat"></div>
+        </div>
+    </div>
 
 </div>
 

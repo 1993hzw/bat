@@ -81,6 +81,7 @@ router.get('/edit', function (req, res, next) {
                 markdown: blog[fields.markdown],
                 tag: blog[fields.tags],
                 time: time,
+                mode:blog[fields.mode],
                 isLogined: req.session.hasLogined
             };
             data.tags = DC.tags;

@@ -12,9 +12,10 @@ var add = function (data, result) {
                 fields.brief + ',' +
                 fields.markdown + ',' +
                 fields.html + ',' +
-                fields.tags + ') values (?,?,?,?,?,?)';
+                fields.mode + ',' +
+                fields.tags + ') values (?,?,?,?,?,?,?)';
             var time = utils.getTime();
-            var arr = [time, data[fields.title], data[fields.brief], data[fields.markdown], data[fields.html], data[fields.tags]];
+            var arr = [time, data[fields.title], data[fields.brief], data[fields.markdown], data[fields.html], data[fields.mode] ,data[fields.tags]];
             result.db.run(sql, arr, function (err) {
                 if (err) return reject(err);
                 resolve(result);
@@ -40,7 +41,7 @@ var getById = function (startId, endId, result) {
     var _select = function (result) {
         return new Promise(function (resolve, reject) {
             var sql = "select " +
-                fields.id + "," + fields.insert_time + "," + fields.modify_time + "," + fields.title + "," + fields.html + "," + fields.tags + "," + fields.visits + "," + fields.brief + "," + fields.markdown +
+                fields.id + "," + fields.insert_time + "," + fields.modify_time + "," + fields.title + "," + fields.html + "," + fields.tags + "," + fields.visits + "," + fields.brief + "," + fields.mode + "," + fields.markdown +
                 " from " + fields.tableName;
             if (endId) {
                 if (endId >= startId)
@@ -224,6 +225,10 @@ var modifyById = function (id, data, result) {
             if (data[fields.tags] != undefined) {
                 setStat += fields.tags + "=?,";
                 arr[i++] = data[fields.tags];
+            }
+            if(data[fields.mode]!=undefined){
+                setStat += fields.mode + "=?,";
+                arr[i++] = data[fields.mode];
             }
 
             setStat = setStat.slice(0, setStat.length - 1);
