@@ -20,7 +20,7 @@ var setLayout = function () {
             //alert($(".edit-container").width())
             //alert($(".preview-container").width()+" "+$(window).width())
         }
-        $(".input-title-container").css({paddingLeft:$(".tag-container").width()+"px"})
+        $(".input-title-container").css({paddingLeft:$(".tag-container").width()+"px",width:width+'px'})
         //alert($(".input-title-container").width()+" "+$(".input-title").width())
     } else {//关闭预览情况
          height = $(window).height();
