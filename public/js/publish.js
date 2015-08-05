@@ -3,28 +3,28 @@ var downX;
 var isRender = false;
 var mode=1;//编辑模式
 var setLayout = function () {
-    if (isPreview) {
+    if (isPreview) {//预览
         var height = $(window).height();
         var width = $(window).width();
         var editHeight = height - $('.topbar-container').height();
         //var titleHeight=$(".title-container").height();
 
         $(".edit-container").height(editHeight).width(width);
-        if (isPc) {
+        if (isPc) {//pc端
             $(".inupt-container").height(editHeight).width(width / 2 - 10);
             $(".preview-container").height(editHeight).width(width / 2 - 10);
-        } else {
-            $(".inupt-container").height(editHeight).width(0);
+        } else {//移动端
+            $(".inupt-container").height(editHeight).hide();
             $(".preview-container").height(editHeight).width(width - 20);
         }
         $(".input-title-container").width(width - $(".tag-container").width()-5)
-    } else {
+    } else {//关闭预览情况
         var height = $(window).height();
         var width = $(window).width();
         var editHeight = height - $('.topbar-container').height();
         $(".edit-container").height(editHeight).width(width);
-        $(".inupt-container").height(editHeight).width(width - 50);
-        $(".preview-container").height(editHeight).width(30);
+        $(".inupt-container").height(editHeight).width(width - 50).show();
+        $(".preview-container").height(editHeight).width(20);
         $(".input-title-container").width(width - $(".tag-container").width())
         $(".preview").html("")
     }
