@@ -12,19 +12,20 @@ var setLayout = function () {
         $(".edit-container").height(editHeight).width(width);
         if (isPc) {//pc端
             $(".inupt-container").height(editHeight).width(width / 2 - 10);
-            $(".preview-container").height(editHeight).width(width / 2 - 10);
+            $(".preview-container").height(editHeight).width(width / 2 );
         } else {//移动端
             $(".inupt-container").height(editHeight).hide();
-            $(".preview-container").height(editHeight).width(width - 20);
+            $(".preview-container").height(editHeight).width(width);
         }
-        $(".input-title-container").width(width - $(".tag-container").width()-5)
+        $(".input-title-container").css({paddingLeft:$(".tag-container").width()+"px"})
+        //alert($(".input-title-container").width()+" "+$(".input-title").width())
     } else {//关闭预览情况
         var height = $(window).height();
         var width = $(window).width();
         var editHeight = height - $('.topbar-container').height();
         $(".edit-container").height(editHeight).width(width);
-        $(".inupt-container").height(editHeight).width(width - 50).show();
-        $(".preview-container").height(editHeight).width(20);
+        $(".inupt-container").height(editHeight).width(width - 27).show();
+        $(".preview-container").height(editHeight).width(27);
         $(".input-title-container").width(width - $(".tag-container").width())
         $(".preview").html("")
     }
@@ -187,12 +188,12 @@ $(document).ready(function () {
         isPreview = !isPreview;
         if (isPreview) {
             setLayout();
-            $('.resize-border').css({borderLeft: "2px dashed gray", borderRight: "2px dashed gray"})
+            $('.resize-border').show();
             $('.btn-preview').text(" > ")
            previewPassage(preview,textarea);
         } else {
             setLayout();
-            $('.resize-border').css({border: "none"});
+            $('.resize-border').hide();
             $('.btn-preview').text(" < ");
             $('.preview').html("");
         }
