@@ -6,17 +6,17 @@ var setLayout = function () {
     var height,width,editHeight;
     if (isPreview) {//预览
          height = $(window).height();
-         width = $(".edit-container").width();
+         width = $(window).width();
          editHeight = height - $('.topbar-container').height();
         //var titleHeight=$(".title-container").height();
        //alert(width)
-        $(".edit-container").height(editHeight);
+        $(".edit-container").height(editHeight).width(width);
         if (isPc) {//pc端
             $(".inupt-container").height(editHeight).width(width / 2 - 10);
-            $(".preview-container").height(editHeight).width(width / 2 -2);
+            $(".preview-container").height(editHeight).width($(".edit-container").width() / 2 -2);
         } else {//移动端
             $(".inupt-container").height(editHeight).hide();
-            $(".preview-container").height(editHeight).width(width-10);
+            $(".preview-container").height(editHeight).width($(".edit-container").width()-10);
             //alert($(".edit-container").width())
             //alert($(".preview-container").width()+" "+$(window).width())
         }
@@ -53,7 +53,7 @@ var resize = function (e) {
         width = e.clientX;
     }
     textarea.width(width);
-    preview.width($(window).width() - width - 20);
+    preview.width($(window).width() - width - 12);
 
     setTimeout(function () {
         isRender = false;
