@@ -40,9 +40,10 @@
     font-size: 24px;
     border: none;
     outline: none;
+    cursor: pointer;
+    z-index: 0;
 }
 .btn-publish:hover,.btn-finish:hover{
-    cursor: pointer;
     background: deepskyblue;
 }
 
@@ -186,11 +187,17 @@
 .toolsbar-container{
     width: 100%;
     position: fixed;
-    top: 0;
+    top: -0px;
     background: transparent;
 }
+.btn-tools{
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+
+}
 .toolsbar{
-    padding: 10px 10px 10px 20px;
+    padding: 5px 0px 5px 10px;
     margin: 0 auto;
     background: white;
     display: table;
@@ -230,5 +237,8 @@
     }
     .logo{
         margin-left: 10px;
+    }
+    .btn-publish,.btn-finish{
+
     }
 }
