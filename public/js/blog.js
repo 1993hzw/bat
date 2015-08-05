@@ -63,7 +63,7 @@ var getComments = function () {
                 }else{
                     replay=formatReplay(getTime(rows[i].f_modify_time),formatHTML(replay));
                 }
-                $('.others-container').append(content+replay);
+                $('.other-comment-container').append(content+replay);
             }
             commentsLength+= rows.length;
             if(rows.length<10){
@@ -93,7 +93,7 @@ var addComment = function () {
         var v = JSON.parse(res);
         if (v.state > 0) {
             var content = formatComment(v.time,comment)
-            $('.others-container').prepend(content);
+            $('.other-comment-container').prepend(content);
             $('.input-comment').val("")
             $('#input-comment').html('<div style="text-align: center;color: gray">（已评论）</div>')
             isSending=false;
