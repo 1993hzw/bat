@@ -3,26 +3,29 @@ var downX;
 var isRender = false;
 var mode=1;//编辑模式
 var setLayout = function () {
+    var height,width,editHeight;
     if (isPreview) {//预览
-        var height = $(window).height();
-        var width = $(window).width();
-        var editHeight = height - $('.topbar-container').height();
+         height = $(window).height();
+         width = $(".edit-container").width();
+         editHeight = height - $('.topbar-container').height();
         //var titleHeight=$(".title-container").height();
-
-        $(".edit-container").height(editHeight).width(width);
+       //alert(width)
+        $(".edit-container").height(editHeight);
         if (isPc) {//pc端
             $(".inupt-container").height(editHeight).width(width / 2 - 10);
-            $(".preview-container").height(editHeight).width(width / 2 );
+            $(".preview-container").height(editHeight).width(width / 2 -2);
         } else {//移动端
             $(".inupt-container").height(editHeight).hide();
-            $(".preview-container").height(editHeight).width(width);
+            $(".preview-container").height(editHeight).width(width-10);
+            //alert($(".edit-container").width())
+            //alert($(".preview-container").width()+" "+$(window).width())
         }
         $(".input-title-container").css({paddingLeft:$(".tag-container").width()+"px"})
         //alert($(".input-title-container").width()+" "+$(".input-title").width())
     } else {//关闭预览情况
-        var height = $(window).height();
-        var width = $(window).width();
-        var editHeight = height - $('.topbar-container').height();
+         height = $(window).height();
+         width = $(window).width();
+         editHeight = height - $('.topbar-container').height();
         $(".edit-container").height(editHeight).width(width);
         $(".inupt-container").height(editHeight).width(width - 27).show();
         $(".preview-container").height(editHeight).width(27);
