@@ -136,7 +136,7 @@
 .preview-container {
     overflow: hidden;
     font-size: 18px;
-    float: right;
+    float: left;
     height: 100%;
     background: white;
     width: 100%;
