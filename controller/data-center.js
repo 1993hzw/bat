@@ -29,7 +29,7 @@ var init=function(){
         .then(function(){//获取管理员信息
             var val = maps.get("admin");
                 if(val!=undefined) return admin=JSON.parse(val);
-                var v={user:'hzw',passwd:'835156567q'};
+                var v={user:'hzw',passwd:'835156567q',name:'走向远方',email:'154330138@qq.com'};
                 return maps.put("admin",JSON.stringify(v))
                           .then(function(){
                                 admin=v;
