@@ -7,8 +7,10 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
-var session = require('express-session')
+var session = require('express-session');
 
+var maps=require('./controller/maps');
+var DC=require('./controller/data-center');
 
 var app = express();
 // view engine setup
@@ -24,7 +26,16 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(session({secret: 'hzw', cookie: {maxAge: 3600000}}))
-app.use(function (req, res, next) {
+app.use(function (req, res, next) {//记录访问量
+    if(!req.session.hasVisited){
+        //console.log('hasVisited:'+req.session.hasVisited);
+         DC.visits++;//访问量加1
+         req.session.hasVisited=true;
+          maps.put('visits',DC.visits)
+            .catch(function(err){
+                console.log(err);
+            });
+    }
     next();
 })
 

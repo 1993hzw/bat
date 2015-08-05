@@ -110,7 +110,7 @@
 .hotblogs-item{
     color: cornflowerblue;
     padding-bottom: 5px;
-    font-size: 14px;
+    font-size: 16px;
 }
 .hotblogs-item:hover{
     cursor: pointer;
