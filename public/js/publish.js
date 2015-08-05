@@ -11,7 +11,7 @@ var setLayout = function () {
         //var titleHeight=$(".title-container").height();
        //alert(width)
         $(".edit-container").height(editHeight).width(width);
-        if (isPc) {//pc端
+        if (!isPc) {//pc端
             $(".inupt-container").height(editHeight).width(width / 2 - 10);
             $(".preview-container").height(editHeight).width($(".edit-container").width() / 2 -2);
         } else {//移动端
@@ -20,7 +20,8 @@ var setLayout = function () {
             //alert($(".edit-container").width())
             //alert($(".preview-container").width()+" "+$(window).width())
         }
-        $(".input-title-container").css({paddingLeft:$(".tag-container").width()+"px",width:width+'px'})
+        $(".input-title-container").css({width:width+'px'})
+        $(".input-title").width(width);
         //alert($(".input-title-container").width()+" "+$(".input-title").width())
     } else {//关闭预览情况
          height = $(window).height();
