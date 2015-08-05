@@ -207,12 +207,16 @@
 .tool-item{
     float: left;
     margin-right: 10px;
+    width: 100px;
+    height: 20px;
+}
+.mode{
+    height: 100%;
 }
 .item-btn{
     cursor: pointer;
     text-align:center;
     border: 1px solid #999;
-    min-width: 100px;
 }
 .item-btn:hover{
     background: #eee;

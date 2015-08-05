@@ -68,7 +68,7 @@ $(document).ready(function () {
     var preview = $(".preview");
 
     var render = function () {
-        if (!isInput) return;
+        if (!isInput||!isPreview) return;
         isRender = true;
         setTimeout(function () {
             previewPassage(preview,textarea);
@@ -192,8 +192,9 @@ $(document).ready(function () {
            previewPassage(preview,textarea);
         } else {
             setLayout();
-            $('.resize-border').css({border: "none"})
-            $('.btn-preview').text(" < ")
+            $('.resize-border').css({border: "none"});
+            $('.btn-preview').text(" < ");
+            $('.preview').html("");
         }
     })
     //监听编辑模式
@@ -272,6 +273,7 @@ var finish = function () {
 }
 
 var previewPassage=function(preview,textarea){
+    if(!isPreview) return;
     preview=preview||$('.preview');
     textarea=textarea||$('.textarea');
     if(mode==2){//纯文本
