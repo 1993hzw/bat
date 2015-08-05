@@ -26,8 +26,9 @@ router.post('/_publish', function(req, res, next) {
         data[fields.html]=marked(req.body.markdown);
          brief = htmlToText.fromString(data[fields.html], {wordwrap: 130}).substr(0,150);
     }else{//文本模式,对内容进行html标签转义
-        data[fields.html]='<pre style="background: white;border: none;padding-top: 0px;">'+utils.formatHTML(req.body.markdown)+'</pre>';
-         brief = data[fields.html].substr(0,150);
+        var html=utils.formatHTML(req.body.markdown);
+        data[fields.html]='<pre style="background: white;border: none;padding-top: 0px;">'+html+'</pre>';
+         brief = html.substr(0,150);
     }
 
     data[fields.brief]=brief;
@@ -67,8 +68,9 @@ router.post('/_save', function(req, res, next) {
         data[fields.html]=marked(req.body.markdown);
         brief = htmlToText.fromString(data[fields.html], {wordwrap: 130}).substr(0,150);
     }else{//文本模式
-        data[fields.html]='<pre style="background: white;border: none;padding-top: 0px;">'+utils.formatHTML(req.body.markdown)+'</pre>';
-        brief = data[fields.html].substr(0,150);
+        var html=utils.formatHTML(req.body.markdown);
+        data[fields.html]='<pre style="background: white;border: none;padding-top: 0px;">'+html+'</pre>';
+        brief = html.substr(0,150);
     }
 
     data[fields.brief]=brief;
