@@ -15,18 +15,15 @@ var add = function (name, result) {
             });
         })
     }
-    if (result) {
-        return _insert(result)
-            .then(function () {
-                return Promise.resolve()
-            })
-    } else {
-        return dbHolder.openDB()
-            .then(_insert)
-            .then(function () {
-                return Promise.resolve()
-            })
-    }
+    return Promise.resolve()
+        .then(function () {
+            if(result) return Promise.resolve(result);
+            return dbHolder.openDB();
+        })
+        .then(_insert)
+        .then(function () {
+            return Promise.resolve()
+        })
 }
 
 var getById = function (id, result) {
@@ -41,18 +38,15 @@ var getById = function (id, result) {
             })
         })
     }
-    if (result) {
-        return _select(result)
-            .then(function (result) {
-                return Promise.resolve(result.rows)
-            })
-    } else {
-        return dbHolder.openDB()
-            .then(_select)
-            .then(function (result) {
-                return Promise.resolve(result.rows)
-            })
-    }
+    return Promise.resolve()
+        .then(function () {
+            if(result) return Promise.resolve(result);
+            return dbHolder.openDB();
+        })
+        .then(_select)
+        .then(function (result) {
+            return Promise.resolve(result.rows)
+        })
 
 }
 
@@ -67,18 +61,15 @@ var getAll = function ( result) {
             })
         })
     }
-    if (result) {
-        return _select(result)
-            .then(function (result) {
-                return Promise.resolve(result.rows)
-            })
-    } else {
-        return dbHolder.openDB()
-            .then(_select)
-            .then(function (result) {
-                return Promise.resolve(result.rows)
-            })
-    }
+    return Promise.resolve()
+        .then(function () {
+            if(result) return Promise.resolve(result);
+            return dbHolder.openDB();
+        })
+        .then(_select)
+        .then(function (result) {
+            return Promise.resolve(result.rows)
+        })
 
 }
 
@@ -94,18 +85,15 @@ var modifyById = function (id, name, result) {
             })
         })
     }
-    if (result) {
-        return _modify(result)
-            .then(function () {
-                return Promise.resolve();
-            })
-    } else {
-        return dbHolder.openDB()
-            .then(_modify)
-            .then(function () {
-                return Promise.resolve();
-            })
-    }
+    return Promise.resolve()
+        .then(function () {
+            if(result) return Promise.resolve(result);
+            return dbHolder.openDB();
+        })
+        .then(_modify)
+        .then(function () {
+            return Promise.resolve();
+        })
 }
 
 var deleteById = function (id, result) {
@@ -120,18 +108,15 @@ var deleteById = function (id, result) {
             })
         })
     }
-    if (result) {
-        return _delete(result)
-            .then(function () {
-                return Promise.resolve();
-            })
-    } else {
-        return dbHolder.openDB()
-            .then(_delete)
-            .then(function () {
-                return Promise.resolve();
-            })
-    }
+    return Promise.resolve()
+        .then(function () {
+            if(result) return Promise.resolve(result);
+            return dbHolder.openDB();
+        })
+        .then(_delete)
+        .then(function () {
+            return Promise.resolve();
+        })
 }
 
 exports.add = add;

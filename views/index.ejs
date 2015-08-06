@@ -26,11 +26,12 @@ for(var i in tags) {
 <body>
 <div>
     <div class="top-container bg">
-        <img src="/img/logo.png" class="logo">
-        <div class="name">走向远方</div>
+            <img src="/img/logo.png" class="logo">
+            <div class="name">I LOVE YOU</div>
         <% if(isLogined){ %>
         <a href="/blogs/publish"><div class="btn-new">+</div></a>
         <% } %>
+        <!--<div class="clearFloat"></div>-->
     </div>
     <div class="content-container">
         <div class="left">
@@ -52,7 +53,7 @@ for(var i in tags) {
 
                     <% for(var i=0;i<rows.length;i++){ %>
                     <div class="blog-item">
-                        <div class="blog-title"><a href="/blogs/<%= rows[i].f_id %>"><%= rows[i].f_title %></a></div>
+                        <a href="/blogs/<%= rows[i].f_id %>"><div class="blog-title"><%= rows[i].f_title %></div></a>
                         <div class="blog-brief"><%= rows[i].f_brief %></div>
                         <div class="blog-details"><span class="blog-tags"><%= tags[rows[i].f_tags] %></span>|
                             <span class="blog-time"><%= getTime(rows[i].f_insert_time) %></span></div>

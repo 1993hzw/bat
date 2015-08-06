@@ -8,7 +8,7 @@ var init=function(){
     var visits=0;//博客访问量
     dbHolder.initDB()//初始化数据库
         .then(function(){//初始化map
-            maps.init();
+            return maps.init();
         })
         .then(function(){
             return tags.getAll();
@@ -37,7 +37,6 @@ var init=function(){
         })
         .then(function(){//获取博客访问量
             var temp=maps.get('visits');
-            console.log('visits:'+temp);
             if(temp==undefined){
                 visits=0;
                 return maps.put('visits',visits)
@@ -49,8 +48,10 @@ var init=function(){
             exports.admin=admin;
             exports.tags=tagObj;
             exports.visits=visits;
-            console.log("init db success!");
             console.log(tagObj)
+            console.log(admin);
+            console.log('visits:'+visits);
+            console.log("init db success!");
         })
         .catch(function (err) {
             console.log(err)

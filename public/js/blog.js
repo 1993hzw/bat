@@ -35,6 +35,30 @@ $(document).ready(function () {
     getComments()
 })
 
+var isSetTopping=false;
+var setTop=function(top){
+    if(isSetTopping) return;
+    isSetTopping=true;
+    var id = $("#blog").text();
+    $.post("/api/_set_top",{id: id,top:top}, function (res) {
+        var v = JSON.parse(res);
+        if (v.state > 0) {
+           if(top){
+               $('#top').hide();
+               $('#untop').show();
+               $('.top').show();
+           }else{
+               $('#top').show();
+               $('#untop').hide();
+               $('.top').hide();
+           }
+        } else {
+            alert(res)
+        }
+        isSetTopping=false;
+    })
+}
+
 var del = function () {
     var id = $("#blog").text();
     $.get("/api/_delete", {id: id,t:Math.random()}, function (res) {

@@ -131,23 +131,30 @@ router.get('/get_last',function(req,res,next){
 router.get('/get_blogs',function(req,res,next){
     var tag=req.query.tag;
     var off=req.query.offset;
-    if(utils.checkIsInArray(tag,DC.tags)) {
-        blogs.getByTag(tag,off,5)
-            .then(function (rows) {
-                res.json({rows:rows,tags:DC.tags})
-            })
-            .catch(function (err) {
-                console.log(err);
-            });
-    }else{
-        blogs.getLast(off,5)
-            .then(function (rows) {
-                res.json({rows:rows,tags:DC.tags})
-            })
-            .catch(function (err) {
-                console.log(err);
-            });
+    if(!utils.checkIsInArray(tag,DC.tags)) {
+         tag=undefined;//如果tag为空则返回最新文章
     }
+    blogs.getByTag(tag,off,5)
+        .then(function (rows) {
+            res.json({rows:rows,tags:DC.tags})
+        })
+        .catch(function (err) {
+            console.log(err);
+        });
+})
+
+router.post('/_set_top',function(req,res,next){
+    var id=req.body.id;
+    var top=parseInt(req.body.top);
+    if(!id||isNaN(top)||top<0) return res.json({state:-1});
+    blogs.setTop(id,top)
+        .then(function(){
+             res.json({state:1});
+        })
+        .catch(function(err){
+            console.log(err);
+            res.json({state:-1});
+        })
 })
 
 module.exports=router;

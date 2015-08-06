@@ -20,18 +20,15 @@ var add = function (data, result) {
             })
         })
     }
-    if (result) {
-        return _insert(result)
-            .then(function () {
-                return Promise.resolve();
-            })
-    } else {
-        return dbHolder.openDB()
-            .then(_insert)
-            .then(function () {
-                return Promise.resolve();
-            })
-    }
+    return Promise.resolve()
+        .then(function () {
+            if(result) return Promise.resolve(result);
+            return dbHolder.openDB();
+        })
+        .then(_insert)
+        .then(function () {
+            return Promise.resolve();
+        })
 }
 
 var replay = function (replay, id, result) {
@@ -52,18 +49,15 @@ var replay = function (replay, id, result) {
             })
         })
     }
-    if (result) {
-        return _update(result)
-            .then(function () {
-                return Promise.resolve();
-            })
-    } else {
-        return dbHolder.openDB()
-            .then(_update)
-            .then(function () {
-                return Promise.resolve();
-            })
-    }
+    return Promise.resolve()
+        .then(function () {
+            if(result) return Promise.resolve(result);
+            return dbHolder.openDB();
+        })
+        .then(_update)
+        .then(function () {
+            return Promise.resolve();
+        })
 }
 
 var getCommentsByBlogID = function (blog_id, offset, count, result) {
@@ -83,18 +77,15 @@ var getCommentsByBlogID = function (blog_id, offset, count, result) {
             })
         })
     }
-    if (result) {
-        return _select(result)
-            .then(function (result) {
-                return Promise.resolve(result.rows);
-            })
-    } else {
-        return dbHolder.openDB()
-            .then(_select)
-            .then(function (result) {
-                return Promise.resolve(result.rows);
-            })
-    }
+    return Promise.resolve()
+        .then(function () {
+            if(result) return Promise.resolve(result);
+            return dbHolder.openDB();
+        })
+        .then(_select)
+        .then(function (result) {
+            return Promise.resolve(result.rows);
+        })
 }
 
 var getCommentByID = function (id ,result) {
@@ -111,18 +102,15 @@ var getCommentByID = function (id ,result) {
             })
         })
     }
-    if (result) {
-        return _select(result)
-            .then(function (result) {
-                return Promise.resolve(result.rows);
-            })
-    } else {
-        return dbHolder.openDB()
-            .then(_select)
-            .then(function (result) {
-                return Promise.resolve(result.rows);
-            })
-    }
+    return Promise.resolve()
+        .then(function () {
+            if(result) return Promise.resolve(result);
+            return dbHolder.openDB();
+        })
+        .then(_select)
+        .then(function (result) {
+            return Promise.resolve(result.rows);
+        })
 }
 
 var getLastComments = function (offset, count, result) {
@@ -140,18 +128,15 @@ var getLastComments = function (offset, count, result) {
             })
         })
     }
-    if (result) {
-        return _select(result)
-            .then(function (result) {
-                return Promise.resolve(result.rows);
-            })
-    } else {
-        return dbHolder.openDB()
-            .then(_select)
-            .then(function (result) {
-                return Promise.resolve(result.rows);
-            })
-    }
+    return Promise.resolve()
+        .then(function () {
+            if(result) return Promise.resolve(result);
+            return dbHolder.openDB();
+        })
+        .then(_select)
+        .then(function (result) {
+            return Promise.resolve(result.rows);
+        })
 }
 
 var deleteByBlogId = function (id, result) {
@@ -165,18 +150,15 @@ var deleteByBlogId = function (id, result) {
             })
         });
     }
-    if (result) {
-        return _delete(result)
-            .then(function () {
-                return Promise.resolve();
-            })
-    } else {
-        return dbHolder.openDB()
-            .then(_delete)
-            .then(function () {
-                return Promise.resolve();
-            })
-    }
+    return Promise.resolve()
+        .then(function () {
+            if(result) return Promise.resolve(result);
+            return dbHolder.openDB();
+        })
+        .then(_delete)
+        .then(function () {
+            return Promise.resolve();
+        })
 }
 
 var deleteById = function (id, result) {
@@ -190,18 +172,15 @@ var deleteById = function (id, result) {
             })
         });
     }
-    if (result) {
-        return _delete(result)
-            .then(function () {
-                return Promise.resolve();
-            })
-    } else {
-        return dbHolder.openDB()
-            .then(_delete)
-            .then(function () {
-                return Promise.resolve();
-            })
-    }
+    return Promise.resolve()
+        .then(function () {
+            if(result) return Promise.resolve(result);
+            return dbHolder.openDB();
+        })
+        .then(_delete)
+        .then(function () {
+            return Promise.resolve();
+        })
 }
 
 var getLastCommentsNoReplay = function (offset, count, result) {
@@ -220,18 +199,15 @@ var getLastCommentsNoReplay = function (offset, count, result) {
             })
         })
     }
-    if (result) {
-        return _select(result)
-            .then(function (result) {
-                return Promise.resolve(result.rows);
-            })
-    } else {
-        return dbHolder.openDB()
-            .then(_select)
-            .then(function (result) {
-                return Promise.resolve(result.rows);
-            })
-    }
+    return Promise.resolve()
+        .then(function () {
+            if(result) return Promise.resolve(result);
+            return dbHolder.openDB();
+        })
+        .then(_select)
+        .then(function (result) {
+            return Promise.resolve(result.rows);
+        })
 }
 
 exports.add = add;

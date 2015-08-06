@@ -18,11 +18,10 @@
     margin-left: 30px;
 }
 .btn-new{
-    display: table;
+    margin-top: 77px;
     font-size: 40px;
     float: right;
     line-height: 15px;
-    margin-top: 79px;
     margin-right: 20px;
     color: #666;
 }
@@ -166,13 +165,19 @@
     }
     .logo{
         margin-left: 10px;
-    }
-    .btn-new{
-        margin-right: 10px;
+        margin-top: 58px;
+        height: 40%;
     }
     .name{
-        font-size: 35px;
+        font-size: 30px;
         text-align: center;
-        margin-left: 10px;
+        margin: auto;
+        padding: 0;
+        padding-top: 20px;
+
+    }
+    .btn-new{
+        float: right;
+        margin-right: 10px;
     }
 }

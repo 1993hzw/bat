@@ -33,13 +33,25 @@
     <div class="main-container">
         <% if(isLogined){ %>
         <div class="options-container">
+            <%
+             var topStyle,untopStyle;
+            if(top) {
+                topStyle='style="display:none"';
+                untopStyle='style="display:inline"';
+            }else{
+                topStyle='style="display:inline"';
+                untopStyle='style="display:none"';
+            }
+            %>
+            <span class="options btn-top" id="top" onclick="setTop(1)" <%- topStyle %>>置&nbsp;顶</span>
+            <span class="options btn-top" id="untop" onclick="setTop(0)" <%- untopStyle %>>取消置顶</span>
             <a href="/blogs/edit?id=<%= id %>"><span class="options">编&nbsp;辑</span></a>
             <span class="options btn-del">删&nbsp;除</span>
         </div>
         <div class="box"></div>
         <% } %>
         <!--<div class="clearFloat"></div>-->
-        <div class="title-container"><%- title %></div>
+        <div class="title-container"><span class="top" <%- untopStyle %>>顶</span><%= title %></div>
         <div class="blog-details-container">
             <span class="tags"><%= tags[tag] %></span>|<span class="blog-time"><%= time %></span>
         </div>

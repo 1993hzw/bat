@@ -22,18 +22,15 @@ var add = function (data, result) {
             })
         });
     }
-    if (result) {
-        return _insert(result)
-            .then(function () {
-                return Promise.resolve()
-            })
-    } else {
-        return dbHolder.openDB()
-            .then(_insert)
-            .then(function () {
-                return Promise.resolve()
-            })
-    }
+    return Promise.resolve()
+        .then(function () {
+            if(result) return Promise.resolve(result);
+            return dbHolder.openDB();
+        })
+        .then(_insert)
+        .then(function () {
+            return Promise.resolve()
+        })
 
 }
 
@@ -41,7 +38,10 @@ var getById = function (startId, endId, result) {
     var _select = function (result) {
         return new Promise(function (resolve, reject) {
             var sql = "select " +
-                fields.id + "," + fields.insert_time + "," + fields.modify_time + "," + fields.title + "," + fields.html + "," + fields.tags + "," + fields.visits + "," + fields.brief + "," + fields.mode + "," + fields.markdown +
+                fields.id + "," + fields.insert_time + "," + fields.modify_time + ","
+                + fields.title + "," + fields.html + "," + fields.tags + ","
+                + fields.visits + "," + fields.brief + "," + fields.mode + ","
+                + fields.top + "," + fields.markdown +
                 " from " + fields.tableName;
             if (endId) {
                 if (endId >= startId)
@@ -58,32 +58,39 @@ var getById = function (startId, endId, result) {
             })
         })
     }
-    if (result) {
-        return _select(result)
-            .then(function (result) {
-                return Promise.resolve(result.rows);
-            })
-    } else {
-        return dbHolder.openDB()
-            .then(_select)
-            .then(function (result) {
-                return Promise.resolve(result.rows);
-            })
-    }
+    return Promise.resolve()
+        .then(function () {
+            if(result) return Promise.resolve(result);
+            return dbHolder.openDB();
+        })
+        .then(_select)
+        .then(function (result) {
+            return Promise.resolve(result.rows);
+        })
 
 }
 
+//根据标签获取文章，按照置顶排序
 var getByTag = function (tag, offset, count, result) {
     if (!offset || offset < 0) offset = 0;
     if (!count || count < 1) count = 1;
     var _select = function (result) {
         return new Promise(function (resolve, reject) {
-            var sql = "select " +
-                fields.id + "," + fields.insert_time + "," + fields.modify_time + "," + fields.title + "," + fields.html + "," + fields.tags + "," + fields.visits + "," + fields.brief +
-                " from " + fields.tableName;
-            sql += " where " + fields.tags + "='" + tag + "'";
-            sql += " order by " + fields.id + " desc limit " + offset + "," + count;
-
+            var sql;
+           if(!tag){//如果tag为空则返回最新文章
+                sql = "select " +
+                   fields.id + "," + fields.insert_time + "," + fields.modify_time + "," + fields.title +
+                   "," + fields.html + "," + fields.tags + "," + fields.visits+ "," + fields.top + "," + fields.brief +
+                   " from " + fields.tableName;
+               sql += " order by " + fields.top + "  limit " + offset + "," + count;
+           }else{
+               sql = "select " +
+                   fields.id + "," + fields.insert_time + "," + fields.modify_time + "," + fields.title + "," + fields.html + ","
+                   + fields.tags + "," + fields.visits + ","+ fields.top + "," + fields.brief +
+                   " from " + fields.tableName;
+               sql += " where " + fields.tags + "='" + tag + "'";
+               sql += " order by " + fields.top + "  limit " + offset + "," + count;
+           }
             result.db.all(sql, function (err, rows) {
                 if (err) return reject(err);
                 result.rows = rows;
@@ -91,27 +98,26 @@ var getByTag = function (tag, offset, count, result) {
             })
         })
     }
-    if (result) {
-        return _select(result)
-            .then(function (result) {
-                return Promise.resolve(result.rows);
-            })
-    } else {
-        return dbHolder.openDB()
-            .then(_select)
-            .then(function (result) {
-                return Promise.resolve(result.rows);
-            })
-    }
+    return Promise.resolve()
+        .then(function () {
+            if(result) return Promise.resolve(result);
+            return dbHolder.openDB();
+        })
+        .then(_select)
+        .then(function (result) {
+            return Promise.resolve(result.rows);
+        })
 }
 
+//获取最新文章
 var getLast = function (offset, count, result) {
     if (!offset || offset < 0) offset = 0;
     if (!count || count < 1) count = 1;
     var _select = function (result) {
         return new Promise(function (resolve, reject) {
             var sql = "select " +
-                fields.id + "," + fields.insert_time + "," + fields.modify_time + "," + fields.title + "," + fields.html + "," + fields.tags + "," + fields.visits + "," + fields.brief +
+                fields.id + "," + fields.insert_time + "," + fields.modify_time + "," + fields.title +
+                "," + fields.html + "," + fields.tags + "," + fields.visits+ "," + fields.top + "," + fields.brief +
                 " from " + fields.tableName;
             sql += " order by " + fields.id + " desc limit " + offset + "," + count;
             result.db.all(sql, function (err, rows) {
@@ -121,18 +127,15 @@ var getLast = function (offset, count, result) {
             })
         })
     }
-    if (result) {
-        return _select(result)
-            .then(function (result) {
-                return Promise.resolve(result.rows);
-            })
-    } else {
-        return dbHolder.openDB()
-            .then(_select)
-            .then(function (result) {
-                return Promise.resolve(result.rows);
-            })
-    }
+    return Promise.resolve()
+        .then(function () {
+            if(result) return Promise.resolve(result);
+            return dbHolder.openDB();
+        })
+        .then(_select)
+        .then(function (result) {
+            return Promise.resolve(result.rows);
+        })
 }
 
 var getHots = function (offset, count, result) {
@@ -151,18 +154,15 @@ var getHots = function (offset, count, result) {
             })
         })
     }
-    if (result) {
-        return _select(result)
-            .then(function (result) {
-                return Promise.resolve(result.rows);
-            })
-    } else {
-        return dbHolder.openDB()
-            .then(_select)
-            .then(function (result) {
-                return Promise.resolve(result.rows);
-            })
-    }
+    return Promise.resolve()
+        .then(function () {
+            if(result) return Promise.resolve(result);
+            return dbHolder.openDB();
+        })
+        .then(_select)
+        .then(function (result) {
+            return Promise.resolve(result.rows);
+        })
 
 }
 
@@ -183,18 +183,15 @@ var getTitleByArray = function (arr, result) {
             })
         })
     }
-    if (result) {
-        return _select(result)
-            .then(function (result) {
-                return Promise.resolve(result.rows);
-            })
-    } else {
-        return dbHolder.openDB()
-            .then(_select)
-            .then(function (result) {
-                return Promise.resolve(result.rows);
-            })
-    }
+    return Promise.resolve()
+        .then(function () {
+            if(result) return Promise.resolve(result);
+            return dbHolder.openDB();
+        })
+        .then(_select)
+        .then(function (result) {
+            return Promise.resolve(result.rows);
+        })
 
 }
 
@@ -230,6 +227,14 @@ var modifyById = function (id, data, result) {
                 setStat += fields.mode + "=?,";
                 arr[i++] = data[fields.mode];
             }
+            if(data[fields.status]!=undefined){
+                setStat += fields.status + "=?,";
+                arr[i++] = data[fields.status];
+            }
+            if(data[fields.top]!=undefined){
+                setStat += fields.top + "=?,";
+                arr[i++] = data[fields.top];
+            }
 
             setStat = setStat.slice(0, setStat.length - 1);
             var sql = "update " + fields.tableName + setStat + " where " + fields.id + "=" + id;
@@ -239,18 +244,15 @@ var modifyById = function (id, data, result) {
             })
         })
     }
-    if (result) {
-        return _update(result)
-            .then(function () {
-                return Promise.resolve();
-            })
-    } else {
-        return dbHolder.openDB()
-            .then(_update)
-            .then(function () {
-                return Promise.resolve();
-            })
-    }
+    return Promise.resolve()
+        .then(function () {
+            if(result) return Promise.resolve(result);
+            return dbHolder.openDB();
+        })
+        .then(_update)
+        .then(function () {
+            return Promise.resolve();
+        })
 
 }
 
@@ -267,18 +269,15 @@ var modifyTags = function (tagSrc,tagDst, result) {
             })
         })
     }
-    if (result) {
-        return _update(result)
-            .then(function () {
-                return Promise.resolve();
-            })
-    } else {
-        return dbHolder.openDB()
-            .then(_update)
-            .then(function () {
-                return Promise.resolve();
-            })
-    }
+    return Promise.resolve()
+        .then(function () {
+            if(result) return Promise.resolve(result);
+            return dbHolder.openDB();
+        })
+        .then(_update)
+        .then(function () {
+            return Promise.resolve();
+        })
 
 }
 
@@ -293,18 +292,15 @@ var deleteById = function (id, result) {
             })
         });
     }
-    if (result) {
-        return _delete(result)
-            .then(function () {
-                return Promise.resolve();
-            })
-    } else {
-        return dbHolder.openDB()
-            .then(_delete)
-            .then(function () {
-                return Promise.resolve();
-            })
-    }
+    return Promise.resolve()
+        .then(function () {
+            if(result) return Promise.resolve(result);
+            return dbHolder.openDB();
+        })
+        .then(_delete)
+        .then(function () {
+            return Promise.resolve();
+        })
 }
 
 var visitsIncrement = function (id, result) {
@@ -317,18 +313,38 @@ var visitsIncrement = function (id, result) {
             })
         })
     }
-    if (result) {
-        return _visits(result)
-            .then(function () {
-                return Promise.resolve();
+    return Promise.resolve()
+        .then(function () {
+            if(result) return Promise.resolve(result);
+            return dbHolder.openDB();
+        })
+        .then(_visits)
+        .then(function () {
+            return Promise.resolve();
+        })
+}
+
+
+var setTop = function (id,top, result) {
+    var _setTop = function (result) {
+        return new Promise(function (resolve, reject) {
+            var sql = "update " + fields.tableName + " set " + fields.top + "=" + top + " where " + fields.id + "=" + id;
+            result.db.run(sql, function (err) {
+                if(err) return reject(err);
+                resolve(result);
             })
-    } else {
-        return dbHolder.openDB()
-            .then(_visits)
-            .then(function () {
-                return Promise.resolve();
-            })
+        })
     }
+
+    return Promise.resolve()
+        .then(function(){
+            if (result) return Promise.resolve(result);
+            return dbHolder.openDB();
+        })
+        .then(_setTop)
+        .then(function () {
+            return Promise.resolve();
+        })
 }
 
 
@@ -343,3 +359,4 @@ exports.modifyById = modifyById;
 exports.deleteById = deleteById;
 exports.visitsIncrement = visitsIncrement;
 exports.modifyTags=modifyTags;
+exports.setTop=setTop;

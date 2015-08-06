@@ -19,13 +19,17 @@ $(document).ready(function(){
 
 var setLayout=function(){
     if($(window).width()>800){
-        $('.right').css({float: "right",width: "250px",paddingTop:"0px"})
+        $('.right').css({float: "right",width: "250px",paddingTop:"0px"});
         var contentWidth=$('.content-container').width();
         var rightWidth=$('.right').width();
         $('.left').width(contentWidth-rightWidth-5);
+        $('.logo').css({height:"100%",marginTop:"0px"})
+        $('.name').css({width:'auto'})
     }else{
-        $('.left').css({width:"100%"})
-        $('.right').css({float: "none",width: "100%",paddingTop:"30px"})
+        $('.logo').css({height:"40%",marginTop:"58px"})
+        $('.name').width($(window).width()-150);
+        $('.left').css({width:"100%"});
+        $('.right').css({float: "none",width: "100%",paddingTop:"30px"});
     }
 }
 

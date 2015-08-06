@@ -34,13 +34,18 @@ var getBlogs=function(){
     $.get('/api/get_blogs',{t:Math.random(),tag:$('#cur-tag-id').text(),offset:length},function(res){
         var v=JSON.parse(res);
         var rows= v.rows;
-        for(var i=0;i<rows.length;i++){
-            list.append('<div class="blog-item">'+
-                '<div class="blog-title"><a href="/blogs/'+rows[i].f_id+'">'+rows[i].f_title+'</a></div>'+
+        var html='';
+        var top='<span class="top">顶</span>';
+        var temp;
+        for(var i=rows.length-1;i>=0;i--){
+            temp=rows[i].f_top?top:'';
+           html+= '<div class="blog-item">'+
+                '<a href="/blogs/'+rows[i].f_id+'">'+temp+'<div class="blog-title">'+rows[i].f_title+'</div></a>'+
                 '<div class="blog-brief">'+rows[i].f_brief+'</div>'+
                 '<div class="blog-details"><span class="blog-tags">'+ v.tags[rows[i].f_tags]+'</span>|<span class="blog-time">'+getTime(rows[i].f_insert_time)+'</span></div>'+
-                '</div>')
+                '</div>';
         }
+        list.append(html);
         length+= rows.length;
         if(rows.length<5){
             return $(".btn-more").css({display:"none"});

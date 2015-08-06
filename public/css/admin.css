@@ -46,6 +46,7 @@
     outline: none;
     height: 40px;
     background: cornflowerblue;
+    cursor: pointer;
 }
 .btn:hover{
     background: deepskyblue;
@@ -108,19 +109,17 @@
 }
 .brief{
     display: table;
-    padding: 1px;
-    max-width: 50%;
-    min-width: 200px;
-    background: greenyellow;
+    padding: 2px 5px;
+    background: lightblue;
 }
 .brief:hover{
     text-decoration: underline;
     cursor: pointer;
 }
 .comment-item {
+    display: inline-block;
     margin-bottom: 1px;
-    margin-left: 5px;
-
+    margin-left: 12px;
 }
 
 #console{

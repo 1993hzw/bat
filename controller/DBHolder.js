@@ -7,13 +7,15 @@ var blog = {
     id: "f_id",
     insert_time: "f_insert_time",
     modify_time: "f_modify_time",
+    status:"f_status",//文章状态，暂未使用，以后可能添加公开和私密状态
     title: "f_title",
-    brief: "f_brief",
+    brief: "f_brief",//摘要
     markdown: "f_markdown",
-    html: "f_html",
+    html: "f_html",//在浏览文章时直接显示，不进行转义
     mode:"f_mode",//编辑模式，1：markdown:2：文本模式
-    tags: "f_tags",
-    visits: "f_visits"
+    tags: "f_tags",//所属标签id
+    top:"f_top",//0：默认，1：置顶
+    visits: "f_visits"//文章访问量，查找热门文章的依据
 }
 
 var comment = {
@@ -21,11 +23,12 @@ var comment = {
     id: "f_id",
     insert_time: "f_insert_time",
     modify_time: "f_modify_time",
-    content: "f_content",
-    reply: "f_reply",
-    blogId: "f_blog_id",
-    author: "f_author",
-    contact: "f_contact"
+    status:"f_status",//评论状态，0：正常显示  10：隐藏  20：忽略
+    content: "f_content",//评论内容
+    reply: "f_reply",//回复
+    blogId: "f_blog_id",//评论的文章id
+    author: "f_author",//评论者
+    contact: "f_contact"//联系方式
 }
 
 var map = {
@@ -74,7 +77,9 @@ var _createBlogTable = function (result) {
             blog.markdown + ' text,' +
             blog.html + ' text,' +
             blog.tags + ' text,' +
+            blog.status + ' integer default 0,' +
             blog.mode + ' integer default 1,' +
+            blog.top + ' integer default 0,' +
             blog.visits + ' integer default 0,' +
             'primary key (' + blog.id + ')' +
             ')';
@@ -96,6 +101,7 @@ var _createCommentTable = function (result) {
             comment.blogId + ' integer,' +
             comment.author + ' text,' +
             comment.contact + ' text,' +
+            comment.status + ' integer default 0,' +
             'primary key (' + comment.id + ')' +
             ')';
         result.db.run(sql, function (err) {
