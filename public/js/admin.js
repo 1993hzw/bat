@@ -1,88 +1,160 @@
-/*
- <div class="blog-item">
- <div class="blog-title">title</div>
- <div class="blog-brief">details<br>ss</div>
- <div class="blog-details"><span class="blog-tags">tags</span>|<span class="blog-time">2015-7-1</span></div>
- </div>
-*/
-var isBusy=false;
-$(document).ready(function(){
-   $('.upload').click(function(){
-       upload();
-   })
-    $('.download').click(function(){
+if (!String.prototype.trim) {
+    String.prototype.trim = function () {
+        return this.replace(/(?:^[ \t\n\r]+)|(?:[ \t\n\r]+$)/g, '');
+    }
+}
+var isBusy = false;
+$(document).ready(function () {
+    $('.upload').click(function () {
+        upload();
+    })
+    $('.download').click(function () {
         download();
     })
-    $('#cancel').click(function(){
-        if(isBusy||isBusy||isBusy) return;
+    $('#cancel').click(function () {
+        if (isBusy || isBusy || isBusy) return;
         $('#enter').unbind('click');
-        $('#dialog').css({display:"none"})
+        $('#dialog').css({display: "none"})
     })
-    $(window).resize(function(){
+    $(window).resize(function () {
         setLayout();
     })
-    $('.btn-more').click(function(){
+    $('.btn-more').click(function () {
         getCommentBrief();
     })
     setLayout();
     getCommentBrief();
 });
 
-function setLayout(){
-    var height=$(window).height()-$('.topbar-container').height()-150;
+function setLayout() {
+    var height = $(window).height() - $('.topbar-container').height() - 150;
     $('.content').height(height)
 }
 
-function upload(){
-    if(isBusy) return;
-    isBusy=true;
-    $.get('/api/_upload_database',{t:Math.random()},function(res){
-        var v=JSON.parse(res);
-        var console=$('#console');
-        if(v.state>0){
-            console.html(new Date()+":上传成功:"+ v.msg +"<br>"+console.html());
-        }else{
-            console.html(new Date()+":上传失败:"+ v.msg+"<br>"+console.html());
+function modifyInfo() {
+    var enter = $('#enter');
+    enter.unbind('click');
+    var admin = JSON.parse($('#blog-info').text());
+    var html = ' <div class="form-container">' +
+        '<div>修改博客信息</div>' +
+        '<div id="tip"></div>' +
+        '<div class="form-row">' +
+        '<div class="form-label">博客名称</div><div class="form-input"><input type="text" id="blogname" value="' + admin.blog + '" autofocus></div>' +
+        '</div>' +
+        '<div class="form-row">' +
+        '<div class="form-label">昵&nbsp;&nbsp;称</div><div class="form-input"><input type="text" id="name" value="' + admin.name + '"></div>' +
+        '</div>' +
+        '<div class="form-row">' +
+        '<div class="form-label">邮&nbsp;&nbsp;箱</div><div class="form-input"><input type="text" id="email" value="' + admin.email + '"></div>' +
+        '</div>' +
+        '<br>' +
+        '<div class="form-row">' +
+        '<div class="form-label">管理账号</div><div class="form-input"><input type="text" id="user" value="' + admin.user + '"></div>' +
+        '</div>' +
+        '<div class="form-row">' +
+        '<div class="form-label">管理密码</div><div class="form-input"><input type="text" id="password" value="' + admin.password + '"></div>' +
+        '</div>' +
+        '<br>'
+    $('#content').html(html);
+    enter.click(function () {
+        finishModifyInof();
+    })
+    $('#dialog').css({display: "block"})
+}
+
+function finishModifyInof() {
+    var tip = $('#tip');
+    $('.form-input input').focus(function () {
+        tip.text('');
+    })
+    var blog = $('#blogname').val().trim();
+    var name = $('#name').val().trim();
+    var email = $('#email').val().trim();
+
+    var user = $('#user').val().trim();
+    var password = $('#password').val().trim();
+
+    //alert(blog+' '+name+' '+email+' '+user+' '+password)
+    if (blog == '') {
+        tip.text('博客名称不能为空')
+    } else if (name == '') {
+        tip.text('昵称不能为空')
+    } else if (email == '') {
+        tip.text('邮箱不能为空')
+    } else if (user == '') {
+        tip.text('管理账号不能为空')
+    } else if (password == '') {
+        tip.text('管理密码不能为空')
+    } else if (!/[\d\w]{3,}@[\d\w]+\.[\d\w]+/.test(email)) {
+        tip.text('邮箱格式不对')
+    } else {
+        $.post('/api/save_info', {
+            blog: blog,
+            name: name,
+            email: email,
+            user: user,
+            password: password
+        }, function (res) {
+            var v = JSON.parse(res);
+            if (v.state > 0) {
+                location.href = '/admin';
+            } else {
+                alert(res)
+            }
+        })
+    }
+}
+
+function upload() {
+    if (isBusy) return;
+    isBusy = true;
+    $.get('/api/_upload_database', {t: Math.random()}, function (res) {
+        var v = JSON.parse(res);
+        var console = $('#console');
+        if (v.state > 0) {
+            console.html(new Date() + ":上传成功:" + v.msg + "<br>" + console.html());
+        } else {
+            console.html(new Date() + ":上传失败:" + v.msg + "<br>" + console.html());
         }
-        isBusy=false;
+        isBusy = false;
     })
 }
 
-function download(){
-    if(isBusy) return;
-    isBusy=true;
-    $.get('/api/_download_database',{t:Math.random()},function(res){
-        var v=JSON.parse(res);
-        var console=$('#console');
-        if(v.state>0){
-            var html=new Date()+":";
-            for(var i=0;i< v.urls.length;i++)
-                html+='点击下载：<a style="color:blue" href="'+ v.urls[i]+'">'+ v.urls[i]+'</a><br>'
-            console.html(html+console.html());
-        }else{
-            console.text("生成下载链接失败<br>"+console.html());
+function download() {
+    if (isBusy) return;
+    isBusy = true;
+    $.get('/api/_download_database', {t: Math.random()}, function (res) {
+        var v = JSON.parse(res);
+        var console = $('#console');
+        if (v.state > 0) {
+            var html = new Date() + ":";
+            for (var i = 0; i < v.urls.length; i++)
+                html += '点击下载：<a style="color:blue" href="' + v.urls[i] + '">' + v.urls[i] + '</a><br>'
+            console.html(html + console.html());
+        } else {
+            console.text("生成下载链接失败<br>" + console.html());
         }
-        isBusy=false;
+        isBusy = false;
     })
 }
 
-var rename=function(name){
-    if(isBusy) return;
-    var tip=$('.tip');
-    isBusy=true;
-    var tag=$('.input-tag').val();
-    var tip=$("#tip");
-    $('.input-tag').click(function(){
-        tip.html('<div id="tip" style="font-size: 16px">（原标签名：'+name+'）</div>')
-        isBusy=false;
+var rename = function (name) {
+    if (isBusy) return;
+    var tip = $('.tip');
+    isBusy = true;
+    var tag = $('.input-tag').val();
+    var tip = $("#tip");
+    $('.input-tag').click(function () {
+        tip.html('<div id="tip" style="font-size: 16px">（原标签名：' + name + '）</div>')
+        isBusy = false;
     })
-    if(tag==""){
+    if (tag == "") {
         tip.html('<span style="color: red;font-size: 18px">标签名不能为空</span>')
-        isBusy=false;
-    }else if(tag.length>15){
+        isBusy = false;
+    } else if (tag.length > 15) {
         tip.html('<span style="color: red;font-size: 18px">标签名长度不能大于15</span>')
-        isBusy=false;
-    }else {
+        isBusy = false;
+    } else {
         $.post('/api/_rename_tag', {tagSrc: name, tagDst: tag}, function (res) {
             var v = JSON.parse(res);
             if (v.state > 0) {
@@ -99,40 +171,40 @@ var rename=function(name){
     }
 }
 
-var del=function(name){
-    if(isBusy) return;
-    isBusy=true;
-    $.post('/api/_delete_tag',{tagSrc:name},function(res){
-        var v=JSON.parse(res);
-        if(v.state>0){
-            location.href="/admin";
-        }else{
+var del = function (name) {
+    if (isBusy) return;
+    isBusy = true;
+    $.post('/api/_delete_tag', {tagSrc: name}, function (res) {
+        var v = JSON.parse(res);
+        if (v.state > 0) {
+            location.href = "/admin";
+        } else {
             alert('fail')
         }
-        isBusy=false;
+        isBusy = false;
     })
 }
 
-var add=function(){
-    if(isBusy) return;
-    isBusy=true;
-    var tag=_trim($('.input-tag').val());
-    var tip=$("#tip");
-    $('.input-tag').click(function(){
+var add = function () {
+    if (isBusy) return;
+    isBusy = true;
+    var tag = _trim($('.input-tag').val());
+    var tip = $("#tip");
+    $('.input-tag').click(function () {
         tip.html('<div id="tip">请输入标签名</div>')
-        isBusy=false;
+        isBusy = false;
     })
-    if(tag==""){
+    if (tag == "") {
         tip.html('<span style="color: red;font-size: 18px">标签名不能为空</span>')
-        isBusy=false;
-    }else if(tag.length>15){
+        isBusy = false;
+    } else if (tag.length > 15) {
         tip.html('<span style="color: red;font-size: 18px">标签名长度不能大于15</span>')
-        isBusy=false;
-    }else {
+        isBusy = false;
+    } else {
         $.post("/api/_add_tag", {tag: tag}, function (res) {
             var v = JSON.parse(res);
             if (v.state > 0) {
-                location.href="/admin"
+                location.href = "/admin"
             } else {
                 if (v.state == -2) {
                     tip.html('<span style="color: red;font-size: 18px">已存在相同标签</span>')
@@ -145,140 +217,140 @@ var add=function(){
     }
 }
 
-function renameTag(tag,name){
-    var enter=$('#enter');
+function renameTag(tag, name) {
+    var enter = $('#enter');
     enter.unbind('click');
 
-    var html='<div id="tip" style="font-size: 16px">（原标签名：'+name+'）</div>'+
-        '<div id="tip-input">请输入新标签名</div>'+
+    var html = '<div id="tip" style="font-size: 16px">（原标签名：' + name + '）</div>' +
+        '<div id="tip-input">请输入新标签名</div>' +
         '<input type="text" class="input-tag">'
     $('#content').html(html);
-    enter.click(function(){
+    enter.click(function () {
         rename(name);
     })
-    $('#dialog').css({display:"block"})
+    $('#dialog').css({display: "block"})
 }
 
 
-function deleteTag(tag,name){
-    var enter=$('#enter');
+function deleteTag(tag, name) {
+    var enter = $('#enter');
     enter.unbind('click');
-    var html='<div>确定删除标签：<br><span class="original-dtag"></span></div>'+
+    var html = '<div>确定删除标签：<br><span class="original-dtag"></span></div>' +
         '<div style="color: #aaa;font-size: 16px;font-weight: normal">' +
         '(标签下的文章将移至默认标签下)</div>'
     $('#content').html(html);
-    enter.click(function(){
+    enter.click(function () {
         del(name);
     })
-    $('#dialog').css({display:"block"})
+    $('#dialog').css({display: "block"})
 }
 
-function addTag(){
-    var enter=$('#enter');
+function addTag() {
+    var enter = $('#enter');
     enter.unbind('click');
-    var html='<div id="tip">请输入标签名</div>'+
+    var html = '<div id="tip">请输入标签名</div>' +
         '<input type="text" class="input-tag">';
     $('#content').html(html);
-    enter.click(function(){
+    enter.click(function () {
         add(name);
     })
-    $('#dialog').css({display:"block"})
+    $('#dialog').css({display: "block"})
 }
-var briefLength=0;
-var isLoading=false;
-function getCommentBrief(){
-    if(isLoading) return;
-    isLoading=true;
-    var content=$('.comment-container');
-    $.get('/api/_get_comment_brief_noreplay',{offset:briefLength,t:Math.random()},function(res){
-        var v=JSON.parse(res);
-        if(v.state>0){
-            var html=""
-            for(var i=0;i< v.rows.length;i++){
-                html+='<div class="comment-item" id="comment'+v.rows[i].f_id+'">'+
-                    '<div class="brief" onclick="getComment('+ v.rows[i].f_id+')">'+ v.rows[i].f_content.substring(0,100)+'</div>'+
+var briefLength = 0;
+var isLoading = false;
+function getCommentBrief() {
+    if (isLoading) return;
+    isLoading = true;
+    var content = $('.comment-container');
+    $.get('/api/_get_comment_brief_noreplay', {offset: briefLength, t: Math.random()}, function (res) {
+        var v = JSON.parse(res);
+        if (v.state > 0) {
+            var html = ""
+            for (var i = 0; i < v.rows.length; i++) {
+                html += '<div class="comment-item" id="comment' + v.rows[i].f_id + '">' +
+                    '<div class="brief" onclick="getComment(' + v.rows[i].f_id + ')">' + v.rows[i].f_content.substring(0, 100) + '</div>' +
                     '</div>';
             }
             content.append(html);
-            briefLength+=v.rows.length;
-            if(v.rows.length<10){
-                $('.more-blogs-container').css({display:'none'})
-            }else{
-                $('.more-blogs-container').css({display:'block'})
+            briefLength += v.rows.length;
+            if (v.rows.length < 10) {
+                $('.more-blogs-container').css({display: 'none'})
+            } else {
+                $('.more-blogs-container').css({display: 'block'})
             }
-        }else{
+        } else {
             alert("get brief err");
         }
-        isLoading=false;
+        isLoading = false;
     })
 }
-function getComment(id){
-    $('#comment-details').css({display:"block"});
-    var comment=$('#comment-main-container');
+function getComment(id) {
+    $('#comment-details').css({display: "block"});
+    var comment = $('#comment-main-container');
     comment.html("");
 
-    $.get('/api/_get_comment_by_id',{id:id,t:Math.random()},function(res){
-        var v=JSON.parse(res);
-        if(v.state>0){
-            var c= v.rows[0];
-            var html='<div class="comment-details-container">'+
-                '<div class="comment-details-time">'+getTime(c.f_insert_time)+'</div>'+
-                    '<div class="btn-close-comment" onclick="closeComment()">x</div>'+
-            '<a target="_blank" href="/blogs/'+ c.f_blog_id+'"><div class="comment-details-title">'+ v.title+'</div></a>'+
-            '<div class="comment-details-content">'+ c.f_content+'</div>'+
-                '<textarea class="textarea-replay"></textarea>'+
-                '<input type="button" value="回复" class="btn-replay" onclick="replay('+ c.f_id+')">'+
-                '<div class="comment-details-options">'+
-                '<span onclick="delComment('+ c.f_id+')">删除该评论</span>'+
-                '</div>'+
+    $.get('/api/_get_comment_by_id', {id: id, t: Math.random()}, function (res) {
+        var v = JSON.parse(res);
+        if (v.state > 0) {
+            var c = v.rows[0];
+            var html = '<div class="comment-details-container">' +
+                '<div class="comment-details-time">' + getTime(c.f_insert_time) + '</div>' +
+                '<div class="btn-close-comment" onclick="closeComment()">x</div>' +
+                '<a target="_blank" href="/blogs/' + c.f_blog_id + '"><div class="comment-details-title">' + v.title + '</div></a>' +
+                '<div class="comment-details-content">' + c.f_content + '</div>' +
+                '<textarea class="textarea-replay"></textarea>' +
+                '<input type="button" value="回复" class="btn-replay" onclick="replay(' + c.f_id + ')">' +
+                '<div class="comment-details-options">' +
+                '<span onclick="delComment(' + c.f_id + ')">删除该评论</span>' +
+                '</div>' +
                 '</div>';
             comment.html(html)
-        }else{
+        } else {
             alert('getcoments err');
-            $('#comment-details').css({display:"none"});
+            $('#comment-details').css({display: "none"});
         }
     })
 }
-function delComment(id){
+function delComment(id) {
 
-    var enter=$('#enter');
+    var enter = $('#enter');
     enter.unbind('click');
-    var html='<div>确定删除评论吗?</div>'
+    var html = '<div>确定删除评论吗?</div>'
     $('#content').html(html);
-    enter.click(function(){
-        $.post('/api/_del_comment',{id:id},function(res){
-            var v=JSON.parse(res);
-            if(v.state>0){
-                location.href="";
-            }else{
+    enter.click(function () {
+        $.post('/api/_del_comment', {id: id}, function (res) {
+            var v = JSON.parse(res);
+            if (v.state > 0) {
+                location.href = "";
+            } else {
                 alert("del err");
             }
         })
     })
-    $('#dialog').css({display:"block"})
+    $('#dialog').css({display: "block"})
 }
-function replay(id){
-    var replay=_trim($('.textarea-replay').val());
-    if(replay=="") return alert("回复不能为空");
-    if(replay.length>500) return alert("回复不能超过五百字");
-    $.post('/api/_replay',{id:id,replay:replay},function(res){
-        var v=JSON.parse(res);
-        if(v.state>0){
-            $('#comment'+id).css({display:"none"})
-            $('#comment-details').css({display:"none"})
-        }else{
+function replay(id) {
+    var replay = _trim($('.textarea-replay').val());
+    if (replay == "") return alert("回复不能为空");
+    if (replay.length > 500) return alert("回复不能超过五百字");
+    $.post('/api/_replay', {id: id, replay: replay}, function (res) {
+        var v = JSON.parse(res);
+        if (v.state > 0) {
+            $('#comment' + id).css({display: "none"})
+            $('#comment-details').css({display: "none"})
+        } else {
             alert('replay err');
         }
     })
 }
-function closeComment(){
-    $('#comment-details').css({display:"none"})
+function closeComment() {
+    $('#comment-details').css({display: "none"})
 }
 
-var getTime=function(obj){
-    var v=JSON.parse(obj);
-    return v.year+"-"+v.month+"-"+v.date+" "+ v.hour+":"+ v.minute+":"+ v.second;
+var getTime = function (obj) {
+    var v = JSON.parse(obj);
+    return v.year + "-" + v.month + "-" + v.date + " " + v.hour + ":" + v.minute + ":" + v.second;
 }
 function _trim(str) {
-      return str.replace(/(?:^[ \t\n\r]+)|(?:[ \t\n\r]+$)/g, '');
+    return str.replace(/(?:^[ \t\n\r]+)|(?:[ \t\n\r]+$)/g, '');
 }

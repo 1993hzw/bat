@@ -35,8 +35,8 @@
 .dialog-content {
     padding-top: 20px;
     background: white;
-    width: 300px;
-    height: 120px;
+    min-width: 300px;
+    min-height: 120px;
     font-size: 20px;
     font-weight: bold;
     border-bottom: 2px solid #ddd;
@@ -72,3 +72,4 @@
     background: deepskyblue;
     cursor: pointer;
 }
+

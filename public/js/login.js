@@ -8,14 +8,14 @@
 $(document).ready(function(){
     var user=$(".user");
     user.focus(function(){
-        if(_trim(user.val())=="管理员名称")
+        if(_trim(user.val())=="管理账号")
               user.val("").css({color:"black"})
         else
             user.css({color:"black"})
         $(".tip").html("")
     }).blur(function(){
         if(_trim(user.val())=="")
-            user.val("管理员名称").css({color:"#aaa"})
+            user.val("管理账号").css({color:"#aaa"})
     })
     $('.passwd').focus(function(){
         $(".tip").html("")
@@ -30,7 +30,7 @@ $(document).ready(function(){
 function verify(){
    var user=$(".user").val();
     var passwd=$(".passwd").val();
-    if(!user||_trim(user)==""||user=='管理员名称'){
+    if(!user||_trim(user)==""||user=='管理账号'){
        $(".tip").html("名称不能为空")
     }else if(passwd==""){
         $(".tip").html("密码不能为空")

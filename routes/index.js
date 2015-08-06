@@ -49,6 +49,7 @@ router.get('/', function(req, res, next) {
             result.getTime=utils.getTime;
             result.name=DC.admin.name;
             result.email=DC.admin.email;
+            result.blog=DC.admin.blog;
             res.render('index', result);
         })
         .catch(function(err){

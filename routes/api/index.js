@@ -1,6 +1,6 @@
 var router=require('express').Router();
 var dbHolder=require('../../controller/DBHolder');
-var blogs=require('../../controller/blogs');
+var maps=require('../../controller/maps');
 var comments=require('../../controller/comments');
 var markdown=require('../../utils/markdown');
 var utils=require('../../utils/utils');
@@ -57,13 +57,40 @@ router.post('/login',function(req,res,next){
         var user=req.body.user;
         var passwd=req.body.passwd;
         if(!user||!passwd||user.trim()==""||passwd.trim()=="") return res.json({state:-1})
-        if(user===DC.admin.user&&passwd===DC.admin.passwd){
+        if(user===DC.admin.user&&passwd===DC.admin.password){
             console.log("admin logined")
             req.session.hasLogined=true;
             res.json({state:1})
         }else{
             res.json({state:-2})
         }
+})
+
+router.post('/save_info',function(req,res,next){//保存博客信息
+   var blog=req.body.blog;
+    var name=req.body.name;
+    var email=req.body.email;
+    var user=req.body.user;
+    var password=req.body.password;
+
+    if(!blog||!name||!email||!user||!password||blog.trim()==''||name.trim()==''||
+        email.trim()==''||user.trim()==''||password.trim()==''){
+        return res.json({state:-1})
+    }
+    var v={blog:blog,name:name,email:email,user:user,password:password};
+    maps.put('admin',JSON.stringify(v))
+        .then(function () {
+            return maps.put('hasInitialized','true');
+        })
+        .then(function(){
+            DC.admin=v;
+            res.json({state:1})
+        })
+        .catch(function(err){
+            console.log(err)
+            res.json({state:-2})
+        })
+
 })
 
 
