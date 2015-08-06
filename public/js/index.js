@@ -27,7 +27,7 @@ var setLayout=function(){
         $('.name').css({width:'auto'})
     }else{
         $('.logo').css({height:"40%",marginTop:"58px"})
-        $('.name').width($(window).width()-150);
+        $('.name').width($(window).width()-100);
         $('.left').css({width:"100%"});
         $('.right').css({float: "none",width: "100%",paddingTop:"30px"});
     }
