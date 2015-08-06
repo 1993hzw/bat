@@ -11,7 +11,7 @@ var setLayout = function () {
         //var titleHeight=$(".title-container").height();
        //alert(width)
         $(".edit-container").height(editHeight).width(width);
-        if (!isPc) {//pc端
+        if (isPc) {//pc端
             $(".inupt-container").height(editHeight).width(width / 2 - 10);
             $(".preview-container").height(editHeight).width($(".edit-container").width() / 2 -2);
         } else {//移动端
