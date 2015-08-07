@@ -208,13 +208,41 @@ var getLastCommentsNoReplay = function (offset, count, result) {
         .then(function (result) {
             return Promise.resolve(result.rows);
         })
-}
+};
+
+var getLastCommentsReplayed = function (offset, count, result) {
+    if (!offset || offset < 0) offset = 0;
+    if (!count || count < 0) count = 1;
+
+    var _select = function (result) {
+        return new Promise(function (resolve, reject) {
+            var sql = 'select * from ' + fields.tableName;
+            sql+=' where '+fields.reply+' not null '
+            sql += " order by " + fields.id + " desc limit " + offset + "," + count;
+            result.db.all(sql,function (err, rows) {
+                if (err) return reject(err);
+                result.rows = rows;
+                resolve(result);
+            })
+        })
+    }
+    return Promise.resolve()
+        .then(function () {
+            if(result) return Promise.resolve(result);
+            return dbHolder.openDB();
+        })
+        .then(_select)
+        .then(function (result) {
+            return Promise.resolve(result.rows);
+        })
+};
 
 exports.add = add;
 exports.getCommentByID=getCommentByID;
 exports.getCommentsByBlogID = getCommentsByBlogID;
 exports.getLastComments = getLastComments;
 exports.getLastCommentsNoReplay=getLastCommentsNoReplay;
+exports.getLastCommentsReplayed=getLastCommentsReplayed;
 exports.replay = replay;
 exports.deleteByBlogId = deleteByBlogId;
 exports.deleteById=deleteById;

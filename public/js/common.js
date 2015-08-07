@@ -19,9 +19,9 @@ var formatHTML = function () {
     }
 }();
 
-var getTime=function(obj){
-    var v=eval('('+obj+')');
-    return v.year+"-"+v.month+"-"+v.date+" "+ v.hour+":"+ v.minute+":"+ v.second;
+var formatTime=function(time){
+    var date=new Date(time);
+    return date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate()+" "+date.getHours()+":"+date.getMinutes();
 }
 
 function checkIsPC() {

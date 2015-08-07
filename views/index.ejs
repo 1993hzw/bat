@@ -1,8 +1,5 @@
 <!DOCTYPE html>
-<% var getTime=function(obj){
-var v=JSON.parse(obj);
-return v.year+"-"+v.month+"-"+v.date+" "+ v.hour+":"+ v.minute+":"+ v.second;
-}
+<%
 var keywords='博客,个人博客,';
 for(var i in tags) {
     keywords += tags[i] + ",";
@@ -57,7 +54,7 @@ for(var i in tags) {
                         <div class="blog-brief"><%= rows[i].f_brief %></div>
                         <div class="blog-details">
                             <span class="blog-tags" title="标签"><%= tags[rows[i].f_tags] %></span>|
-                            <span class="blog-time" title="发布时间"><%= getTime(rows[i].f_insert_time) %></span>
+                            <span class="blog-time" title="发布时间"><%= formatTime(rows[i].f_insert_time) %></span>
                             <span class="blog-time" title="阅读量">(<%= rows[i].f_visits %>)</span>
                         </div>
                         </div>
@@ -81,7 +78,7 @@ for(var i in tags) {
                 <div class="comments-container">
                     <% for(var i=0; i< comments.length;i++){ %>
                     <div class="comments-item">
-                        <div class="time"><%= getTime(comments[i].f_insert_time) %></div>
+                        <div class="time"><%= formatTime(comments[i].f_insert_time) %></div>
                         <div style="font-size: 12px;color: gray"><a class="title" href="/blogs/<%= comments[i].f_blog_id %>"><%=
                             titles[comments[i].f_blog_id] %></a>：
                         </div>

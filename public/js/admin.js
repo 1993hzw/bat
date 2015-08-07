@@ -1,8 +1,8 @@
 var isBusy = false;
-$(document).ready(function () {
+$(function () {
     $('.upload').click(function () {
         upload();
-    })
+    });
     $('.download').click(function () {
         download();
     })
@@ -10,15 +10,20 @@ $(document).ready(function () {
         if (isBusy || isBusy || isBusy) return;
         $('#enter').unbind('click');
         $('#dialog').css({display: "none"})
-    })
+    });
     $(window).resize(function () {
         setLayout();
-    })
+    });
+    $('.select-comment').change(function(){
+        briefLength=0;
+        $('.comment-container').html('');
+        getCommentBrief($('.select-comment').val());
+    });
     $('.btn-more').click(function () {
-        getCommentBrief();
-    })
+        getCommentBrief($('.select-comment').val());
+    });
     setLayout();
-    getCommentBrief();
+    getCommentBrief(1);
 });
 
 function setLayout() {
@@ -253,17 +258,24 @@ function addTag() {
 }
 var briefLength = 0;
 var isLoading = false;
-function getCommentBrief() {
+//获取评论
+function getCommentBrief(param) {
     if (isLoading) return;
     isLoading = true;
     var content = $('.comment-container');
-    $.get('/api/_get_comment_brief_noreplay', {offset: briefLength, t: Math.random()}, function (res) {
+    var url;
+    if(param==1){//未回复
+        url='/api/_get_comment_brief_noreplay';
+    }else if(param==2){//已回复
+        url='/api/_get_comment_brief_replayed';
+    }
+    $.get(url, {offset: briefLength, t: Math.random()}, function (res) {
         var v = JSON.parse(res);
         if (v.state > 0) {
             var html = ""
             for (var i = 0; i < v.rows.length; i++) {
                 html += '<div class="comment-item" id="comment' + v.rows[i].f_id + '">' +
-                    '<div class="brief" onclick="getComment(' + v.rows[i].f_id + ')">' + v.rows[i].f_content.substring(0, 100) + '</div>' +
+                    '<div class="brief" onclick="getComment(' + v.rows[i].f_id + ')">' + formatHTML(v.rows[i].f_content.substring(0, 100)) + '</div>' +
                     '</div>';
             }
             content.append(html);
@@ -280,7 +292,7 @@ function getCommentBrief() {
     })
 }
 function getComment(id) {
-    $('#comment-details').css({display: "block"});
+    $('#dialog-comment-details').css({display: "block"});
     var comment = $('#comment-main-container');
     comment.html("");
 
@@ -288,21 +300,28 @@ function getComment(id) {
         var v = JSON.parse(res);
         if (v.state > 0) {
             var c = v.rows[0];
-            var html = '<div class="comment-details-container">' +
-                '<div class="comment-details-time">' + getTime(c.f_insert_time) + '</div>' +
+            var replayHtml='';
+            if(c.f_reply){
+                replayHtml='<div class="textarea-replay">'+c.f_reply+'</div>'+
+                    '<input type="button" value="已回复" class="btn-replayed"><span class="replayed-time">'+formatTime(c.f_modify_time)+'</span>';
+            }else{
+                replayHtml='<textarea class="textarea-replay"></textarea>' +
+                    '<input type="button" value="回复" class="btn-replay" onclick="replay(' + c.f_id + ')">';
+            }
+            var html = '<div class="dialog-comment-details-container">' +
+                '<div class="dialog-comment-details-time">' + formatTime(c.f_insert_time) + '&nbsp;&nbsp;'+ c.f_contact+'</div>' +
                 '<div class="btn-close-comment" onclick="closeComment()">x</div>' +
-                '<a target="_blank" href="/blogs/' + c.f_blog_id + '"><div class="comment-details-title">' + v.title + '</div></a>' +
-                '<div class="comment-details-content">' + c.f_content + '</div>' +
-                '<textarea class="textarea-replay"></textarea>' +
-                '<input type="button" value="回复" class="btn-replay" onclick="replay(' + c.f_id + ')">' +
-                '<div class="comment-details-options">' +
+                '<a target="_blank" href="/blogs/' + c.f_blog_id + '"><div class="dialog-comment-details-title">' + v.title + '</div></a>' +
+                '<div class="dialog-comment-details-content">' + formatHTML(c.f_content) + '</div>' +
+                replayHtml+
+                '<div class="dialog-comment-details-options">' +
                 '<span onclick="delComment(' + c.f_id + ')">删除该评论</span>' +
                 '</div>' +
                 '</div>';
             comment.html(html)
         } else {
             alert('getcoments err');
-            $('#comment-details').css({display: "none"});
+            $('#dialog-comment-details').css({display: "none"});
         }
     })
 }
@@ -316,7 +335,10 @@ function delComment(id) {
         $.post('/api/_del_comment', {id: id}, function (res) {
             var v = JSON.parse(res);
             if (v.state > 0) {
-                location.href = "";
+                //location.href = "/admin";
+                $('#comment' + id).remove();
+                $('#dialog').hide();
+                $('#dialog-comment-details').hide();
             } else {
                 alert("del err");
             }
@@ -331,13 +353,13 @@ function replay(id) {
     $.post('/api/_replay', {id: id, replay: replay}, function (res) {
         var v = JSON.parse(res);
         if (v.state > 0) {
-            $('#comment' + id).css({display: "none"})
-            $('#comment-details').css({display: "none"})
+            $('#comment' + id).remove();
+            $('#dialog-comment-details').css({display: "none"})
         } else {
             alert('replay err');
         }
     })
 }
 function closeComment() {
-    $('#comment-details').css({display: "none"})
+    $('#dialog-comment-details').css({display: "none"})
 }

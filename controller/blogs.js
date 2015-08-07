@@ -82,14 +82,14 @@ var getByTag = function (tag, offset, count, result) {
                     fields.id + "," + fields.insert_time + "," + fields.modify_time + "," + fields.title +
                     "," + fields.html + "," + fields.tags + "," + fields.visits + "," + fields.top + "," + fields.brief +
                     " from " + fields.tableName;
-                sql += " order by " + fields.top + "  limit " + offset + "," + count;
+                sql += " order by " + fields.top + " desc ,"+ fields.id + " desc limit " + offset + ","+count;
             } else {
                 sql = "select " +
                     fields.id + "," + fields.insert_time + "," + fields.modify_time + "," + fields.title + "," + fields.html + ","
                     + fields.tags + "," + fields.visits + "," + fields.top + "," + fields.brief +
                     " from " + fields.tableName;
                 sql += " where " + fields.tags + "='" + tag + "'";
-                sql += " order by " + fields.top + "  limit " + offset + "," + count;
+                sql += " order by " + fields.top+" desc ,"+ fields.id + " desc limit " + offset + "," + count;
             }
             result.db.all(sql, function (err, rows) {
                 if (err) return reject(err);

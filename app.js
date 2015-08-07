@@ -26,6 +26,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(session({secret: 'hzw', cookie: {maxAge: 7200000}}))//ms
+
 app.use(function (req, res, next) {//记录访问量
     if (!req.session.hasVisited) {
         req.session.readedBlogId = [];//记录阅读过的文章id，避免重复增加阅读量
@@ -37,13 +38,12 @@ app.use(function (req, res, next) {//记录访问量
             });
     }
     next();
-})
-
+});
 app.use('/', require('./routes/index'));
 app.use('/blogs', require("./routes/blogs"));
 app.use('/admin', require("./routes/admin"));
-app.use('/test', require('./routes/test/index'))
-app.use('/api', require('./routes/api/index'))
+app.use('/test', require('./routes/test/index'));
+app.use('/api', require('./routes/api/index'));
 
 
 // catch 404 and forward to error handler

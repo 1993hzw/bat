@@ -25,7 +25,7 @@ var renderList = function (req, res, next, curTag) {
 
 router.get('/', function (req, res, next) {
     var tag = req.query.tag;
-    if (utils.checkIsInArray(tag, DC.tags)) {
+    if (DC.tags.hasOwnProperty(tag)) {
         return renderList(req, res, next, tag);
     } else {
         return renderList(req, res, next, "全部")
@@ -36,12 +36,11 @@ router.get(/^\/[0-9]+$/, function (req, res, next) {
     //res.end("is "+JSON.stringify(req));
     var id = parseInt(req.path.substr(1));
     if (!id || id <= 0) return res.redirect('/blogs');
-    var session = req.session;
     blogs.getById(id)
         .then(function (rows) {
             var fields = dbHolder.blog;
             var blog = rows[0];
-            var time = utils.resolveTimeJson(blog[fields.insert_time]);
+            var time = utils.formatTime(blog[fields.insert_time]);
             var data = {
                 id: blog[fields.id],
                 title: blog[fields.title],
@@ -54,20 +53,21 @@ router.get(/^\/[0-9]+$/, function (req, res, next) {
                 isLogined: req.session.hasLogined
             };
             data.tags = DC.tags;
+
+            var isAddVisits=(req.session.readedBlogId.indexOf(id) == -1);
+            if(isAddVisits) req.session.readedBlogId.push(id);//记录阅读过的文章id，避免重复增加阅读量
+            //req.session赋值必须在返回前台之前操作
             res.render('blogs/blog', data);
+            return isAddVisits;
         })
-        .then(function () {
-            //console.log(session.readedBlogId);
-            if (session.readedBlogId.indexOf(id) == -1) {//增加阅读量
+        .then(function (isAddVisits) {
+            if (isAddVisits) {//增加阅读量
                 blogs.visitsIncrement(id)
-                    .then(function () {
-                        session.readedBlogId.push(id);//记录阅读过的文章id，避免重复增加阅读量
-                        console.log(session.readedBlogId);
-                    })
                     .catch(console.log)
             }
         })
-        .catch(function () {
+        .catch(function (err) {
+            console.log(err)
             return res.redirect('/blogs')
         })
 })
@@ -84,7 +84,7 @@ router.get('/edit', function (req, res, next) {
         .then(function (rows) {
             var fields = dbHolder.blog;
             var blog = rows[0];
-            var time = utils.resolveTimeJson(blog[fields.insert_time]);
+            var time = utils.formatTime(blog[fields.insert_time]);
             var data = {
                 id: blog[fields.id],
                 title: blog[fields.title],

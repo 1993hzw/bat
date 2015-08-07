@@ -22,7 +22,7 @@ $(function() {
         // x_vars: {
         //     'id': '1234',
         //     'time': function(up, file) {
-        //         var time = (new Date()).getTime();
+        //         var time = (new Date()).formatTime();
         //         // do something with 'time'
         //         return time;
         //     },

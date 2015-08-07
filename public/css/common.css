@@ -23,6 +23,9 @@ a{
     outline: none;
     text-decoration: none;
 }
+textarea{
+    resize: none;
+}
 .clearFloat{
     float: none;
     clear: both;

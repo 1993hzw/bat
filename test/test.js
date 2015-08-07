@@ -1,3 +1,2 @@
-var arr=[]
-
-console.log(arr.indexOf(1))
+var reg=/^=-?\d+[Xx]-?\d+/
+console.log(reg.test('=12X-12'))

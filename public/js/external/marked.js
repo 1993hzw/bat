@@ -890,7 +890,16 @@ Renderer.prototype.link = function(href, title, text) {
 Renderer.prototype.image = function(href, title, text) {
   var out = '<img src="' + href + '" alt="' + text + '"';
   if (title) {
-    out += ' title="' + title + '"';
+    var reg=/^=-?\d+[Xx]-?\d+/;//满足=12x-12，设置宽高
+    if(reg.test(title)){
+      title=title.substr(1).toLowerCase();
+      var i=title.indexOf('x');
+      var width=title.substr(0,i);
+      var height=title.substr(i+1);
+      out += ' width="' + width + '" height="'+height+'"';
+    }else{
+      out += ' title="' + title + '"';
+    }
   }
   out += this.options.xhtml ? '/>' : '>';
   return out;

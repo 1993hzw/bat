@@ -35,15 +35,15 @@ var getBlogs=function(){
         var v=JSON.parse(res);
         var rows= v.rows;
         var html='';
-        var top='<span class="top">顶</span>';
+        var top='<span class="top" title="置顶">顶</span>';
         var temp;
-        for(var i=rows.length-1;i>=0;i--){
+        for(var i=0;i<rows.length;i++){
             temp=rows[i].f_top?top:'';
            html+= '<div class="blog-item">'+
                 '<a href="/blogs/'+rows[i].f_id+'">'+temp+'<div class="blog-title">'+rows[i].f_title+'</div></a>'+
                 '<div class="blog-brief">'+rows[i].f_brief+'</div>'+
                 '<div class="blog-details"><span class="blog-tags" title="标签">'+ v.tags[rows[i].f_tags]+'</span>|' +
-               '<span class="blog-time" title="发布时间">'+getTime(rows[i].f_insert_time)+'</span>' +
+               '<span class="blog-time" title="发布时间">'+formatTime(rows[i].f_insert_time)+'</span>' +
                '<span class="blog-time" title="阅读量">('+rows[i].f_visits+')</span>' +
                '</div>'+
                 '</div>';

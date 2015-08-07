@@ -79,13 +79,13 @@ var getComments = function () {
         if (v.state > 0) {
             var rows= v.rows;
             for(var i=0;i<rows.length;i++){
-                var content = formatComment(getTime(rows[i].f_insert_time),formatHTML(rows[i].f_content))
+                var content = formatComment(formatTime(rows[i].f_insert_time),formatHTML(rows[i].f_content))
 
                 var replay=rows[i].f_reply;
                 if(replay==undefined){
                     replay="";
                 }else{
-                    replay=formatReplay(getTime(rows[i].f_modify_time),formatHTML(replay));
+                    replay=formatReplay(formatTime(rows[i].f_modify_time),formatHTML(replay));
                 }
                 $('.other-comment-container').append(content+replay);
             }
@@ -113,10 +113,11 @@ var addComment = function () {
         isSending=false;
         return $('.tip-comment').text('评论不能为空').css({color:"red"})
     }
+    if(contact.trim()=='您的联系邮箱（选填）') contact='';
     $.post("/api/add_comment", {id: id, comment: comment,contact:contact}, function (res) {
         var v = JSON.parse(res);
         if (v.state > 0) {
-            var content = formatComment(v.time,comment)
+            var content = formatComment(v.time,formatHTML(comment))
             $('.other-comment-container').prepend(content);
             $('.input-comment').val("")
             $('#input-comment').html('<div style="text-align: center;color: gray">（已评论）</div>')

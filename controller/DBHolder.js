@@ -70,8 +70,8 @@ var _createBlogTable = function (result) {
     return new Promise(function (resolve, reject) {
         var sql = 'create table if not exists ' + blog.tableName + '(' +
             blog.id + ' integer,' +
-            blog.insert_time + ' text,' +
-            blog.modify_time + ' text,' +
+            blog.insert_time + ' integer,' +
+            blog.modify_time + ' integer,' +
             blog.title + ' text,' +
             blog.brief + ' text,' +
             blog.markdown + ' text,' +
@@ -94,8 +94,8 @@ var _createCommentTable = function (result) {
     return new Promise(function (resolve, reject) {
         var sql = 'create table if not exists ' + comment.tableName + '(' +
             comment.id + ' integer,' +
-            comment.insert_time + ' text,' +
-            comment.modify_time + ' text,' +
+            comment.insert_time + ' integer,' +
+            comment.modify_time + ' integer,' +
             comment.content + ' text,' +
             comment.reply + ' text,' +
             comment.blogId + ' integer,' +
@@ -114,8 +114,8 @@ var _createCommentTable = function (result) {
 var _createConfigTable = function (result) {
     return new Promise(function (resolve, reject) {
         var sql = 'create table if not exists ' + map.tableName + '(' +
-            map.insert_time + ' text,' +
-            map.modify_time + ' text,' +
+            map.insert_time + ' integer,' +
+            map.modify_time + ' integer,' +
             map.key + ' text,' +
             map.value + ' text,' +
             'primary key (' + map.key + ')' +
@@ -131,8 +131,8 @@ var _createTagTable = function (result) {
     return new Promise(function (resolve, reject) {
         var sql = 'create table if not exists ' + tag.tableName + '(' +
             tag.id + ' integer,' +
-            tag.insert_time + ' text,' +
-            tag.modify_time + ' text,' +
+            tag.insert_time + ' integer,' +
+            tag.modify_time + ' integer,' +
             tag.name + ' text,' +
             'primary key (' + tag.id + ')' +
             ')';

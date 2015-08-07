@@ -46,7 +46,7 @@ router.get('/', function(req, res, next) {
         .then(function(result){
             result.tags=DC.tags;
             result.visits=DC.visits;
-            result.getTime=utils.getTime;
+            result.formatTime=utils.formatTime;
             result.name=DC.admin.name;
             result.email=DC.admin.email;
             result.blog=DC.admin.blog;

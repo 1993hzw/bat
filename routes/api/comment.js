@@ -18,10 +18,9 @@ router.post('/add_comment',function(req,res,next){
     data[dbHolder.comment.content]=comment.substr(0,500);
     data[dbHolder.comment.contact]=contact.substr(0,50);
     var time=utils.getTime();
-    data[dbHolder.comment.insert_time]=time;
     comments.add(data)
         .then(function(){
-            res.json({state:1,time:utils.resolveTimeJson(time)});
+            res.json({state:1,time:utils.formatTime(time)});
         })
         .catch(function(err){
             console.log(err)
@@ -72,7 +71,21 @@ router.get('/_get_comment_brief_noreplay',function(req,res,next){
             console.log(err);
             res.json({state:-1});
         })
-})
+});
+
+//获取已回复的评论
+router.get('/_get_comment_brief_replayed',function(req,res,next){
+    var off=req.query.offset;
+    off=off||0;
+    comments.getLastCommentsReplayed(off,10)
+        .then(function(rows){
+            res.json({state:1,rows:rows});
+        })
+        .catch(function(err){
+            console.log(err);
+            res.json({state:-1});
+        })
+});
 
 //删除评论
 router.post('/_del_comment',function(req,res,next){

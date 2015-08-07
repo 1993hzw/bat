@@ -139,7 +139,13 @@
 .comment-item {
     display: inline-block;
     margin-bottom: 1px;
-    margin-left: 12px;
+    margin-right: 12px;
+}
+.select-comment{
+    margin-left: 5px;
+    min-width: 90px;
+    height: 25px;
+    padding: 3px 0;
 }
 
 #console{
@@ -156,7 +162,7 @@
     overflow-y: auto;
     border-top: 1px solid white;
 }
-#comment-details{
+#dialog-comment-details{
     top: 0;
     left: auto;
     right: auto;
@@ -166,7 +172,7 @@
     display: none;
     /*display: table;*/
 }
-.comment-details-bg{
+.dialog-comment-details-bg{
     filter: alpha(opacity=50);
     -moz-opacity: 0.5;
     opacity: 0.5;
@@ -185,7 +191,7 @@
     width: 100%;
     height: 100%;
 }
-.comment-details-container {
+.dialog-comment-details-container {
     display: table;
     margin: auto;
     min-width: 400px;
@@ -201,30 +207,30 @@
     cursor: pointer;
     font-weight: bold;
 }
-.comment-details-time{
+.dialog-comment-details-time{
     padding-bottom: 5px;
     display: inline;
 }
-.comment-details-title{
+.dialog-comment-details-title{
    padding-bottom: 5px;
     color: cornflowerblue;
 }
-.comment-details-title:hover{
+.dialog-comment-details-title:hover{
     color: deepskyblue;
 }
-.comment-details-content{
+.dialog-comment-details-content{
    padding: 10px;
     border-top: 1px dashed #bbb;
     border-bottom: 1px dashed #bbb;
 }
-.comment-details-options{
+.dialog-comment-details-options{
     padding-top: 10px;
 }
-.comment-details-options span{
+.dialog-comment-details-options span{
     font-size: 12px;
     color: #aaaaaa;
 }
-.comment-details-options span:hover{
+.dialog-comment-details-options span:hover{
     color: black;
     cursor: pointer;
 }
@@ -235,6 +241,7 @@
     outline: none;
     margin-top: 10px;
     overflow-y: auto;
+    padding: 5px;
 }
 .btn-replay{
     float: right;
@@ -248,7 +255,20 @@
     cursor: pointer;
     background: deepskyblue;
 }
-.comment-details-options span{
+.btn-replayed{
+    float: right;
+    border: none;
+    outline: none;
+    width: 100px;
+    height: 30px;
+    background: grey;
+}
+.replayed-time{
+    float: right;
+    color: grey;
+    padding: 5px;
+}
+.dialog-comment-details-options span{
     padding: 10px;
 }
 .more-blogs-container{
@@ -257,7 +277,7 @@
     padding-left: 10px;
 }
 .btn-more{
-    padding: 3px;
+    padding: 3px 5px;
     display: table;
     color: #333;
     background: antiquewhite;

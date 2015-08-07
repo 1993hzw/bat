@@ -131,7 +131,7 @@ router.get('/get_last',function(req,res,next){
 router.get('/get_blogs',function(req,res,next){
     var tag=req.query.tag;
     var off=req.query.offset;
-    if(!utils.checkIsInArray(tag,DC.tags)) {
+    if(!DC.tags.hasOwnProperty(tag)) {
          tag=undefined;//如果tag为空则返回最新文章
     }
     blogs.getByTag(tag,off,5)

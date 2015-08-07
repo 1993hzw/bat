@@ -39,9 +39,9 @@
             <% } %>
             <div class="options-container">
                 <% if(!isEdit){ %>
-                <input type="button" class="btn-publish" value="发&nbsp;布">
+                <input type="button" class="btn-publish" onclick="publish()" value="发&nbsp;布">
                 <% }else{ %>
-                <input type="button" class="btn-finish" value="保&nbsp;存">
+                <input type="button" class="btn-finish" onclick="finish()" value="保&nbsp;存">
                 <% } %>
             </div>
             <div class="clearFloat"></div>
@@ -73,9 +73,9 @@
     <div class="edit-container">
         <div class="inupt-container">
             <% if(isEdit){ %>
-            <textarea class="textarea"><%= markdown %></textarea>
+            <textarea class="textarea" id="drop_element"><%= markdown %></textarea>
             <% }else{ %>
-            <textarea class="textarea"></textarea>
+            <textarea class="textarea"  id="drop_element"></textarea>
             <% } %>
 
         </div>
@@ -94,8 +94,6 @@
         <div class="dialog-container">
             <div class="dialog-body">
                 <div id="content" class="dialog-content">
-                    <div id="tip">请输入标签名</div>
-                    <input type="text" class="input-tag">
                 </div>
                 <div class="dialog-btn-container">
                     <div id="cancel" class="dialog-btn">取消</div>
@@ -122,7 +120,7 @@
                 </select>
             </div>
 
-            <div class="tool-item item-btn upload-img" id="container">
+            <div class="tool-item item-btn upload-img" id="btn-add-img">
                 <span id="pickfiles">插入图片</span>
             </div>
             <div class="clearFloat"></div>
