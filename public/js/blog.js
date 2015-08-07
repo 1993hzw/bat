@@ -26,7 +26,7 @@ $(document).ready(function () {
         if($('.input-contact').val()=="您的联系邮箱（选填）")
           $('.input-contact').val("").css({color:"black"})
     }).blur(function(){
-        if(_trim($('.input-contact').val())=="")
+        if($('.input-contact').val().trim()=="")
           $('.input-contact').val("您的联系邮箱（选填）").css({color:"#aaa"})
     })
     $('.input-comment').click(function(){
@@ -109,7 +109,7 @@ var addComment = function () {
     if(comment.length>500){
         isSending=false;
         return $('.tip-comment').text('评论长度不能超过500个字').css({color:"red"})
-    }else if(_trim(comment)==""){
+    }else if(comment.trim()==""){
         isSending=false;
         return $('.tip-comment').text('评论不能为空').css({color:"red"})
     }
@@ -160,25 +160,3 @@ var formatReplay=function(time,content){
         '</div>';
 }
 
-var formatHTML=function(){
-    var character={
-        '&':'&amp;',
-        '<':'&lt;',
-        '>':'&gt;',
-        '"':'&quot;',
-        '\'':'&#39;'
-    }
-    return function(html){
-        return html.replace(/[&<>"']/g,function(c){
-            return character[c];
-        })
-    }
-}();
-
-var getTime=function(obj){
-    var v=eval('('+obj+')');
-    return v.year+"-"+v.month+"-"+v.date+" "+ v.hour+":"+ v.minute+":"+ v.second;
-}
-function _trim(str) {
-    return str.replace(/(?:^[ \t\n\r]+)|(?:[ \t\n\r]+$)/g, '');
-}

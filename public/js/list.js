@@ -42,7 +42,10 @@ var getBlogs=function(){
            html+= '<div class="blog-item">'+
                 '<a href="/blogs/'+rows[i].f_id+'">'+temp+'<div class="blog-title">'+rows[i].f_title+'</div></a>'+
                 '<div class="blog-brief">'+rows[i].f_brief+'</div>'+
-                '<div class="blog-details"><span class="blog-tags">'+ v.tags[rows[i].f_tags]+'</span>|<span class="blog-time">'+getTime(rows[i].f_insert_time)+'</span></div>'+
+                '<div class="blog-details"><span class="blog-tags" title="标签">'+ v.tags[rows[i].f_tags]+'</span>|' +
+               '<span class="blog-time" title="发布时间">'+getTime(rows[i].f_insert_time)+'</span>' +
+               '<span class="blog-time" title="阅读量">('+rows[i].f_visits+')</span>' +
+               '</div>'+
                 '</div>';
         }
         list.append(html);
@@ -53,18 +56,4 @@ var getBlogs=function(){
          $(".btn-more").text("点击加载更多");
         isLoading=false;
     })
-}
-
-var getTime=function(obj){
-    var v=eval('('+obj+')');
-    return v.year+"-"+v.month+"-"+v.date+" "+ v.hour+":"+ v.minute+":"+ v.second;
-}
-function checkIsPC() {
-    if(/AppleWebKit.*Mobile/i.test(navigator.userAgent) ||
-        (/MIDP|SymbianOS|NOKIA|SAMSUNG|LG|NEC|TCL|Alcatel|BIRD|DBTEL|Dopod|PHILIPS|HAIER|LENOVO|MOT-|Nokia|SonyEricsson|SIE-|Amoi|ZTE/.test(navigator.userAgent)))
-    {
-        return false;
-    }else{
-        return true;
-    }
 }

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>后天管理</title>
+    <title>后台管理</title>
     <style type="text/css">
         <%- include ../../public/css/common.css%>
         <%- include ../../public/css/dialog.css%>
@@ -27,14 +27,13 @@
         <div class="seperator">博客信息</div>
         <div style="display: none" id="blog-info"><%= JSON.stringify(admin)%></div>
         <div class="inof-container">
-            <span class="info-item"><span class="info-item-key">博客名称</span><%= admin.blog %></span>
-            <span class="info-item"><span class="info-item-key">作者</span><%= admin.name %></span>
-            <span class="info-item"><span class="info-item-key">邮件</span><%= admin.email %></span>
-            &nbsp; &nbsp;
-            <span class="info-item"><span class="info-item-key">管理账号</span><%= admin.user %></span>
-            <span class="info-item"><span class="info-item-key">管理密码</span><%= admin.password %></span>
-            &nbsp; &nbsp;
-            <span style="color: #0000ee;cursor: pointer" onclick="modifyInfo()">修改</span>
+            <div class="info-item"><span class="info-item-key">博客名称</span><%= admin.blog %></div>
+            <div class="info-item"><span class="info-item-key">作者</span><%= admin.name %></div>
+            <div class="info-item"><span class="info-item-key">邮件</span><%= admin.email %></div>
+            <div class="info-item"><span class="info-item-key">管理账号</span><%= admin.user %></div>
+            <div class="info-item"><span class="info-item-key">管理密码</span><%= admin.password %></div>
+            <div class="btn-modify-info" onclick="modifyInfo()">修改</div>
+            <div class="clearFloat"></div>
         </div>
         <div class="seperator">数据库</div>
         <div>
@@ -87,6 +86,7 @@
 
 <script src="/js/external/jquery1.3.2.js"></script>
 <script type="text/javascript">
+    <%- include ../../public/js/common.js%>
     <%- include ../../public/js/admin.js%>
 </script>
 

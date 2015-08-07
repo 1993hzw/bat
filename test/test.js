@@ -1,2 +1,3 @@
-var s=undefined;
- console.log(parseInt(undefined))
+var arr=[]
+
+console.log(arr.indexOf(1))

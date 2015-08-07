@@ -44,7 +44,7 @@ body{
     border: none;
     outline: none;
     cursor: pointer;
-    z-index: 0;
+    z-index: 1;
 }
 .btn-publish:hover,.btn-finish:hover{
     background: deepskyblue;
@@ -53,8 +53,8 @@ body{
 .edit-container {
     position: relative;
     width: 100%;
-    height: 100%;
-    min-height: 200px;
+    height: 1px;
+    /*min-height: 200px;*/
     overflow: hidden;
     border-top: 1px solid gray;
 }
@@ -100,6 +100,7 @@ body{
     padding:8px 0;
 }
 .inupt-container {
+    width: 50%;
     float: left;
     height: 100px;
     background: whitesmoke;
@@ -136,11 +137,11 @@ body{
 
 .preview-container {
     overflow: hidden;
-    font-size: 18px;
+    font-size: 16px;
     float: left;
     height: 100%;
     background: white;
-    width: 100%;
+    width: 50%;
 }
 .preview{
     padding-bottom: 10px;
@@ -180,12 +181,13 @@ body{
     overflow-y: auto;
     overflow-x: hidden;
     padding: 10px;
-    font-size: 18px;
+    font-size: 16px;
     border: none;
     outline: none;
     width: 100%;
     height: 100%;
     background: transparent;
+    line-height: 25px;
 }
 
 .toolsbar-container{
@@ -193,6 +195,7 @@ body{
     position: fixed;
     top: -0px;
     background: transparent;
+    pointer-events: none;
 }
 .btn-tools{
     width: 30px;
@@ -201,23 +204,24 @@ body{
 
 }
 .toolsbar{
-    padding: 5px 0px 5px 10px;
+    padding: 5px 5px 5px 5px;
     margin: 0 auto;
     background: white;
     display: table;
-    border: 2px solid grey;
+    border: 1px solid grey;
     border-radius: 10px;
 }
 .tool-item{
     float: left;
-    margin-right: 10px;
+    /*margin-right: 10px;*/
     width: 100px;
     height: 20px;
 }
 .mode{
-    height: 100%;
+    height: 20px;
 }
 .item-btn{
+    height: 20px;
     cursor: pointer;
     text-align:center;
     border: 1px solid #999;

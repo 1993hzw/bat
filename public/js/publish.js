@@ -1,32 +1,32 @@
 var isResizing = false;
 var downX;
 var isRender = false;
-var mode=1;//编辑模式
+var mode = 1;//编辑模式
 var setLayout = function () {
-    var height,width,editHeight;
+    var height, width, editHeight;
     if (isPreview) {//预览
-         height = $(window).height();
-         width = $(window).width();
-         editHeight = height - $('.topbar-container').height();
+        height = $(window).height();
+        width = $(window).width();
+        editHeight = height - $('.topbar-container').height();
         //var titleHeight=$(".title-container").height();
-       //alert(width)
+        //alert(width)
         $(".edit-container").height(editHeight).width(width);
         if (isPc) {//pc端
             $(".inupt-container").height(editHeight).width(width / 2 - 10);
-            $(".preview-container").height(editHeight).width($(".edit-container").width() / 2 -2);
+            $(".preview-container").height(editHeight).width($(".edit-container").width() / 2 - 2);
         } else {//移动端
             $(".inupt-container").height(editHeight).hide();
-            $(".preview-container").height(editHeight).width($(".edit-container").width()-10);
+            $(".preview-container").height(editHeight).width($(".edit-container").width() - 10);
             //alert($(".edit-container").width())
             //alert($(".preview-container").width()+" "+$(window).width())
         }
-        $(".input-title-container").css({width:width+'px'})
-        $(".input-title").width(width-$('.tag-container').width());
+        $(".input-title-container").width(width);
+        $(".input-title").width(width - $('.tag-container').width());
         //alert($(".input-title-container").width()+" "+$(".input-title").width())
     } else {//关闭预览情况
-         height = $(window).height();
-         width = $(window).width();
-         editHeight = height - $('.topbar-container').height();
+        height = $(window).height();
+        width = $(window).width();
+        editHeight = height - $('.topbar-container').height();
         $(".edit-container").height(editHeight).width(width);
         $(".inupt-container").height(editHeight).width(width - 27).show();
         $(".preview-container").height(editHeight).width(27);
@@ -63,7 +63,7 @@ var resize = function (e) {
 
 var a = false;
 var lastTagVal = 0;
-var isRender = false, isInput = false;
+var isInput = false;
 var obj;
 var isPreview = true;
 var isPc = true;
@@ -73,11 +73,11 @@ $(document).ready(function () {
     var preview = $(".preview");
 
     var render = function () {
-        if (!isInput||!isPreview) return;
+        if (!isInput || !isPreview) return;
         isRender = true;
         setTimeout(function () {
-            previewPassage(preview,textarea);
-            $('pre code').each(function(i, block) {
+            previewPassage(preview, textarea);
+            $('pre code').each(function (i, block) {
                 hljs.highlightBlock(block);
             });
             render();
@@ -98,7 +98,7 @@ $(document).ready(function () {
 
     });
     setLayout();
-    previewPassage(preview,textarea);
+    previewPassage(preview, textarea);
     textarea.scroll(function () {
         var textarea = $(".textarea");
         var preview = $(".preview");
@@ -134,7 +134,7 @@ $(document).ready(function () {
         finish();
     });
     $('.selector-tag').change(function () {
-        var v = _trim($('.selector-tag').val() + "");
+        var v =($('.selector-tag').val() + "").trim();
         if (v == -1) {
             $('#dialog')
                 .css({display: "block"})
@@ -152,7 +152,7 @@ $(document).ready(function () {
     $('#enter').click(function () {
         if (isClickEnter) return;
         isClickEnter = true;
-        var tag = _trim($('.input-tag').val());
+        var tag = ($('.input-tag').val()).trim();
         if (tag == "") {
             $("#tip").html('<span style="color: red;font-size: 18px">标签名不能为空</span>')
             isClickEnter = false;
@@ -194,7 +194,7 @@ $(document).ready(function () {
             setLayout();
             $('.resize-border').show();
             $('.btn-preview').text(" > ")
-           previewPassage(preview,textarea);
+            previewPassage(preview, textarea);
         } else {
             setLayout();
             $('.resize-border').hide();
@@ -203,22 +203,22 @@ $(document).ready(function () {
         }
     })
     //监听编辑模式
-    $('.mode').change(function(){
-        var m=$('.mode').val();
-        if(m==1){//markdown
-          mode=1;
+    $('.mode').change(function () {
+        var m = $('.mode').val();
+        if (m == 1) {//markdown
+            mode = 1;
             $('#container').show();
-            $('.inupt-container').css({background:'whitesmoke'})
-        }else if(m==2){//文本模式
-          mode=2;
+            $('.inupt-container').css({background: 'whitesmoke'})
+        } else if (m == 2) {//文本模式
+            mode = 2;
             $('#container').hide();
-            $('.inupt-container').css({background:'white'})
+            $('.inupt-container').css({background: 'white'})
 
-        }else{
+        } else {
             $('.mode').val(1);
-            $('.inupt-container').css({background:'whitesmoke'})
+            $('.inupt-container').css({background: 'whitesmoke'})
         }
-        previewPassage(preview,textarea);
+        previewPassage(preview, textarea);
 
     })
 
@@ -231,13 +231,15 @@ var isPublishing = false;
 var publish = function () {
     if (isPublishing) return;
     isPublishing = true;
-    $('.btn-publish').val('发送中');
-    var title = _trim($('.input-title').val());
-    var markdown = _trim($('.textarea').val());
-    var tag = _trim($('.selector-tag').val());
-    if (markdown == null || markdown == "")
+    var title = $('.input-title').val().trim();
+    var markdown = $('.textarea').val().trim();
+    var tag = $('.selector-tag').val().trim();
+    if (markdown == null || markdown == ""){
+        isPublishing=false;
         return alert("内容不能为空");
-    $.post('/api/_publish', {title: title, markdown: markdown, tag: tag,mode:mode}, function (res) {
+    }
+    $('.btn-publish').val('发送中');
+    $.post('/api/_publish', {title: title, markdown: markdown, tag: tag, mode: mode}, function (res) {
         var v = JSON.parse(res);
         if (v.state > 0) {
             if (v.id) {
@@ -257,12 +259,18 @@ var finish = function () {
     isSaving = true;
 
     $('.btn-finish').val('保存中');
-    var title = _trim($('.input-title').val());
-    var markdown = _trim($('.textarea').val());
-    var tag = _trim($('.selector-tag').val());
+    var title = $('.input-title').val().trim();
+    var markdown = $('.textarea').val().trim();
+    var tag = $('.selector-tag').val().trim();
     if (markdown == null || markdown == "")
         return alert("内容不能为空");
-    $.post('/api/_save', {id: $("#blog").text(), title: title, markdown: markdown, tag: tag,mode:mode}, function (res) {
+    $.post('/api/_save', {
+        id: $("#blog").text(),
+        title: title,
+        markdown: markdown,
+        tag: tag,
+        mode: mode
+    }, function (res) {
         var v = JSON.parse(res);
         if (v.state > 0) {
             if (v.id) {
@@ -276,55 +284,30 @@ var finish = function () {
     })
 
 }
-
-var previewPassage=function(preview,textarea){
-    if(!isPreview) return;
-    preview=preview||$('.preview');
-    textarea=textarea||$('.textarea');
-    if(mode==2){//纯文本
-        preview.html('<pre style="background: white;border: none;padding-top: 0px;">'+formatHTML(textarea.val())+'</pre>');
-    }else{
+//预览文章
+var previewPassage = function (preview, textarea) {
+    if (!isPreview) return;
+    preview = preview || $('.preview');
+    textarea = textarea || $('.textarea');
+    if (mode == 2) {//纯文本
+        preview.html('<pre style="background: white;border: none;padding-top: 0px;">' + formatHTML(textarea.val()) + '</pre>');
+    } else {
         preview.html(marked(textarea.val()));
     }
 }
 
-var formatHTML = function () {
-    var character = {
-        '&': '&amp;',
-        '<': '&lt;',
-        '>': '&gt;',
-        '"': '&quot;',
-        '\'': '&#39;'
-    }
-    return function (html) {
-        return html.replace(/[&<>"']/g, function (c) {
-            return character[c];
-        })
-    }
-}();
-
-function _trim(str) {
-    return str.replace(/(?:^[ \t\n\r]+)|(?:[ \t\n\r]+$)/g, '');
-}
-function checkIsPC() {
-    if (/AppleWebKit.*Mobile/i.test(navigator.userAgent) ||
-        (/MIDP|SymbianOS|NOKIA|SAMSUNG|LG|NEC|TCL|Alcatel|BIRD|DBTEL|Dopod|PHILIPS|HAIER|LENOVO|MOT-|Nokia|SonyEricsson|SIE-|Amoi|ZTE/.test(navigator.userAgent))) {
-        return false;
-    } else {
-        return true;
-    }
-}
 
 
-$(function() {
+
+$(function () {
     var uploader = Qiniu.uploader({
         filters: {
-            mime_types : [ //只允许上传图片和zip文件
-                { title : "Image files", extensions : "jpg,bmp,png" }
+            mime_types: [ //只允许上传图片和zip文件
+                {title: "Image files", extensions: "jpg,bmp,png"}
                 //{ title : "Zip files", extensions : "zip" }
             ],
-            max_file_size : '2mb', //最大只能上传400kb的文件
-            prevent_duplicates : true //不允许选取重复文件
+            max_file_size: '2mb', //最大只能上传400kb的文件
+            prevent_duplicates: true //不允许选取重复文件
         },
         runtimes: 'html5,flash,html4',
         browse_button: 'pickfiles',
@@ -339,24 +322,24 @@ $(function() {
         unique_names: true,
         auto_start: true,
         init: {
-            'FilesAdded': function(up, files) {
+            'FilesAdded': function (up, files) {
                 console.log("add")
             },
-            'BeforeUpload': function(up, file) {
+            'BeforeUpload': function (up, file) {
                 console.log("before")
             },
-            'UploadProgress': function(up, file) {
-                console.log(file.percent+"%")
+            'UploadProgress': function (up, file) {
+                console.log(file.percent + "%")
             },
-            'UploadComplete': function() {
+            'UploadComplete': function () {
                 console.log('complete')
             },
-            'FileUploaded': function(up, file, info) {
+            'FileUploaded': function (up, file, info) {
                 //图片上传成功返回url
                 addImgUrl(file.target_name);
                 console.log(file)
             },
-            'Error': function(up, err, errTip) {
+            'Error': function (up, err, errTip) {
                 console.log(errTip);
             }
         }
@@ -364,11 +347,11 @@ $(function() {
 
 });
 
-function addImgUrl(name){
-    if(mode!=2) return ;
-    var domain='http://7xkd2p.com1.z0.glb.clouddn.com/';
+function addImgUrl(name) {
+    if (mode == 2) return;//文本模式
+    var domain = 'http://7xkd2p.com1.z0.glb.clouddn.com/';
     var container = $('.textarea');
-    var text=container.val();
-    container.val(text+'\n'+'![]('+domain+name+')');
-    previewPassage(undefined,container);
+    var text = container.val();
+    container.val(text + '\n' + '![](' + domain + name + ')');
+    previewPassage(undefined, container);
 }

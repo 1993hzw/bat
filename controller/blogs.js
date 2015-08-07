@@ -15,7 +15,7 @@ var add = function (data, result) {
                 fields.mode + ',' +
                 fields.tags + ') values (?,?,?,?,?,?,?)';
             var time = utils.getTime();
-            var arr = [time, data[fields.title], data[fields.brief], data[fields.markdown], data[fields.html], data[fields.mode] ,data[fields.tags]];
+            var arr = [time, data[fields.title], data[fields.brief], data[fields.markdown], data[fields.html], data[fields.mode], data[fields.tags]];
             result.db.run(sql, arr, function (err) {
                 if (err) return reject(err);
                 resolve(result);
@@ -24,7 +24,7 @@ var add = function (data, result) {
     }
     return Promise.resolve()
         .then(function () {
-            if(result) return Promise.resolve(result);
+            if (result) return Promise.resolve(result);
             return dbHolder.openDB();
         })
         .then(_insert)
@@ -60,7 +60,7 @@ var getById = function (startId, endId, result) {
     }
     return Promise.resolve()
         .then(function () {
-            if(result) return Promise.resolve(result);
+            if (result) return Promise.resolve(result);
             return dbHolder.openDB();
         })
         .then(_select)
@@ -77,20 +77,20 @@ var getByTag = function (tag, offset, count, result) {
     var _select = function (result) {
         return new Promise(function (resolve, reject) {
             var sql;
-           if(!tag){//如果tag为空则返回最新文章
+            if (!tag) {//如果tag为空则返回最新文章
                 sql = "select " +
-                   fields.id + "," + fields.insert_time + "," + fields.modify_time + "," + fields.title +
-                   "," + fields.html + "," + fields.tags + "," + fields.visits+ "," + fields.top + "," + fields.brief +
-                   " from " + fields.tableName;
-               sql += " order by " + fields.top + "  limit " + offset + "," + count;
-           }else{
-               sql = "select " +
-                   fields.id + "," + fields.insert_time + "," + fields.modify_time + "," + fields.title + "," + fields.html + ","
-                   + fields.tags + "," + fields.visits + ","+ fields.top + "," + fields.brief +
-                   " from " + fields.tableName;
-               sql += " where " + fields.tags + "='" + tag + "'";
-               sql += " order by " + fields.top + "  limit " + offset + "," + count;
-           }
+                    fields.id + "," + fields.insert_time + "," + fields.modify_time + "," + fields.title +
+                    "," + fields.html + "," + fields.tags + "," + fields.visits + "," + fields.top + "," + fields.brief +
+                    " from " + fields.tableName;
+                sql += " order by " + fields.top + "  limit " + offset + "," + count;
+            } else {
+                sql = "select " +
+                    fields.id + "," + fields.insert_time + "," + fields.modify_time + "," + fields.title + "," + fields.html + ","
+                    + fields.tags + "," + fields.visits + "," + fields.top + "," + fields.brief +
+                    " from " + fields.tableName;
+                sql += " where " + fields.tags + "='" + tag + "'";
+                sql += " order by " + fields.top + "  limit " + offset + "," + count;
+            }
             result.db.all(sql, function (err, rows) {
                 if (err) return reject(err);
                 result.rows = rows;
@@ -100,7 +100,7 @@ var getByTag = function (tag, offset, count, result) {
     }
     return Promise.resolve()
         .then(function () {
-            if(result) return Promise.resolve(result);
+            if (result) return Promise.resolve(result);
             return dbHolder.openDB();
         })
         .then(_select)
@@ -117,7 +117,7 @@ var getLast = function (offset, count, result) {
         return new Promise(function (resolve, reject) {
             var sql = "select " +
                 fields.id + "," + fields.insert_time + "," + fields.modify_time + "," + fields.title +
-                "," + fields.html + "," + fields.tags + "," + fields.visits+ "," + fields.top + "," + fields.brief +
+                "," + fields.html + "," + fields.tags + "," + fields.visits + "," + fields.top + "," + fields.brief +
                 " from " + fields.tableName;
             sql += " order by " + fields.id + " desc limit " + offset + "," + count;
             result.db.all(sql, function (err, rows) {
@@ -129,7 +129,7 @@ var getLast = function (offset, count, result) {
     }
     return Promise.resolve()
         .then(function () {
-            if(result) return Promise.resolve(result);
+            if (result) return Promise.resolve(result);
             return dbHolder.openDB();
         })
         .then(_select)
@@ -156,7 +156,7 @@ var getHots = function (offset, count, result) {
     }
     return Promise.resolve()
         .then(function () {
-            if(result) return Promise.resolve(result);
+            if (result) return Promise.resolve(result);
             return dbHolder.openDB();
         })
         .then(_select)
@@ -185,7 +185,7 @@ var getTitleByArray = function (arr, result) {
     }
     return Promise.resolve()
         .then(function () {
-            if(result) return Promise.resolve(result);
+            if (result) return Promise.resolve(result);
             return dbHolder.openDB();
         })
         .then(_select)
@@ -223,15 +223,15 @@ var modifyById = function (id, data, result) {
                 setStat += fields.tags + "=?,";
                 arr[i++] = data[fields.tags];
             }
-            if(data[fields.mode]!=undefined){
+            if (data[fields.mode] != undefined) {
                 setStat += fields.mode + "=?,";
                 arr[i++] = data[fields.mode];
             }
-            if(data[fields.status]!=undefined){
+            if (data[fields.status] != undefined) {
                 setStat += fields.status + "=?,";
                 arr[i++] = data[fields.status];
             }
-            if(data[fields.top]!=undefined){
+            if (data[fields.top] != undefined) {
                 setStat += fields.top + "=?,";
                 arr[i++] = data[fields.top];
             }
@@ -246,7 +246,7 @@ var modifyById = function (id, data, result) {
     }
     return Promise.resolve()
         .then(function () {
-            if(result) return Promise.resolve(result);
+            if (result) return Promise.resolve(result);
             return dbHolder.openDB();
         })
         .then(_update)
@@ -256,14 +256,14 @@ var modifyById = function (id, data, result) {
 
 }
 
-var modifyTags = function (tagSrc,tagDst, result) {
+var modifyTags = function (tagSrc, tagDst, result) {
     var _update = function (result) {
         return new Promise(function (resolve, reject) {
-            var sql = "update " + fields.tableName ;
-                sql+=' set '+fields.tags+'=?'
-                 sql+= " where " + fields.tags + "=?";
-            console.log(sql+" "+tagSrc+" "+tagDst)
-            result.db.run(sql, [tagDst,tagSrc], function (err) {
+            var sql = "update " + fields.tableName;
+            sql += ' set ' + fields.tags + '=?'
+            sql += " where " + fields.tags + "=?";
+            console.log(sql + " " + tagSrc + " " + tagDst)
+            result.db.run(sql, [tagDst, tagSrc], function (err) {
                 if (err) return reject(err);
                 resolve(result);
             })
@@ -271,7 +271,7 @@ var modifyTags = function (tagSrc,tagDst, result) {
     }
     return Promise.resolve()
         .then(function () {
-            if(result) return Promise.resolve(result);
+            if (result) return Promise.resolve(result);
             return dbHolder.openDB();
         })
         .then(_update)
@@ -294,7 +294,7 @@ var deleteById = function (id, result) {
     }
     return Promise.resolve()
         .then(function () {
-            if(result) return Promise.resolve(result);
+            if (result) return Promise.resolve(result);
             return dbHolder.openDB();
         })
         .then(_delete)
@@ -315,7 +315,7 @@ var visitsIncrement = function (id, result) {
     }
     return Promise.resolve()
         .then(function () {
-            if(result) return Promise.resolve(result);
+            if (result) return Promise.resolve(result);
             return dbHolder.openDB();
         })
         .then(_visits)
@@ -325,19 +325,19 @@ var visitsIncrement = function (id, result) {
 }
 
 
-var setTop = function (id,top, result) {
+var setTop = function (id, top, result) {
     var _setTop = function (result) {
         return new Promise(function (resolve, reject) {
             var sql = "update " + fields.tableName + " set " + fields.top + "=" + top + " where " + fields.id + "=" + id;
             result.db.run(sql, function (err) {
-                if(err) return reject(err);
+                if (err) return reject(err);
                 resolve(result);
             })
         })
     }
 
     return Promise.resolve()
-        .then(function(){
+        .then(function () {
             if (result) return Promise.resolve(result);
             return dbHolder.openDB();
         })
@@ -358,5 +358,5 @@ exports.getTitleByArray = getTitleByArray;
 exports.modifyById = modifyById;
 exports.deleteById = deleteById;
 exports.visitsIncrement = visitsIncrement;
-exports.modifyTags=modifyTags;
-exports.setTop=setTop;
+exports.modifyTags = modifyTags;
+exports.setTop = setTop;

@@ -33,11 +33,7 @@ var setLayout=function(){
     }
 }
 
-var getTime=function(obj){
-    var v=JSON.parse(obj);
-    return v.year+"-"+v.month+"-"+v.date+" "+ v.hour+":"+ v.minute+":"+ v.second;
-}
-
+//判断终端
 function checkIsPC() {
     if(/AppleWebKit.*Mobile/i.test(navigator.userAgent) ||
         (/MIDP|SymbianOS|NOKIA|SAMSUNG|LG|NEC|TCL|Alcatel|BIRD|DBTEL|Dopod|PHILIPS|HAIER|LENOVO|MOT-|Nokia|SonyEricsson|SIE-|Amoi|ZTE/.test(navigator.userAgent)))

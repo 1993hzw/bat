@@ -51,12 +51,13 @@
         <div class="box"></div>
         <% } %>
         <!--<div class="clearFloat"></div>-->
-        <div class="title-container"><span class="top" <%- untopStyle %>>顶</span><%= title %></div>
+        <div class="title-container"><span title="置顶" class="top" <%- untopStyle %>>顶</span><%= title %></div>
         <div class="blog-details-container">
-            <span class="tags"><%= tags[tag] %></span>|<span class="blog-time"><%= time %></span>
+            <span class="tags" title="标签"><%= tags[tag] %></span>|<span class="blog-time" title="发布时间"><%= time %></span><span class="blog-time" title="阅读量">(<%= visits %>)</span>
         </div>
         <div class="content-container" ><%- html %></div>
         <div class="others-container" style="display: block">
+            <!-- 代码来自百度分享  http://share.baidu.com/ -->
             <!--<span class="last"> < 上一篇 </span><span class="next">  下一篇 ></span>-->
             <div style="float: right" class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a><a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a></div>
             <script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"1","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"16"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
@@ -100,6 +101,7 @@
 <script src="/js/external/highlight.pack.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
 <script type="text/javascript">
+    <%- include ../../public/js/common.js%>
     <%- include ../../public/js/blog.js%>
 </script>
 

@@ -1,8 +1,3 @@
-if (!String.prototype.trim) {
-    String.prototype.trim = function () {
-        return this.replace(/(?:^[ \t\n\r]+)|(?:[ \t\n\r]+$)/g, '');
-    }
-}
 var isBusy = false;
 $(document).ready(function () {
     $('.upload').click(function () {
@@ -37,7 +32,7 @@ function modifyInfo() {
     var admin = JSON.parse($('#blog-info').text());
     var html = ' <div class="form-container">' +
         '<div>修改博客信息</div>' +
-        '<div id="tip"></div>' +
+        '<div id="blog-info-tip"></div>' +
         '<div class="form-row">' +
         '<div class="form-label">博客名称</div><div class="form-input"><input type="text" id="blogname" value="' + admin.blog + '" autofocus></div>' +
         '</div>' +
@@ -188,7 +183,7 @@ var del = function (name) {
 var add = function () {
     if (isBusy) return;
     isBusy = true;
-    var tag = _trim($('.input-tag').val());
+    var tag = $('.input-tag').val().trim();
     var tip = $("#tip");
     $('.input-tag').click(function () {
         tip.html('<div id="tip">请输入标签名</div>')
@@ -330,7 +325,7 @@ function delComment(id) {
     $('#dialog').css({display: "block"})
 }
 function replay(id) {
-    var replay = _trim($('.textarea-replay').val());
+    var replay = $('.textarea-replay').val().trim();
     if (replay == "") return alert("回复不能为空");
     if (replay.length > 500) return alert("回复不能超过五百字");
     $.post('/api/_replay', {id: id, replay: replay}, function (res) {
@@ -345,12 +340,4 @@ function replay(id) {
 }
 function closeComment() {
     $('#comment-details').css({display: "none"})
-}
-
-var getTime = function (obj) {
-    var v = JSON.parse(obj);
-    return v.year + "-" + v.month + "-" + v.date + " " + v.hour + ":" + v.minute + ":" + v.second;
-}
-function _trim(str) {
-    return str.replace(/(?:^[ \t\n\r]+)|(?:[ \t\n\r]+$)/g, '');
 }

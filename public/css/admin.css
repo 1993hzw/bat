@@ -55,13 +55,22 @@
     padding-left: 5px;
 }
 .info-item{
+    float: left;
     background: lightblue;
     padding: 2px 5px;
+    margin-bottom: 3px;
+    margin-right: 5px;
 }
 .info-item-key{
     color: grey;
     font-size: 12px;
     padding-right: 3px;
+}
+.btn-modify-info{
+    color: #0000ee;
+    cursor: pointer;
+    float: left;
+    line-height: 30px;
 }
  .tag-item{
      margin: 5px;
@@ -145,6 +154,7 @@
     height: 150px;
     width: 100%;
     overflow-y: auto;
+    border-top: 1px solid white;
 }
 #comment-details{
     top: 0;
@@ -299,7 +309,7 @@
     line-height: 40px;
 }
 
-#tip{
+#blog-info-tip{
     height: 20px;
     color: red;
 }

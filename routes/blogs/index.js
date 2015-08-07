@@ -4,8 +4,8 @@ var dbHolder = require('../../controller/DBHolder');
 var blogs = require('../../controller/blogs');
 var utils = require('../../utils/utils');
 var Promise = require('bluebird');
-var maps=require('../../controller/maps');
-var DC=require('../../controller/data-center');
+var maps = require('../../controller/maps');
+var DC = require('../../controller/data-center');
 
 var renderList = function (req, res, next, curTag) {
     Promise.resolve(DC.tags)
@@ -35,7 +35,8 @@ router.get('/', function (req, res, next) {
 router.get(/^\/[0-9]+$/, function (req, res, next) {
     //res.end("is "+JSON.stringify(req));
     var id = parseInt(req.path.substr(1));
-    if (!id || id <= 0) return res.redirect('/blogs')
+    if (!id || id <= 0) return res.redirect('/blogs');
+    var session = req.session;
     blogs.getById(id)
         .then(function (rows) {
             var fields = dbHolder.blog;
@@ -47,7 +48,8 @@ router.get(/^\/[0-9]+$/, function (req, res, next) {
                 brief: blog[fields.brief],
                 html: blog[fields.html],
                 tag: blog[fields.tags],
-                top:blog[fields.top],
+                top: blog[fields.top],
+                visits: blog[fields.visits],
                 time: time,
                 isLogined: req.session.hasLogined
             };
@@ -55,8 +57,15 @@ router.get(/^\/[0-9]+$/, function (req, res, next) {
             res.render('blogs/blog', data);
         })
         .then(function () {
-            blogs.visitsIncrement(id)
-                .catch(console.log)
+            //console.log(session.readedBlogId);
+            if (session.readedBlogId.indexOf(id) == -1) {//增加阅读量
+                blogs.visitsIncrement(id)
+                    .then(function () {
+                        session.readedBlogId.push(id);//记录阅读过的文章id，避免重复增加阅读量
+                        console.log(session.readedBlogId);
+                    })
+                    .catch(console.log)
+            }
         })
         .catch(function () {
             return res.redirect('/blogs')
@@ -82,7 +91,7 @@ router.get('/edit', function (req, res, next) {
                 markdown: blog[fields.markdown],
                 tag: blog[fields.tags],
                 time: time,
-                mode:blog[fields.mode],
+                mode: blog[fields.mode],
                 isLogined: req.session.hasLogined
             };
             data.tags = DC.tags;

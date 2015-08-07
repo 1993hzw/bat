@@ -55,8 +55,11 @@ for(var i in tags) {
                     <div class="blog-item">
                         <a href="/blogs/<%= rows[i].f_id %>"><div class="blog-title"><%= rows[i].f_title %></div></a>
                         <div class="blog-brief"><%= rows[i].f_brief %></div>
-                        <div class="blog-details"><span class="blog-tags"><%= tags[rows[i].f_tags] %></span>|
-                            <span class="blog-time"><%= getTime(rows[i].f_insert_time) %></span></div>
+                        <div class="blog-details">
+                            <span class="blog-tags" title="标签"><%= tags[rows[i].f_tags] %></span>|
+                            <span class="blog-time" title="发布时间"><%= getTime(rows[i].f_insert_time) %></span>
+                            <span class="blog-time" title="阅读量">(<%= rows[i].f_visits %>)</span>
+                        </div>
                         </div>
                     <% } %>
 
