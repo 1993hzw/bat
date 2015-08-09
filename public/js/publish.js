@@ -300,6 +300,7 @@ var previewPassage = function (preview, textarea) {
 
 
 $(function () {
+    var domain=$('#upload-domain').text().trim();
     var isUploading=false;
     var uploader = Qiniu.uploader({
         filters: {
@@ -318,8 +319,8 @@ $(function () {
         flash_swf_url: '/js/upload/Moxie.swf',
         dragdrop: true,
         chunk_size: '4mb',
-        uptoken_url: '/test/token',
-        domain: '7xkd2p.com1.z0.glb.clouddn.com',
+        uptoken_url: '/api/_token',
+        domain: domain,
         unique_names: true,//唯一名称
         auto_start: true,//立即上传
         multi_selection:false,//一次只能上传一张图片
@@ -364,7 +365,7 @@ $(function () {
 
 });
 
-//在编辑框挺添加图片
+//在编辑框添加图片
 function addImgUrl(name, fileName) {
     if (mode == 2) return;//文本模式
     var domain = 'http://7xkd2p.com1.z0.glb.clouddn.com/';

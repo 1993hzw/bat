@@ -11,4 +11,4 @@ p.exists(path, function(exists) {
     // => true
 });*/
 
-//console.log(uptoken(bucket))
+//console.log(uptoken(db_bucket))

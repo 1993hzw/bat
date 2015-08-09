@@ -5,6 +5,7 @@ var maps=require('../../controller/maps');
 var DC=require('../../controller/data-center');
 
 router.get('/', function(req, res, next) {
+    console.log()
     var hasInitialized=maps.get('hasInitialized');
     if(!hasInitialized){//第一次部署博客
         res.render("admin/register");

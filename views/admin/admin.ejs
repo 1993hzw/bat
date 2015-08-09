@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>后台管理</title>
+    <title>Bat博客系统</title>
     <style type="text/css">
         <%- include ../../public/css/common.css%>
         <%- include ../../public/css/dialog.css%>
@@ -16,29 +16,29 @@
     <div class="topbar-container bg">
         <a href="/"><img src="/img/logo.png" class="logo"></a>
 
-        <div class="name">后台管理</div>
+        <div class="name">Bat&nbsp;博客系统</div>
+         <img class="btn-logout"  title="注销" src="/img/logout.png" >
         <a href="/blogs/publish">
-            <div class="btn-new">+</div>
+            <div class="btn-new"  title="新建文章">+</div>
         </a>
-
         <div class="clearFloat"></div>
     </div>
     <div class="content">
         <div class="seperator">博客信息</div>
-        <div style="display: none" id="blog-info"><%= JSON.stringify(admin)%></div>
+        <div style="display: none" id="blog-info"><%= JSON.stringify(admin,['blog','name','email','user'])%></div>
         <div class="inof-container">
             <div class="info-item"><span class="info-item-key">博客名称</span><%= admin.blog %></div>
-            <div class="info-item"><span class="info-item-key">作者</span><%= admin.name %></div>
+            <div class="info-item"><span class="info-item-key">姓名</span><%= admin.name %></div>
             <div class="info-item"><span class="info-item-key">邮件</span><%= admin.email %></div>
             <div class="info-item"><span class="info-item-key">管理账号</span><%= admin.user %></div>
-            <div class="info-item"><span class="info-item-key">管理密码</span><%= admin.password %></div>
             <div class="btn-modify-info" onclick="modifyInfo()">修改</div>
             <div class="clearFloat"></div>
         </div>
         <div class="seperator">数据库</div>
         <div>
-            <input type="button" value="上传数据库" class="btn upload">
-            <input type="button" value="下载数据库" class="btn download">
+            <!--<input type="button" value="上传数据库" class="btn" onclick="upload_db_to_qiniu()">
+            <input type="button" value="下载数据库" class="btn" onclick="download_db_from_qiniu()">-->
+            <a href="/api/_download_db"><input type="button" value="导出数据库" class="btn"></a>
         </div>
         <div class="seperator">标签</div>
         <div>
@@ -54,7 +54,7 @@
             </div>
             <% } %>
             <div class="tag-item">
-                <div class="add-tag" onclick="addTag()">+</div>
+                <div class="add-tag" onclick="addTag()"  title="新增标签">+</div>
             </div>
             <div class="clearFloat"></div>
         </div>
@@ -65,9 +65,10 @@
         </select>
         <div class="comment-container"></div>
         <div class="more-blogs-container"><div class="btn-more">加载更多</div></div>
+        <br><br>
     </div>
 </div>
-<div id="console"></div>
+<!--<div id="console"></div>-->
 
 <!-- 查看评论详情的对话框 -->
 <div id="dialog-comment-details">
@@ -90,6 +91,7 @@
 </div>
 
 <script src="/js/external/jquery1.3.2.js"></script>
+<script src="/js/external/md5.js"></script>
 <script type="text/javascript">
     <%- include ../../public/js/common.js%>
     <%- include ../../public/js/admin.js%>

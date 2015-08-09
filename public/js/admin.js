@@ -1,11 +1,6 @@
 var isBusy = false;
+var isModifyPassword=false;
 $(function () {
-    $('.upload').click(function () {
-        upload();
-    });
-    $('.download').click(function () {
-        download();
-    })
     $('#cancel').click(function () {
         if (isBusy || isBusy || isBusy) return;
         $('#enter').unbind('click');
@@ -22,15 +17,30 @@ $(function () {
     $('.btn-more').click(function () {
         getCommentBrief($('.select-comment').val());
     });
+    $('.btn-logout').click(function(){
+        $.post('/api/_logout',function(res){
+            var v=JSON.parse(res);
+            if(v.state>0){
+                location.href='/admin';
+            }else{
+                alert(res);
+            }
+        })
+    });
     setLayout();
     getCommentBrief(1);
 });
 
 function setLayout() {
-    var height = $(window).height() - $('.topbar-container').height() - 150;
-    $('.content').height(height)
+    var height = $(window).height() - $('.topbar-container').height();
+    $('.content').height(height);
 }
 
+function onClickModifyPassword(){
+    $('#modify_password').show();
+    $('#btn-modify-passowrd').hide();
+    isModifyPassword=true;
+}
 function modifyInfo() {
     var enter = $('#enter');
     enter.unbind('click');
@@ -42,7 +52,7 @@ function modifyInfo() {
         '<div class="form-label">博客名称</div><div class="form-input"><input type="text" id="blogname" value="' + admin.blog + '" autofocus></div>' +
         '</div>' +
         '<div class="form-row">' +
-        '<div class="form-label">昵&nbsp;&nbsp;称</div><div class="form-input"><input type="text" id="name" value="' + admin.name + '"></div>' +
+        '<div class="form-label">姓&nbsp;&nbsp;名</div><div class="form-input"><input type="text" id="name" value="' + admin.name + '"></div>' +
         '</div>' +
         '<div class="form-row">' +
         '<div class="form-label">邮&nbsp;&nbsp;箱</div><div class="form-input"><input type="text" id="email" value="' + admin.email + '"></div>' +
@@ -51,8 +61,9 @@ function modifyInfo() {
         '<div class="form-row">' +
         '<div class="form-label">管理账号</div><div class="form-input"><input type="text" id="user" value="' + admin.user + '"></div>' +
         '</div>' +
-        '<div class="form-row">' +
-        '<div class="form-label">管理密码</div><div class="form-input"><input type="text" id="password" value="' + admin.password + '"></div>' +
+        '<div id="btn-modify-passowrd" onclick="onClickModifyPassword()">----修改密码-----</div>'+
+        '<div class="form-row" id="modify_password" style="display: none">' +
+        '<div class="form-label">管理密码</div><div class="form-input"><input type="password" id="password" ></div>' +
         '</div>' +
         '<br>'
     $('#content').html(html);
@@ -62,8 +73,10 @@ function modifyInfo() {
     $('#dialog').css({display: "block"})
 }
 
+var isModifyingInfo=false;
 function finishModifyInof() {
-    var tip = $('#tip');
+    if(isModifyingInfo) return;
+    var tip = $('#blog-info-tip');
     $('.form-input input').focus(function () {
         tip.text('');
     })
@@ -72,28 +85,28 @@ function finishModifyInof() {
     var email = $('#email').val().trim();
 
     var user = $('#user').val().trim();
-    var password = $('#password').val().trim();
+    var password = $('#password').val();
 
     //alert(blog+' '+name+' '+email+' '+user+' '+password)
     if (blog == '') {
         tip.text('博客名称不能为空')
     } else if (name == '') {
-        tip.text('昵称不能为空')
+        tip.text('姓名不能为空')
     } else if (email == '') {
         tip.text('邮箱不能为空')
     } else if (user == '') {
         tip.text('管理账号不能为空')
-    } else if (password == '') {
-        tip.text('管理密码不能为空')
+    } else if (isModifyPassword&&(password == ''||password.length<6)) {
+        tip.text('管理密码不能为空且长度不能小于6位')
     } else if (!/[\d\w]{3,}@[\d\w]+\.[\d\w]+/.test(email)) {
         tip.text('邮箱格式不对')
     } else {
-        $.post('/api/save_info', {
+        $.post('/api/_save_info', {
             blog: blog,
             name: name,
             email: email,
             user: user,
-            password: password
+            password: isModifyPassword?hex_md5(password):''
         }, function (res) {
             var v = JSON.parse(res);
             if (v.state > 0) {
@@ -101,14 +114,15 @@ function finishModifyInof() {
             } else {
                 alert(res)
             }
+            isModifyingInfo=false;
         })
     }
 }
 
-function upload() {
+/*function upload_db_to_qiniu() {
     if (isBusy) return;
     isBusy = true;
-    $.get('/api/_upload_database', {t: Math.random()}, function (res) {
+    $.get('/api/_upload_db_qn', {t: Math.random()}, function (res) {
         var v = JSON.parse(res);
         var console = $('#console');
         if (v.state > 0) {
@@ -119,11 +133,10 @@ function upload() {
         isBusy = false;
     })
 }
-
-function download() {
+function download_db_from_qiniu() {
     if (isBusy) return;
     isBusy = true;
-    $.get('/api/_download_database', {t: Math.random()}, function (res) {
+    $.get('/api/_download_db_qn', {t: Math.random()}, function (res) {
         var v = JSON.parse(res);
         var console = $('#console');
         if (v.state > 0) {
@@ -136,7 +149,7 @@ function download() {
         }
         isBusy = false;
     })
-}
+}*/
 
 var rename = function (name) {
     if (isBusy) return;

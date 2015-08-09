@@ -31,16 +31,18 @@ function verify(){
    var user=$(".user").val();
     var passwd=$(".passwd").val();
     if(!user||_trim(user)==""||user=='管理账号'){
-       $(".tip").html("名称不能为空")
+       $(".tip").html("名账号不能为空")
     }else if(passwd==""){
         $(".tip").html("密码不能为空")
+    }else if(passwd.length<6){
+        $(".tip").html('账号或密码错误');
     }else{
-        $.post("/api/login",{user:user,passwd:passwd},function(res){
+        $.post("/api/login",{user:user,passwd:hex_md5(passwd)},function(res){
             var v=JSON.parse(res);
             if(v.state>0){
                    location.href='/admin'
             }else{
-                $(".tip").html('名称或密码错误');
+                $(".tip").html('账号或密码错误');
             }
         })
     }

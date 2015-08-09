@@ -12,7 +12,12 @@ var getTime=function(){
 }
 
 var formatTime=function(time){
-    var date=new Date(time);
+    var date;
+    if(time){
+       date = new Date(time);
+    }else{
+        date = new Date();
+    }
     return date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate()+" "+date.getHours()+":"+date.getMinutes();
 }
 

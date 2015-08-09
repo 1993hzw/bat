@@ -1,97 +1,120 @@
-var router=require('express').Router();
-var dbHolder=require('../../controller/DBHolder');
-var maps=require('../../controller/maps');
-var comments=require('../../controller/comments');
-var markdown=require('../../utils/markdown');
-var utils=require('../../utils/utils');
+var router = require('express').Router();
+var dbHolder = require('../../controller/DBHolder');
+var maps = require('../../controller/maps');
+var comments = require('../../controller/comments');
+var markdown = require('../../utils/markdown');
+var utils = require('../../utils/utils');
 var Promise = require('bluebird');
-var qn=require('../../controller/storage/qiniu')
-var DC=require('../../controller/data-center');
-var tags=require('../../controller/tags');
+var qn = require('../../controller/storage/qiniu')
+var DC = require('../../controller/data-center');
+var tags = require('../../controller/tags');
 
-router.use(/_.+/,function(req,res,next){
-    if(!req.session.hasLogined) return res.json({state:-1})
+router.use(/\/_.+/, function (req, res, next) {//_开头的为私有接口，必须登录授权
+    if (!req.session.hasLogined) return res.json({state: -100});
     next();
 });
 
-router.use('/',require('./blog'));
-router.use('/',require('./tag'));
-router.use('/',require('./comment'));
+router.use('/', require('./blog'));
+router.use('/', require('./tag'));
+router.use('/', require('./comment'));
+//登录
+router.post('/login', function (req, res, next) {
+    var user = req.body.user;
+    var passwd = req.body.passwd;
+    if (!user || !passwd || user.trim() == "" || passwd.trim() == "") return res.json({state: -1})
+    if (user === DC.admin.user && passwd === DC.admin.password) {
+        console.log("admin logined")
+        req.session.hasLogined = true;
+        res.json({state: 1});
+    } else {
+        res.json({state: -2});
+    }
+});
+//注销
+router.post('/_logout', function (req, res, next) {
+        console.log("admin logout");
+        req.session.hasLogined = false;
+        res.json({state: 1});
+});
+//保存博客信息
+router.post('/_save_info', function (req, res, next) {
+    var blog = req.body.blog;
+    var name = req.body.name;
+    var email = req.body.email;
+    var user = req.body.user;
+    var password = req.body.password || '';//密码为加密后的md5，大于等于16位
 
-router.get('/_upload_database',function(req,res,next){
-    var result=[];
-    var upload=function(name){
-        return new Promise(function(resolve,reject) {
-            qn.uploadFile(APP_PATH + "/data/"+name, name, qn.getToken(qn.bucket + ':'+name), function (err, ret) {
-                if (err) return reject(err);
-                result[result.length]=ret;
-                resolve(result)
-            })
-        })
+    //空字符串为false
+    if (!blog || !name || !email || !user || blog.trim() == '' || name.trim() == '' ||
+        email.trim() == '' || user.trim() == '' || (password.trim() != '' && password.length < 16) || !/[\d\w]{3,}@[\d\w]+\.[\d\w]+/.test(email)) {
+        return res.json({state: -1})
+    }
+    var v;
+    if (password != '') {//修改了密码
+        v = {blog: blog, name: name, email: email, user: user, password: password};
+    } else {//密码不变
+        v = {blog: blog, name: name, email: email, user: user, password: DC.admin.password};
     }
 
-    upload("myblog.sqlite3")
-    /*.then(function(){
-       return  upload("config.sqlite3")
-     })*/
-    .then(function(){
-        res.json({state:1,msg:JSON.stringify(result)})
-    })
-    .catch(function(err){
-        res.json({state:-1,msg:JSON.stringify(err)})
-    })
-
-})
-router.get('/_download_database',function(req,res,next){
-    try{
-        var url=qn.downloadUrl("myblog.sqlite3")
-        //var url2=qn.downloadUrl("config.sqlite3")
-        res.json({state:1,urls:[url]})
-    }catch(e){
-        console.log(e)
-        res.json({state:-1})
-    }
-})
-
-router.post('/login',function(req,res,next){
-        var user=req.body.user;
-        var passwd=req.body.passwd;
-        if(!user||!passwd||user.trim()==""||passwd.trim()=="") return res.json({state:-1})
-        if(user===DC.admin.user&&passwd===DC.admin.password){
-            console.log("admin logined")
-            req.session.hasLogined=true;
-            res.json({state:1})
-        }else{
-            res.json({state:-2})
-        }
-})
-
-router.post('/save_info',function(req,res,next){//保存博客信息
-   var blog=req.body.blog;
-    var name=req.body.name;
-    var email=req.body.email;
-    var user=req.body.user;
-    var password=req.body.password;
-
-    if(!blog||!name||!email||!user||!password||blog.trim()==''||name.trim()==''||
-        email.trim()==''||user.trim()==''||password.trim()==''){
-        return res.json({state:-1})
-    }
-    var v={blog:blog,name:name,email:email,user:user,password:password};
-    maps.put('admin',JSON.stringify(v))
+    maps.put('admin', JSON.stringify(v))
         .then(function () {
-            return maps.put('hasInitialized','true');
+            return maps.put('hasInitialized', 'true');
         })
-        .then(function(){
-            DC.admin=v;
-            res.json({state:1})
+        .then(function () {
+            DC.admin = v;
+            res.json({state: 1})
         })
-        .catch(function(err){
+        .catch(function (err) {
             console.log(err)
-            res.json({state:-2})
+            res.json({state: -2})
         })
+});
 
-})
+//获取上传图片的token
+router.get("/_token", function (req, res, next) {
+    var token = qn.getToken(qn.resource_bucket);
+    res.json({"uptoken": token});
+});
+//下载数据库
+router.get('/_download_db', function (req, res, next) {
+    res.download(APP_PATH + '/data/myblog.sqlite3', 'myblog(' + utils.formatTime() + ').sqlite3');
+});
 
 
-module.exports=router;
+/*//上传数据库到七牛
+ router.get('/_upload_db_qn', function (req, res, next) {
+ var result = [];
+ var upload = function (name) {
+ return new Promise(function (resolve, reject) {
+ qn.uploadFile(APP_PATH + "/data/" + name, name, qn.getToken(qn.db_bucket + ':' + name), function (err, ret) {
+ if (err) return reject(err);
+ result[result.length] = ret;
+ resolve(result)
+ })
+ })
+ };
+ upload("myblog.sqlite3")
+ /!*.then(function(){
+ return  upload("config.sqlite3")
+ })*!/
+ .then(function () {
+ res.json({state: 1, msg: JSON.stringify(result)})
+ })
+ .catch(function (err) {
+ res.json({state: -1, msg: JSON.stringify(err)})
+ })
+
+ });
+ //从七牛上获取下载数据库的链接
+ router.get('/_download_db_qn', function (req, res, next) {
+ try {
+ var url = qn.downloadUrl("myblog.sqlite3")
+ res.json({state: 1, urls: [url]})
+ } catch (e) {
+ console.log(e)
+ res.json({state: -1})
+ }
+ });*/
+
+
+module.exports = router;

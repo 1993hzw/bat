@@ -26,7 +26,7 @@ for(var i in tags) {
             <img src="/img/logo.png" class="logo">
             <div class="name"><%= blog %></div>
         <% if(isLogined){ %>
-        <a href="/blogs/publish"><div class="btn-new">+</div></a>
+        <a href="/blogs/publish"><div class="btn-new" title="新建文章">+</div></a>
         <% } %>
         <!--<div class="clearFloat"></div>-->
     </div>
@@ -90,7 +90,7 @@ for(var i in tags) {
             <div>
                 <div class="seperator">关于我</div>
                 <div class="about-me">
-                    昵称：<b><%= name %></b>
+                    姓名：<b><%= name %></b>
                     <br>
                     邮箱：<b><%= email %></b>
                     <br>

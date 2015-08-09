@@ -3,9 +3,17 @@
 /**
  * Module dependencies.
  */
+
+
+process.on('uncaughtException', function(err) {//捕捉全局错误
+  console.log(err.stack);
+});
+
 var app = require('../app');
 var debug = require('debug')('myblog:server');
 var http = require('http');
+
+
 
 /*
   init
@@ -91,5 +99,6 @@ function onListening() {
   var bind = typeof addr === 'string'
     ? 'pipe ' + addr
     : 'port ' + addr.port;
+  console.log('Listening on ' + bind)
   debug('Listening on ' + bind);
 }

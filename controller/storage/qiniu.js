@@ -1,11 +1,12 @@
 var qiniu=require('qiniu');
 var Promise = require('bluebird');
-var bucket="myblog";
+var db_bucket="myblog";
+var resource_bucket="resources";
 var domain='7xjxgh.com1.z0.glb.clouddn.com';
 qiniu.conf.ACCESS_KEY='wOCAdRTCgP5FuyribXfXNFbUR5npBDCJeBoFsYil';
 qiniu.conf.SECRET_KEY='e9TXzdyVHTY8rv3Foa081-nKzJjqDh8Seh-mu5To';
 function getToken(bucketname) {
-    bucketname=bucketname||bucket;
+    bucketname=bucketname||db_bucket;
     var putPolicy = new qiniu.rs.PutPolicy(bucketname);
     //putPolicy.callbackUrl = callbackUrl;
     //putPolicy.callbackBody = callbackBody;
@@ -15,6 +16,8 @@ function getToken(bucketname) {
     putPolicy.expires = 1100;//s
     return putPolicy.token();
 }
+
+//上传文件
 function uploadFile(localFile, key, uptoken,cb) {
     var extra = new qiniu.io.PutExtra();
     //extra.params = params;
@@ -25,17 +28,16 @@ function uploadFile(localFile, key, uptoken,cb) {
     qiniu.io.putFile(uptoken, key, localFile, extra,cb);
 }
 
+//生成下载地址
 function downloadUrl(key) {
     var baseUrl = qiniu.rs.makeBaseUrl(domain, key);
     var policy = new qiniu.rs.GetPolicy(120);//120s
     return policy.makeRequest(baseUrl);
 }
 
-/*var token=uptoken(bucket);
-var path=APP_PATH+"/data/myblog.sqlite3";
-uploadFile(path,"123321",token)*/
-
 exports.getToken=getToken;
 exports.uploadFile=uploadFile;
 exports.downloadUrl=downloadUrl;
-exports.bucket=bucket;
+exports.db_bucket=db_bucket;
+exports.resource_bucket=resource_bucket;
+exports.domain=domain;

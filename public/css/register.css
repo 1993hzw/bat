@@ -1,5 +1,13 @@
+body{
+    height: 800px;
+    overflow-y: hidden
+}
 .topbar-container{
     height: 100%;
+}
+.logo{
+    width: 50px;
+    float: left;
 }
 .form-container{
     max-width: 400px;
@@ -7,7 +15,7 @@
     display: table;
     margin: 0 auto;
     padding: 0 5px;
-    padding-top: 80px;
+    padding-top: 50px;
 
 }
 .form-row{
@@ -58,4 +66,6 @@
 #tip{
     height: 20px;
     color: red;
+    margin: 3px 0;
+    text-align: right;
 }

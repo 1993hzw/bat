@@ -3,9 +3,15 @@
 <head>
     <meta charset="utf-8"/>
     <title>Marked in the browser</title>
+    <script src="/myblog/public/js/external/jquery1.3.2.js"></script>
 </head>
 <body>
 
+<script>
+    $.get('http://localhost:18080/test/getname',function(res){
+        console.log(res)
+    });
+</script>
 
 
 </body>

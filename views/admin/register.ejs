@@ -4,24 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>博客设置</title>
+    <title>欢迎使用Bat博客系统</title>
     <style type="text/css">
         <%- include ../../public/css/common.css%>
         <%- include ../../public/css/register.css%>
     </style>
 </head>
-<body style="height: 800px;overflow-y: hidden">
+<body>
 <div  style="height: 100%;" class="bg">
-
     <div class="form-container">
-        <div style="font-size: 24px;padding-bottom: 5px">博客设置</div>
-        <div id="tip"></div>
+        <div style="font-size: 24px;">
+            <img class="logo" src="/img/logo.png">
+            <span style="float: left;padding-top: 18px">&nbsp;Bat&nbsp;博客系统</span>
+            <div class="clearFloat"></div>
+        </div>
         <br>
        <div class="form-row">
            <div class="form-label">博客名称</div><div class="form-input"><input type="text" id="blogname" required autofocus></div>
        </div>
         <div class="form-row">
-            <div class="form-label">昵&nbsp;&nbsp;称</div><div class="form-input"><input type="text" id="name"></div>
+            <div class="form-label">姓&nbsp;&nbsp;名</div><div class="form-input"><input type="text" id="name"></div>
         </div>
         <div class="form-row">
             <div class="form-label">邮&nbsp;&nbsp;箱</div><div class="form-input"><input type="text" id="email"></div>
@@ -34,13 +36,14 @@
             <div class="form-label">管理密码</div><div class="form-input"><input type="text" id="password"></div>
         </div>
         <br>
-        <input class="btn-finish" type="button" value="完&nbsp;&nbsp;成" onclick="finish()">
-
+        <input class="btn-finish" type="button" value="设&nbsp;置&nbsp;完&nbsp;成" onclick="finish()">
+        <div id="tip"></div>
     </div>
 
 </div>
 
 <script src="/js/external/jquery1.3.2.js"></script>
+<script src="/js/external/md5.js"></script>
 <script type="text/javascript">
     <%- include ../../public/js/register.js%>
 </script>

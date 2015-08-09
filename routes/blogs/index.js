@@ -6,6 +6,7 @@ var utils = require('../../utils/utils');
 var Promise = require('bluebird');
 var maps = require('../../controller/maps');
 var DC = require('../../controller/data-center');
+var qn=require('../../controller/storage/qiniu.js');
 
 var renderList = function (req, res, next, curTag) {
     Promise.resolve(DC.tags)
@@ -74,7 +75,7 @@ router.get(/^\/[0-9]+$/, function (req, res, next) {
 
 router.get('/publish', function (req, res, next) {
     if (!req.session.hasLogined) return res.redirect("/")
-    res.render('blogs/publish', {id: -1, tags: DC.tags});
+    res.render('blogs/publish', {id: -1, tags: DC.tags , qiniu_domain : qn.domain});
 });
 router.get('/edit', function (req, res, next) {
     if (!req.session.hasLogined) return res.redirect("/")
@@ -95,6 +96,7 @@ router.get('/edit', function (req, res, next) {
                 isLogined: req.session.hasLogined
             };
             data.tags = DC.tags;
+            data.qiniu_domain = qn.domain;
             res.render('blogs/publish', data);
         })
         .catch(function (err) {
