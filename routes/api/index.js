@@ -8,6 +8,7 @@ var Promise = require('bluebird');
 var qn = require('../../controller/storage/qiniu')
 var DC = require('../../controller/data-center');
 var tags = require('../../controller/tags');
+var local=require('../../controller/storage/local');
 
 router.use(/\/_.+/, function (req, res, next) {//_开头的为私有接口，必须登录授权
     if (!req.session.hasLogined) return res.json({state: -100});
@@ -103,7 +104,14 @@ router.post('/_save_upload_policy',function(req,res,next){
                  res.json({state:1});
             });
     }
+});
 
+router.post('/_upload',function(req,res,next){
+    local.parse(req,function(err,filename){
+        if(err) return res.json({failed:'upload failed'});//上传失败
+        res.json({target_name:filename});//返回文件名
+        console.log(filename);
+    })
 });
 
 //获取上传图片的token

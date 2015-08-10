@@ -14,7 +14,7 @@ function init(data,cb){
     qiniu.conf.SECRET_KEY=data.secret;
     if(cb){//检测是否可以成功上传
         uploadFile(APP_PATH+'/public/img/logo.png','upload_test_logo.png',
-            getToken(resource_bucket + ':upload_test_logo.png'),function(err){
+            getToken(resource_bucket),function(err){
             return cb(err);
         })
     }

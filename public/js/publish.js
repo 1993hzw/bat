@@ -363,6 +363,11 @@ $(function () {
             },
             'FileUploaded': function (up, file, info) {
                 isUploading=false;
+
+                if(info.response&&JSON.parse(info.response).failed){//上传到本地服务器时，如果上传失败会返回错误信息
+                   return  $('#content').html('<span style="color:red">上传失败,请重试</span>');
+                }
+
                 //图片上传成功返回url
                 addImgUrl(file.target_name||JSON.parse(info.response).target_name, file.name);
                 console.log(file)
@@ -381,7 +386,7 @@ $(function () {
         options.unique_names= true;//唯一名称
         uploader = Qiniu.uploader(options);
     }else{//上传到服务器端
-        options.url= '/test/upload';
+        options.url= '/api/_upload';
         uploader=new plupload.Uploader(options);
         uploader.init();
     }
