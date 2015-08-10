@@ -2,10 +2,8 @@ var qiniu=require('qiniu');
 var Promise = require('bluebird');
 //var db_bucket="myblog";
 
-var resource_bucket="resources";
-var domain='http://7xkd2p.com1.z0.glb.clouddn.com';//resources
-qiniu.conf.ACCESS_KEY='wOCAdRTCgP5FuyribXfXNFbUR5npBDCJeBoFsYil';
-qiniu.conf.SECRET_KEY='e9TXzdyVHTY8rv3Foa081-nKzJjqDh8Seh-mu5To';
+var resource_bucket="";
+var domain='';//resources
 
 function init(data,cb){
     resource_bucket=data.bucket;
