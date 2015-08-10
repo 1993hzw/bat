@@ -140,7 +140,7 @@ var modify_upload_policy = function (policy) {
         $.post('/api/_save_upload_policy',data,function(res){
             var v=JSON.parse(res);
             if(v.state>0){
-                 location.href='/admin';
+                location.href = '/admin';
             }else{
                 if(v.state==-10){
                     tip.text('填写的信息有误，无法上传文件');
