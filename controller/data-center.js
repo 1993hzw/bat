@@ -1,9 +1,12 @@
 var init=function(){
     var dbHolder = require('../controller/DBHolder');
     var tags = require('../controller/tags');
+    var blogs=require('../controller/blogs');
     var Promise=require('bluebird');
     var maps=require('../controller/maps');
     var qiniu=require('../controller/storage/qiniu');
+    var marked=require('marked');
+    var htmlToText=require('html-to-text');
     var tagObj={};
     var admin=undefined;
     var upload_policy;
@@ -27,6 +30,26 @@ var init=function(){
         .then(function(rows){//将标签弄成键值对id:name
             for(var i=0;i<rows.length;i++)
                 tagObj[rows[i].f_id]=rows[i].f_name;
+        })
+        .then(function(){
+            var val=maps.get('hasCreatedGuide');
+            if(!val){
+                var fields=dbHolder.blog;
+                var data={};
+                var brief;
+                var markdown=require('fs').readFileSync(APP_PATH+'/data/guide',{encoding:'utf-8'});
+                data[fields.title]='欢迎使用 Bat 博客系统';
+                data[fields.markdown]=markdown;
+                data[fields.mode]=1;//markdown
+                data[fields.html]=marked(markdown);
+                brief = htmlToText.fromString(data[fields.html], {wordwrap: 130}).substr(0,150);
+                data[fields.brief]=brief;
+                data[fields.tags]="默认";
+                return blogs.add(data)
+                    .then(function(){
+                        return maps.put('hasCreatedGuide','true')
+                    })
+            }
         })
         .then(function(){//获取管理员信息
             var val = maps.get("admin");
@@ -74,6 +97,6 @@ var init=function(){
         .catch(function (err) {
             console.log(err);
         })
-}
+};
 
 exports.init=init;

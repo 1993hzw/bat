@@ -57,12 +57,14 @@
 .blog-title{
     display: inline-block;
     font-size: 25px;
-    /*font-weight: bolder;*/
+    font-weight: bolder;
     min-width: 150px;
+    color: #333;
 }
 .blog-title:hover{
     /*font-weight: bolder;*/
-    text-decoration: underline;
+    /*text-decoration: underline;*/
+    color: #000;
 }
 .top:hover{
     text-decoration: none;

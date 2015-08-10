@@ -37,11 +37,11 @@ router.post('/_publish', function(req, res, next) {
     blogs.add(data)
         .then(function(){
             blogs.getLast()
-                .then(function(rows){
+                .then(function(rows){//返回文章id
                     return res.json({state:1,id:rows[0][fields.id]})
                 })
                 .catch(function(err){
-                    return res.json({state:1})
+                    return res.json({state:-1})
                 });
         })
         .catch(function(err){

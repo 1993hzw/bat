@@ -16,7 +16,7 @@ var http = require('http');
 
 
 /*
-  init
+  init初始化博客
  */
 var dc=require('../controller/data-center');
 dc.init();
@@ -99,6 +99,6 @@ function onListening() {
   var bind = typeof addr === 'string'
     ? 'pipe ' + addr
     : 'port ' + addr.port;
-  console.log('Listening on ' + bind)
+  console.log('Listening on http://localhost:' +addr.port )
   debug('Listening on ' + bind);
 }

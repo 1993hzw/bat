@@ -44,7 +44,7 @@ app.use(function (req, res, next) {//记录访问量
 
 app.use('/', require('./routes/index'));
 app.use('/blogs', require("./routes/blogs"));
-app.use('/admin', require("./routes/admin"));
+app.use('/bat', require("./routes/admin"));
 app.use('/test', require('./routes/test/index'));
 app.use('/api', require('./routes/api/index'));
 

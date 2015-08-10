@@ -342,13 +342,14 @@ $(function () {
                 });
                 $('#cancel').unbind('click').click(function () {
                     uploader.stop();//停止上传
-                    uploader.splice(0,1);//从队列中移出
+                    uploader.splice(0,10);//从队列中移出
                     isUploading=false;
                     $("#dialog").hide();
                 });
-                if(auto_start) {
+                if(auto_start) {//立即上传
                     isUploading=true;
-                    uploader.start();}
+                    uploader.start();
+                }
                 console.log("add")
             },
             'BeforeUpload': function (up, file) {
@@ -370,11 +371,13 @@ $(function () {
 
                 //图片上传成功返回url
                 addImgUrl(file.target_name||JSON.parse(info.response).target_name, file.name);
+                uploader.splice(0,10);//从队列中移出
                 console.log(file)
             },
             'Error': function (up, err, errTip) {
                 isUploading=false;
                 $('#content').html('<span style="color:red">上传失败,请重试</span>');
+                uploader.splice(0,10);//从队列中移出
                 console.log(errTip);
             }
         }

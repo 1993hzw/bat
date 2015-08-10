@@ -6,7 +6,7 @@ var DC=require('../../controller/data-center');
 var qiniu=require('../../controller/storage/qiniu');
 
 router.get('/', function(req, res, next) {
-    console.log()
+    console.log();
     var hasInitialized=maps.get('hasInitialized');
     if(!hasInitialized){//第一次部署博客
         res.render("admin/register");

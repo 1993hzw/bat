@@ -13,7 +13,7 @@ $(document).ready(function(){
         setLayout();
     })
     $('.logo').bind('dblclick',function(){
-        location.href="/admin"
+        location.href="/bat"
     })
 });
 

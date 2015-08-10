@@ -38,7 +38,7 @@ var map = {
     modify_time: "f_modify_time",
     key: "f_key",
     value: "f_value"
-}
+};
 
 var tag = {
     tableName: "t_tag",
@@ -46,7 +46,7 @@ var tag = {
     insert_time: "f_insert_time",
     modify_time: "f_modify_time",
     name: "f_name"
-}
+};
 
 var _open_db = function () {
     return new Promise(function (resolve, reject) {
@@ -55,7 +55,7 @@ var _open_db = function () {
             resolve({db: db});
         })
     });
-}
+};
 
 var _open_db_config = function () {
     return new Promise(function (resolve, reject) {
@@ -64,7 +64,7 @@ var _open_db_config = function () {
             resolve({db: db});
         })
     });
-}
+};
 
 var _createBlogTable = function (result) {
     return new Promise(function (resolve, reject) {
@@ -175,7 +175,7 @@ var _checkIfExistsColumn = function (result, table, col, cb) {
             cb(null, false);
         }
     })
-}
+};
 
 /*
   给指定的表添加新列，
@@ -209,7 +209,7 @@ var initDB = function () {
          return _open_db_config();
          })*/
         .then(_createConfigTable)
-        /*.then(function(result){
+        /*.then(function(result){//增加新列
             return _addColumns(result,comment.tableName,'test','int default 0');
         })*/
         .then(function(result){

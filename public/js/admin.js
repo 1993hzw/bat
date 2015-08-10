@@ -21,7 +21,7 @@ $(function () {
         $.post('/api/_logout', function (res) {
             var v = JSON.parse(res);
             if (v.state > 0) {
-                location.href = '/admin';
+                location.href = '/bat';
             } else {
                 alert(res);
             }
@@ -79,7 +79,7 @@ var modify_upload_policy = function (policy) {
     var html = '<div style="text-align: left;font-size: 16px;">' +
             '<div id="upload_policy_tip" style="color: red;height: 20px;padding: 0px 15px;margin-bottom: 3px"></div>'+
         '<div><input type="radio" name="select-upload-policy" id="upload-policy1" value="1"><label for="upload-policy1">' +
-        '上传到第三方（七牛）</label><span style="color: lawngreen;">推荐</span></div>' +
+        '上传到第三方（<a href="http://www.qiniu.com" target="_blank" style="color: dodgerblue">七牛</a>）</label><span style="color: lawngreen;">推荐</span></div>' +
         '<div style="padding-left: 15px;font-weight: normal;font-size: 14px;display: none" id="upload-policy1-items">' +
         '<div class="upload-policy1-item"><div>域&nbsp;名</div><div><input id="upload-policy-domain" type="text" value="'+($('#domain').text()||'http://')+'"></div></div>' +
         '<div class="upload-policy1-item"><div>空间名(bucket)</div><div><input id="upload-policy-bucket" type="text"  value="'+($('#bucket').text()||'')+'"></div></div>' +
@@ -140,7 +140,7 @@ var modify_upload_policy = function (policy) {
         $.post('/api/_save_upload_policy',data,function(res){
             var v=JSON.parse(res);
             if(v.state>0){
-                location.href = '/admin';
+                location.href = '/bat';
             }else{
                 if(v.state==-10){
                     tip.text('填写的信息有误，无法上传文件');
@@ -191,7 +191,7 @@ function finishModifyInof() {
         }, function (res) {
             var v = JSON.parse(res);
             if (v.state > 0) {
-                location.href = '/admin';
+                location.href = '/bat';
             } else {
                 alert(res)
             }
@@ -252,7 +252,7 @@ var rename = function (name) {
         $.post('/api/_rename_tag', {tagSrc: name, tagDst: tag}, function (res) {
             var v = JSON.parse(res);
             if (v.state > 0) {
-                location.href = "/admin";
+                location.href = "/bat";
             } else {
                 if (v.state == -2) {
                     tip.html('<span style="color: red;font-size: 18px">已存在相同标签</span>')
@@ -271,7 +271,7 @@ var del = function (name) {
     $.post('/api/_delete_tag', {tagSrc: name}, function (res) {
         var v = JSON.parse(res);
         if (v.state > 0) {
-            location.href = "/admin";
+            location.href = "/bat";
         } else {
             alert('fail')
         }
@@ -298,7 +298,7 @@ var add = function () {
         $.post("/api/_add_tag", {tag: tag}, function (res) {
             var v = JSON.parse(res);
             if (v.state > 0) {
-                location.href = "/admin"
+                location.href = "/bat"
             } else {
                 if (v.state == -2) {
                     tip.html('<span style="color: red;font-size: 18px">已存在相同标签</span>')
@@ -429,7 +429,7 @@ function delComment(id) {
         $.post('/api/_del_comment', {id: id}, function (res) {
             var v = JSON.parse(res);
             if (v.state > 0) {
-                //location.href = "/admin";
+                //location.href = "/bat";
                 $('#comment' + id).remove();
                 $('#dialog').hide();
                 $('#dialog-comment-details').hide();

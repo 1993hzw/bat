@@ -40,7 +40,7 @@ function verify(){
         $.post("/api/login",{user:user,passwd:hex_md5(passwd)},function(res){
             var v=JSON.parse(res);
             if(v.state>0){
-                   location.href='/admin'
+                   location.href='/bat'
             }else{
                 $(".tip").html('账号或密码错误');
             }

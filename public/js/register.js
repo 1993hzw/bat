@@ -35,7 +35,7 @@ var finish = function () {
     } else if (!/[\d\w]{3,}@[\d\w]+\.[\d\w]+/.test(email)) {
         tip.text('邮箱格式不对')
     } else {
-        $.post('/api/save_info', {
+        $.post('/api/register', {
             blog: blog,
             name: name,
             email: email,
@@ -44,7 +44,7 @@ var finish = function () {
         }, function (res) {
             var v = JSON.parse(res);
             if (v.state > 0) {
-                location.href = '/admin';
+                location.href = '/';
             } else {
                 alert(res)
             }

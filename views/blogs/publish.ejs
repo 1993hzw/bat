@@ -9,7 +9,11 @@
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>新建</title>
+    <% if(isEdit){ %>
+    <title>编辑文章</title>
+    <% }else{%>
+    <title>新建文章</title>
+    <% }%>
     <link rel="stylesheet" href="/css/highlight/github.css">
     <style type="text/css">
         <%- include ../../public/css/common.css%>
@@ -95,14 +99,14 @@
             <div class="tool-item">
                 <select class="mode">
                     <% if(isEdit){ %>
-                     <option value="1" selected>markdown</option>
+                     <option value="1" selected>Markdown</option>
                         <% if(mode == 2){ %>
                         <option value="2" selected>文本模式</option>
                         <% }else{ %>
                         <option value="2">文本模式</option>
                         <% } %>
                     <% }else{ %>
-                    <option value="1" selected>markdown</option>
+                    <option value="1" selected>Markdown</option>
                     <option value="2">文本模式</option>
                     <% } %>
                 </select>

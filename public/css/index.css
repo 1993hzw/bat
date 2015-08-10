@@ -76,15 +76,17 @@
     border-bottom: 1px dashed #eee;
 }
 .blog-title{
-    display: table;
+    display: inline-block;
     font-size: 25px;
-    /*font-weight: bolder;*/
+    font-weight: bolder;
     min-width: 150px;
+    color: #333;
 }
 .blog-title:hover{
     /*font-weight: bolder;*/
     text-decoration-color: red;
-    text-decoration: underline;
+    /*text-decoration: underline;*/
+    color: #000;
 }
 .blog-brief{
     padding-top: 10px;

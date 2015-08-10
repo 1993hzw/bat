@@ -137,7 +137,7 @@ body{
 
 .preview-container {
     overflow: hidden;
-    font-size: 16px;
+    font-size: 18px;
     float: left;
     height: 100%;
     background: white;
@@ -181,7 +181,7 @@ body{
     overflow-y: auto;
     overflow-x: hidden;
     padding: 10px;
-    font-size: 16px;
+    font-size: 18px;
     border: none;
     outline: none;
     width: 100%;
@@ -223,6 +223,7 @@ body{
 }
 .item-btn{
     height: 20px;
+    line-height: 20px;
     cursor: pointer;
     text-align:center;
     border: 1px solid #999;

@@ -45,7 +45,6 @@ router.post('/_save_info', function (req, res, next) {
     var email = req.body.email;
     var user = req.body.user;
     var password = req.body.password || '';//密码为加密后的md5，大于等于16位
-
     //空字符串为false
     if (!blog || !name || !email || !user || blog.trim() == '' || name.trim() == '' ||
         email.trim() == '' || user.trim() == '' || (password.trim() != '' && password.length < 16) || !/[\d\w]{3,}@[\d\w]+\.[\d\w]+/.test(email)) {
@@ -57,14 +56,43 @@ router.post('/_save_info', function (req, res, next) {
     } else {//密码不变
         v = {blog: blog, name: name, email: email, user: user, password: DC.admin.password};
     }
+    maps.put('admin', JSON.stringify(v))
+        .then(function () {
+            DC.admin = v;
+            res.json({state: 1})
+        })
+        .catch(function (err) {
+            console.log(err)
+            res.json({state: -2})
+        })
+});
 
+//初次设置博客
+router.post('/register', function (req, res, next) {
+    var hasInitialized=maps.get('hasInitialized');
+    if(hasInitialized){//已经设置
+        return res.json({state: -100})
+    }
+    //第一次设置博客
+    var blog = req.body.blog;
+    var name = req.body.name;
+    var email = req.body.email;
+    var user = req.body.user;
+    var password = req.body.password || '';//密码为加密后的md5，大于等于16位
+    //空字符串为false
+    if (!blog || !name || !email || !user || blog.trim() == '' || name.trim() == '' ||
+        email.trim() == '' || user.trim() == '' || password.length < 16 || !/[\d\w]{3,}@[\d\w]+\.[\d\w]+/.test(email)) {
+        return res.json({state: -1})
+    }
+    var v = {blog: blog, name: name, email: email, user: user, password: password};
     maps.put('admin', JSON.stringify(v))
         .then(function () {
             return maps.put('hasInitialized', 'true');
         })
         .then(function () {
             DC.admin = v;
-            res.json({state: 1})
+            req.session.hasLogined = true;//注册成功后，则标为已登录
+            res.json({state: 1});
         })
         .catch(function (err) {
             console.log(err)
