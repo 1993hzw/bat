@@ -296,17 +296,28 @@ var previewPassage = function (preview, textarea) {
     } else {
         preview.html(marked(textarea.val()));
     }
-}
+};
 
+
+//在编辑框添加图片
+function addImgUrl(name, fileName) {
+    if (mode == 2) return;//文本模式
+    var downloadUrl = ($('#upload-domain').text().trim()) || location.protocol+'//'+location.host+'/res';
+    var container = $('.textarea');
+    var text = container.val();
+    container.val(text + '\n' + '![img](' + downloadUrl +'/'+ name + ' "' + fileName + '")');
+    container.scrollTop(container[0].scrollHeight);
+    previewPassage(undefined, container);
+};
 
 $(function () {
     var domain=$('#upload-domain').text().trim();
     var isUploading=false;
-    var uploader = Qiniu.uploader({
+    var auto_start= true;//立即上传
+    var options={
         filters: {
             mime_types: [ //只允许上传图片
-                {title: "Image files", extensions: "jpg,bmp,png"}
-                //{ title : "Zip files", extensions : "zip" }
+                {title: "Image files", extensions: "jpg,bmp,png,jpeg"}
             ],
             max_file_size: '4mb', //最大只能上传2mb的文件
             prevent_duplicates: true //不允许选取重复文件
@@ -319,10 +330,6 @@ $(function () {
         flash_swf_url: '/js/upload/Moxie.swf',
         dragdrop: true,
         chunk_size: '4mb',
-        uptoken_url: '/api/_token',
-        domain: domain,
-        unique_names: true,//唯一名称
-        auto_start: true,//立即上传
         multi_selection:false,//一次只能上传一张图片
         init: {
             'FilesAdded': function (up, files) {
@@ -334,11 +341,14 @@ $(function () {
                     if(! isUploading) $('#dialog').hide();
                 });
                 $('#cancel').unbind('click').click(function () {
-                    uploader.stop();//停止下载
-                    uploader.splice(0,1);//从下载队列中移出
+                    uploader.stop();//停止上传
+                    uploader.splice(0,1);//从队列中移出
                     isUploading=false;
                     $("#dialog").hide();
                 });
+                if(auto_start) {
+                    isUploading=true;
+                    uploader.start();}
                 console.log("add")
             },
             'BeforeUpload': function (up, file) {
@@ -354,24 +364,25 @@ $(function () {
             'FileUploaded': function (up, file, info) {
                 isUploading=false;
                 //图片上传成功返回url
-                addImgUrl(file.target_name, file.name);
+                addImgUrl(file.target_name||JSON.parse(info.response).target_name, file.name);
                 console.log(file)
             },
             'Error': function (up, err, errTip) {
+                isUploading=false;
+                $('#content').html('<span style="color:red">上传失败,请重试</span>');
                 console.log(errTip);
             }
         }
-    });
-
+    };
+    var uploader;
+    if(domain){//上传到七牛，以下为七牛的参数
+        options.uptoken_url= '/api/_token';
+        options.domain= domain;
+        options.unique_names= true;//唯一名称
+        uploader = Qiniu.uploader(options);
+    }else{//上传到服务器端
+        options.url= '/test/upload';
+        uploader=new plupload.Uploader(options);
+        uploader.init();
+    }
 });
-
-//在编辑框添加图片
-function addImgUrl(name, fileName) {
-    if (mode == 2) return;//文本模式
-    var domain = 'http://7xkd2p.com1.z0.glb.clouddn.com/';
-    var container = $('.textarea');
-    var text = container.val();
-    container.val(text + '\n' + '![img](' + domain + name + ' "' + fileName + '")');
-    container.scrollTop(container[0].scrollHeight);
-    previewPassage(undefined, container);
-}

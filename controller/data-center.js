@@ -3,8 +3,10 @@ var init=function(){
     var tags = require('../controller/tags');
     var Promise=require('bluebird');
     var maps=require('../controller/maps');
+    var qiniu=require('../controller/storage/qiniu');
     var tagObj={};
     var admin=undefined;
+    var upload_policy;
     var visits=0;//博客访问量
     dbHolder.initDB()//初始化数据库
         .then(function(){//初始化map
@@ -35,6 +37,21 @@ var init=function(){
                                 admin=v;
                         })
         })
+        .then(function(){//上传策略
+            var val=maps.get("upload_policy");
+            if(val!=undefined){
+                var json=JSON.parse(val);
+                if(json.policy==1){//上传到第三方
+                    qiniu.init(json);
+                }
+                upload_policy=json.policy;
+            }else{
+                return maps.put("upload_policy",JSON.stringify({policy:2}))
+                    .then(function(){
+                        upload_policy=2;//上传到本地服务器
+                    });
+            }
+        })
         .then(function(){//获取博客访问量
             var temp=maps.get('visits');
             if(temp==undefined){
@@ -48,13 +65,14 @@ var init=function(){
             exports.admin=admin;
             exports.tags=tagObj;
             exports.visits=visits;
-            console.log(tagObj)
+            exports.upload_policy=upload_policy;
+            console.log(tagObj);
             console.log(admin);
             console.log('visits:'+visits);
             console.log("init db success!");
         })
         .catch(function (err) {
-            console.log(err)
+            console.log(err);
         })
 }
 

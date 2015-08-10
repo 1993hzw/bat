@@ -75,7 +75,7 @@ router.get(/^\/[0-9]+$/, function (req, res, next) {
 
 router.get('/publish', function (req, res, next) {
     if (!req.session.hasLogined) return res.redirect("/")
-    res.render('blogs/publish', {id: -1, tags: DC.tags , qiniu_domain : qn.domain});
+    res.render('blogs/publish', {id: -1, tags: DC.tags , qiniu_domain : DC.upload_policy==1?qn.getDomain():''});
 });
 router.get('/edit', function (req, res, next) {
     if (!req.session.hasLogined) return res.redirect("/")
@@ -96,7 +96,7 @@ router.get('/edit', function (req, res, next) {
                 isLogined: req.session.hasLogined
             };
             data.tags = DC.tags;
-            data.qiniu_domain = qn.domain;
+            data.qiniu_domain = DC.upload_policy==1?qn.getDomain():'';
             res.render('blogs/publish', data);
         })
         .catch(function (err) {

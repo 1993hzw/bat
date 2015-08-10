@@ -59,7 +59,7 @@
     margin: 5px;
     border: none;
     outline: none;
-    height: 40px;
+    height: 30px;
     background: cornflowerblue;
     cursor: pointer;
 }
@@ -132,6 +132,11 @@
     cursor: pointer;
 }
 .content{
+    padding-top: 20px;
+    /*border-left: 2px solid #ddd;*/
+    /*border-right: 2px solid #ddd;*/
+    margin: 0 auto;
+    max-width: 1000px;
     width: 100%;
     height: 200px;
     /*overflow-y: auto;*/
@@ -354,6 +359,23 @@
     font-weight: normal;
     font-size: 12px;
     cursor: pointer;
+}
+
+.upload-policy1-item{
+    padding: 3px 0;
+}
+.upload-policy1-item div{
+    font-size: 12px;
+    color: grey;
+}
+.upload-policy1-item input{
+    width: 265px;
+    height: 25px;
+    border-radius: 5px;
+    border: 1px solid #aaa;
+}
+.upload-policy-cur{
+    padding-left: 5px;
 }
 
 @media(max-width: 800px){

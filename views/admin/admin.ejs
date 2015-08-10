@@ -34,6 +34,24 @@
             <div class="btn-modify-info" onclick="modifyInfo()">修改</div>
             <div class="clearFloat"></div>
         </div>
+        <div class="seperator">上传策略</div>
+        <div class="upload-policy">
+            <div class="upload-policy-cur">
+                <% if(policy==1){%>
+                <div>当前策略：上传到第三方（<a target="_blank" href="http://www.qiniu.com/" style="color: #0066ee">七牛</a>）</div>
+                <div>域名：<span id="domain"><%= domain%></span></div>
+                <div>空间名：<span id="bucket"><%= bucket%></span></div>
+                <% }else{%>
+                <div>当前策略：上传到本地服务器</div>
+                <% }%>
+                <div class="btn-modify-info" style="line-height: normal" onclick="modify_upload_policy(<%= policy%>)">修改</div>
+            <div class="clearFloat"></div>
+            </div>
+            <div class="upload-policy-info">
+
+            </div>
+
+        </div>
         <div class="seperator">数据库</div>
         <div>
             <!--<input type="button" value="上传数据库" class="btn" onclick="upload_db_to_qiniu()">

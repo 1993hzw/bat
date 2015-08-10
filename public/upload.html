@@ -3,27 +3,14 @@
 <head>
     <meta charset="utf-8"/>
     <title>Marked in the browser</title>
-    <link rel="stylesheet" href="/css/highlight/github.css">
-    <script src="/js/external/highlight.pack.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
-    <script src="/js/external/marked.js"></script>
+    <script src="/js/external/jquery1.3.2.js"></script>
+    <script type="text/javascript" src="/js/upload/plupload.full.min.js"></script>
+    <script type="text/javascript" src="/js/upload/zh_CN.js"></script>
+    <script src="/js/main.js"></script>
 </head>
 <body>
-<div id="content"></div>
-<script>
-    marked.setOptions({
-            highlight: function (code,lang) {
-        return hljs.highlightBlock(code);
-    }
-    });
-    document.getElementById('content').innerHTML =
-            marked('```js\n console.log("hello"); \n```');
-</script>
-<br>
-<pre>
-    <code>
-        console.log("hello");
-    </code>
-</pre>
+<div class="tool-item item-btn upload-img" id="btn-add-img">
+    <span id="pickfiles">插入图片</span>
+</div>
 </body>
 </html>

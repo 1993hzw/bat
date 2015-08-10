@@ -17,6 +17,7 @@ router.use(/\/_.+/, function (req, res, next) {//_开头的为私有接口，必
 router.use('/', require('./blog'));
 router.use('/', require('./tag'));
 router.use('/', require('./comment'));
+
 //登录
 router.post('/login', function (req, res, next) {
     var user = req.body.user;
@@ -70,9 +71,44 @@ router.post('/_save_info', function (req, res, next) {
         })
 });
 
+router.post('/_save_upload_policy',function(req,res,next){
+    var policy=req.body.policy;
+    var domain=req.body.domain||'';
+    var bucket=req.body.bucket||'';
+    var access=req.body.access||'';
+    var secret=req.body.secret||'';
+    if(policy!=1&&policy!=2){
+        return res.json({state:-2});
+    }
+    if(policy==1){
+        if(domain.trim()===''||bucket.trim()===''||access.trim()===''||secret.trim()===''){
+            return res.json({state:-1});
+        }
+        var json={policy:1,domain:domain,bucket:bucket,access:access,secret:secret};
+        maps.put("upload_policy",JSON.stringify(json))
+            .then(function(){
+                qn.init(json,function(err){
+                    if(err){
+                        console.log(err);
+                        return res.json({state:-10});//填写的信息有误，无法上传
+                    }
+                    DC.upload_policy=1;
+                    res.json({state:1});
+                });
+            });
+    }else{
+         maps.put("upload_policy",JSON.stringify({policy:2}))
+            .then(function(){
+                DC.upload_policy=2;
+                 res.json({state:1});
+            });
+    }
+
+});
+
 //获取上传图片的token
 router.get("/_token", function (req, res, next) {
-    var token = qn.getToken(qn.resource_bucket);
+    var token = qn.getToken(qn.getBucket());
     res.json({"uptoken": token});
 });
 //下载数据库

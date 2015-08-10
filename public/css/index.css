@@ -7,6 +7,7 @@
     height: 60px;
     float: left;
     margin-left: 30px;
+    margin-top:38px
 }
 .name{
     display: none;
@@ -171,7 +172,7 @@
     }
     .name{
         font-size: 30px;
-        padding-top: 10px;
+        padding-top: 15px;
     }
     .btn-new{
         float: right;
