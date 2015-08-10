@@ -13,6 +13,9 @@ var maps = require('./controller/maps');
 var DC = require('./controller/data-center');
 
 var app = express();
+
+app.use(favicon(__dirname + '/public/favicon.ico'));
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');

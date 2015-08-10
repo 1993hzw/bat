@@ -94,12 +94,12 @@ router.get('/_delete',function(req,res,next){
     if(!id||id<1) return res.json({state:-1});
     var result;
     dbHolder.openDB()
-        .then(dbHolder.beginTransaction)
-        .then(function(res){
+        .then(dbHolder.beginTransaction)//开启一个事务
+        .then(function(res){//相处文章
             result=res;
             return blogs.deleteById(id,res);
         })
-        .then(function(){
+        .then(function(){//删除相关评论
             return comments.deleteByBlogId(id,result);
         })
         .then(function(){

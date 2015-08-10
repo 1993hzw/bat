@@ -35,7 +35,7 @@ var getBlogs=function(){
         var v=JSON.parse(res);
         var rows= v.rows;
         var html='';
-        var top='<span class="top" title="置顶">顶</span>';
+        var top='<span class="top-text" title="置顶">顶</span>';
         var temp;
         for(var i=0;i<rows.length;i++){
             temp=rows[i].f_top?top:'';

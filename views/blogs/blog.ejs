@@ -35,7 +35,7 @@
         <div class="options-container">
             <%
              var topStyle,untopStyle;
-            if(top) {
+            if(top==1) {
                 topStyle='style="display:none"';
                 untopStyle='style="display:inline"';
             }else{
@@ -50,8 +50,15 @@
         </div>
         <div class="box"></div>
         <% } %>
+        <%   var toptextStyle;
+            if(top==1){
+                 toptextStyle='style="display:inline"';
+            }else{
+                 toptextStyle='style="display:none"';
+            }
+          %>
         <!--<div class="clearFloat"></div>-->
-        <div class="title-container"><span title="置顶" class="top" <%- untopStyle %>>顶</span><%= title %></div>
+        <div class="title-container"><span title="置顶" class="top-text" <%- toptextStyle %>>顶</span><%= title %></div>
         <div class="blog-details-container">
             <span class="tags" title="标签"><%= tags[tag] %></span>|<span class="blog-time" title="发布时间"><%= time %></span><span class="blog-time" title="阅读量">(<%= visits %>)</span>
         </div>

@@ -46,11 +46,11 @@ var setTop=function(top){
            if(top){
                $('#top').hide();
                $('#untop').show();
-               $('.top').show();
+               $('.top-text').show();
            }else{
                $('#top').show();
                $('#untop').hide();
-               $('.top').hide();
+               $('.top-text').hide();
            }
         } else {
             alert(res)
