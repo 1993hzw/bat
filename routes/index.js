@@ -1,11 +1,11 @@
 var express = require('express');
 var router = express.Router();
-var dbHolder=require('../controller/DBHolder');
-var comments=require('../controller/comments');
-var blogs=require('../controller/blogs');
+var dbHolder=require('../models/DBHolder');
+var comments=require('../models/comments');
+var blogs=require('../models/blogs');
 var Promise=require('bluebird');
 var utils=require('../utils/utils');
-var DC=require('../controller/data-center');
+var DC=require('../models/data-center');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {

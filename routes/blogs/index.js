@@ -1,12 +1,12 @@
 var express = require('express');
 var router = express.Router();
-var dbHolder = require('../../controller/DBHolder');
-var blogs = require('../../controller/blogs');
+var dbHolder = require('../../models/DBHolder');
+var blogs = require('../../models/blogs');
 var utils = require('../../utils/utils');
 var Promise = require('bluebird');
-var maps = require('../../controller/maps');
-var DC = require('../../controller/data-center');
-var qn=require('../../controller/storage/qiniu.js');
+var maps = require('../../models/maps');
+var DC = require('../../models/data-center');
+var qn=require('../../models/storage/qiniu.js');
 
 var renderList = function (req, res, next, curTag) {
     Promise.resolve(DC.tags)

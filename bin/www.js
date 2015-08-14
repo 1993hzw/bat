@@ -18,7 +18,7 @@ var http = require('http');
 /*
   init初始化博客
  */
-var dc=require('../controller/data-center');
+var dc=require('../models/data-center');
 dc.init();
 
 /**

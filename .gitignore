@@ -3,3 +3,8 @@
 node_modules
 .idea
 *.iml
+/data/myblog.sqlite3
+/public/res/*.jpg
+/public/res/*.jpeg
+/public/res/*.bmp
+/public/res/*.png

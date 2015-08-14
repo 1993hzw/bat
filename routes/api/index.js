@@ -1,14 +1,14 @@
 var router = require('express').Router();
-var dbHolder = require('../../controller/DBHolder');
-var maps = require('../../controller/maps');
-var comments = require('../../controller/comments');
+var dbHolder = require('../../models/DBHolder');
+var maps = require('../../models/maps');
+var comments = require('../../models/comments');
 var markdown = require('../../utils/markdown');
 var utils = require('../../utils/utils');
 var Promise = require('bluebird');
-var qn = require('../../controller/storage/qiniu')
-var DC = require('../../controller/data-center');
-var tags = require('../../controller/tags');
-var local=require('../../controller/storage/local');
+var qn = require('../../models/storage/qiniu')
+var DC = require('../../models/data-center');
+var tags = require('../../models/tags');
+var local=require('../../models/storage/local');
 
 router.use(/\/_.+/, function (req, res, next) {//_开头的为私有接口，必须登录授权
     if (!req.session.hasLogined) return res.json({state: -100});

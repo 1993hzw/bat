@@ -1,14 +1,14 @@
 var router=require('express').Router();
-var dbHolder=require('../../controller/DBHolder');
-var blogs=require('../../controller/blogs');
-var comments=require('../../controller/comments');
+var dbHolder=require('../../models/DBHolder');
+var blogs=require('../../models/blogs');
+var comments=require('../../models/comments');
 var markdown=require('../../utils/markdown');
 var htmlToText = require('html-to-text');
 var utils=require('../../utils/utils');
 var Promise = require('bluebird');
-var qn=require('../../controller/storage/qiniu')
-var DC=require('../../controller/data-center');
-var tags=require('../../controller/tags');
+var qn=require('../../models/storage/qiniu')
+var DC=require('../../models/data-center');
+var tags=require('../../models/tags');
 var marked = require('marked');
 
 //发布文章

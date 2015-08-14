@@ -1,10 +1,10 @@
 var init=function(){
-    var dbHolder = require('../controller/DBHolder');
-    var tags = require('../controller/tags');
-    var blogs=require('../controller/blogs');
+    var dbHolder = require('../models/DBHolder');
+    var tags = require('../models/tags');
+    var blogs=require('../models/blogs');
     var Promise=require('bluebird');
-    var maps=require('../controller/maps');
-    var qiniu=require('../controller/storage/qiniu');
+    var maps=require('../models/maps');
+    var qiniu=require('../models/storage/qiniu');
     var marked=require('marked');
     var htmlToText=require('html-to-text');
     var tagObj={};

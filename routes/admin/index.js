@@ -1,9 +1,9 @@
 var express = require('express');
 var router = express.Router();
 var Promise=require('bluebird');
-var maps=require('../../controller/maps');
-var DC=require('../../controller/data-center');
-var qiniu=require('../../controller/storage/qiniu');
+var maps=require('../../models/maps');
+var DC=require('../../models/data-center');
+var qiniu=require('../../models/storage/qiniu');
 
 router.get('/', function(req, res, next) {
     console.log();

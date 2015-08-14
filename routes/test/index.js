@@ -1,6 +1,6 @@
 var router=require('express').Router();
-var qiniu=require('../../controller/storage/qiniu');
-var local=require('../../controller/storage/local');
+var qiniu=require('../../models/storage/qiniu');
+var local=require('../../models/storage/local');
 
 /*router.get("/",function(req,res,next){
     var token=qiniu.getToken("resources")

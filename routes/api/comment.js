@@ -1,11 +1,11 @@
 var router=require('express').Router();
-var dbHolder=require('../../controller/DBHolder');
-var blogs=require('../../controller/blogs');
-var comments=require('../../controller/comments');
+var dbHolder=require('../../models/DBHolder');
+var blogs=require('../../models/blogs');
+var comments=require('../../models/comments');
 var markdown=require('../../utils/markdown');
 var utils=require('../../utils/utils');
 var Promise = require('bluebird');
-var tags=require('../../controller/tags');
+var tags=require('../../models/tags');
 
 //添加新评论
 router.post('/add_comment',function(req,res,next){

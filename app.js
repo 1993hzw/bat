@@ -9,8 +9,8 @@ var bodyParser = require('body-parser');
 
 var session = require('express-session');
 
-var maps = require('./controller/maps');
-var DC = require('./controller/data-center');
+var maps = require('./models/maps');
+var DC = require('./models/data-center');
 
 var app = express();
 
