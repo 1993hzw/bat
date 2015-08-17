@@ -9,7 +9,8 @@ var Promise = require('bluebird');
 var qn=require('../../models/storage/qiniu')
 var DC=require('../../models/data-center');
 var tags=require('../../models/tags');
-var marked = require('marked');
+//var marked = require('marked');
+var marked = require('../../utils/marked');
 
 //发布文章
 router.post('/_publish', function(req, res, next) {

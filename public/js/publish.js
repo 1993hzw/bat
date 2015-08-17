@@ -233,7 +233,7 @@ var publish = function () {
     if (isPublishing) return;
     isPublishing = true;
     var title = $('.input-title').val().trim();
-    var markdown = $('.textarea').val().trim();
+    var markdown = $('.textarea').val();
     var tag = $('.selector-tag').val().trim();
     if (markdown == null || markdown == "") {
         isPublishing = false;
@@ -260,7 +260,7 @@ var finish = function () {
     if (isSaving) return;
     isSaving = true;
     var title = $('.input-title').val().trim();
-    var markdown = $('.textarea').val().trim();
+    var markdown = $('.textarea').val();
     var tag = $('.selector-tag').val().trim();
     if (markdown == null || markdown == "")
         return alert("内容不能为空");
