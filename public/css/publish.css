@@ -137,7 +137,6 @@ body{
 
 .preview-container {
     overflow: hidden;
-    font-size: 18px;
     float: left;
     height: 100%;
     background: white;
@@ -181,13 +180,12 @@ body{
     overflow-y: auto;
     overflow-x: hidden;
     padding: 10px;
-    font-size: 18px;
+    padding-top: 15px;
     border: none;
     outline: none;
     width: 100%;
     height: 100%;
     background: transparent;
-    line-height: 25px;
 }
 
 .toolsbar-container{

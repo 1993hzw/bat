@@ -4,6 +4,7 @@
     box-sizing: border-box;
     word-wrap: break-word;/*允许长单词换行到下一行：*/
     /*word-break:break-all; /!*任意*!/*/
+    font-family: "Microsoft YaHei", Verdana, sans-serif, "SimSun";
 }
 
 body {
@@ -15,7 +16,6 @@ body {
     width: 100%;
     height: 100%;
     font-size: 14px;
-    font-family: "Microsoft YaHei", Verdana, sans-serif, "SimSun";
     overflow-x: hidden;
 }
 a{
@@ -43,4 +43,9 @@ textarea{
     color: red;
     font-size: 12px;
     font-weight: normal;
+}
+
+.global-text-size{
+    font-size: 16px;
+    line-height: 25px;
 }

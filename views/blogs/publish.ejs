@@ -78,15 +78,15 @@
     <div class="edit-container">
         <div class="inupt-container">
             <% if(isEdit){ %>
-            <textarea class="textarea" id="drop_element"><%= markdown %></textarea>
+            <textarea class="textarea global-text-size" id="drop_element"><%= markdown %></textarea>
             <% }else{ %>
-            <textarea class="textarea"  id="drop_element"></textarea>
+            <textarea class="textarea global-text-size"  id="drop_element"></textarea>
             <% } %>
 
         </div>
         <div class="resize-border"></div>
         <div id="preview-container" class="preview-container">
-            <div class="preview"></div>
+            <div class="preview  global-text-size"></div>
             <div class="btn-preview-container">
                 <div class="btn-preview"> ></div>
             </div>
