@@ -6,34 +6,52 @@ $(document).ready(function () {
         else
             $('.options-container').css({display: "none"})
         isHidden = !isHidden;
-    })
+    });
     $('.btn-del').click(function () {
         $("#dialog").css({display: "block"})
-    })
+    });
     $('#cancel').click(function () {
         $("#dialog").css({display: "none"})
-    })
+    });
     $('#enter').click(function () {
         del();
-    })
+    });
     $('.btn-send').click(function () {
         addComment()
-    })
+    });
     $(".btn-more").click(function(){
         getComments();
-    })
+    });
     $('.input-contact').focus(function(){
         if($('.input-contact').val()=="您的联系邮箱（选填）")
           $('.input-contact').val("").css({color:"black"})
     }).blur(function(){
         if($('.input-contact').val().trim()=="")
           $('.input-contact').val("您的联系邮箱（选填）").css({color:"#aaa"})
-    })
+    });
     $('.input-comment').click(function(){
         $('.tip-comment').text('（请输入评论）').css({color:"grey"})
+    });
+    getComments();
+
+    var btnTopOfBlog=$('#topOfBlog');
+    $(window).scroll(function(){
+        var top = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop;
+            if(top>250){
+                btnTopOfBlog.fadeIn(500);
+            }else{
+                btnTopOfBlog.fadeOut(500);
+            }
     })
-    getComments()
-})
+
+    btnTopOfBlog.click(function () {
+        document.documentElement.scrollTop=window.pageYOffset=document.body.scrollTop=0;
+        //$('body').scrollTop(0)//不兼容ie8
+        document.body.scrollTop=0;
+    });
+
+
+});
 
 var isSetTopping=false;
 var setTop=function(top){

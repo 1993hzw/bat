@@ -317,7 +317,7 @@ $(function () {
     var options={
         filters: {
             mime_types: [ //只允许上传图片
-                {title: "Image files", extensions: "jpg,bmp,png,jpeg"}
+                {title: "Image files", extensions: "jpg,bmp,png,jpeg,gif"}
             ],
             max_file_size: '4mb', //最大只能上传2mb的文件
             prevent_duplicates: true //不允许选取重复文件
