@@ -2,9 +2,9 @@ var isHidden = true;
 $(document).ready(function () {
     $('.box').click(function () {
         if (isHidden)
-            $('.options-container').css({display: "block"})
+            $('.options-container').slideDown(200);
         else
-            $('.options-container').css({display: "none"})
+            $('.options-container').slideUp(200);
         isHidden = !isHidden;
     });
     $('.btn-del').click(function () {
@@ -64,11 +64,11 @@ var setTop=function(top){
            if(top){
                $('#top').hide();
                $('#untop').show();
-               $('.top-text').show();
+               $('.span_top').show();
            }else{
                $('#top').show();
                $('#untop').hide();
-               $('.top-text').hide();
+               $('.span_top').hide();
            }
         } else {
             alert(res)

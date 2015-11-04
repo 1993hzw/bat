@@ -30,7 +30,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(session({secret: 'hzw', cookie: {maxAge: 7200000}}))//ms
+app.use(session({secret: 'bat', cookie: {maxAge: 7200000}}))//ms
 
 app.use(function (req, res, next) {//记录访问量
     if (!req.session.hasVisited) {
@@ -45,12 +45,7 @@ app.use(function (req, res, next) {//记录访问量
     next();
 });
 
-app.use('/', require('./routes/index'));
-app.use('/blogs', require("./routes/blogs"));
-app.use('/bat', require("./routes/admin"));
-app.use('/test', require('./routes/test/index'));
-app.use('/api', require('./routes/api/index'));
-
+app.use('/', require('./routes'));
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

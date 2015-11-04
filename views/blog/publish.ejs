@@ -11,9 +11,9 @@
           content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <% if(isEdit){ %>
     <title>编辑文章</title>
-    <% }else{%>
+    <% }else{ %>
     <title>新建文章</title>
-    <% }%>
+    <% } %>
     <link rel="stylesheet" href="/css/highlight/github.css">
     <style type="text/css">
         <%- include ../../public/css/common.css%>
@@ -34,26 +34,31 @@
             <a href="/">
                 <a href="/" class="logo"><img src="/img/logo.png" style="height: 60px;float: left"></a>
             </a>
-            <!-- <a href="/blogs">
-                 <div class="btn-list">文章</div>
-             </a>-->
             <% if(!isEdit){ %>
-            <div class="btn-new">新建</div>
+            <div class="btn-new border-corner">新建</div>
             <% }else{ %>
-            <div class="btn-edit">编辑</div>
+            <div class="btn-edit border-corner">编辑</div>
             <% } %>
             <div class="options-container">
                 <% if(!isEdit){ %>
-                <input type="button" class="btn-publish" onclick="publish()" value="发&nbsp;布">
+                <input type="button" class="btn-publish border-corner" onclick="publish()" value="发&nbsp;布">
                 <% }else{ %>
-                <input type="button" class="btn-finish" onclick="finish()" value="保&nbsp;存">
+                <input type="button" class="btn-finish border-corner" onclick="finish()" value="保&nbsp;存">
+                <% } %>
+            </div>
+            <div class="checkbox-private-container">
+                <!-- 私密 -->
+                <% if(status===1){ %>
+                <input type="checkbox" id="checkbox-private" title="仅本人可见" checked ><label for="checkbox-private">私密</label>
+                <% }else{ %>
+                <input type="checkbox" id="checkbox-private" title="仅本人可见"><label for="checkbox-private">私密</label>
                 <% } %>
             </div>
             <div class="clearFloat"></div>
         </div>
+
         <div class="title-container">
             <div class="tag-container">
-                <!--<input type="button" class="selector-tag" value="tag">-->
                 <select class="selector-tag">
                     <% for(var i in tags){ %>
                     <% if(isEdit && tag == i){ %>
@@ -76,11 +81,11 @@
         </div>
     </div>
     <div class="edit-container">
-        <div class="inupt-container">
+        <div class="input-container">
             <% if(isEdit){ %>
             <textarea class="textarea global-text-size" id="drop_element"><%= markdown %></textarea>
             <% }else{ %>
-            <textarea class="textarea global-text-size"  id="drop_element"></textarea>
+            <textarea class="textarea global-text-size" id="drop_element"></textarea>
             <% } %>
 
         </div>
@@ -88,35 +93,10 @@
         <div id="preview-container" class="preview-container">
             <div class="preview  global-text-size"></div>
             <div class="btn-preview-container">
-                <div class="btn-preview"> ></div>
+                <div class="btn-preview border-corner"> ></div>
             </div>
         </div>
         <div class="clearFloat"></div>
-    </div>
-
-    <div class="toolsbar-container" >
-        <div class="toolsbar">
-            <div class="tool-item">
-                <select class="mode">
-                    <% if(isEdit){ %>
-                     <option value="1" selected>Markdown</option>
-                        <% if(mode == 2){ %>
-                        <option value="2" selected>文本模式</option>
-                        <% }else{ %>
-                        <option value="2">文本模式</option>
-                        <% } %>
-                    <% }else{ %>
-                    <option value="1" selected>Markdown</option>
-                    <option value="2">文本模式</option>
-                    <% } %>
-                </select>
-            </div>
-
-            <div class="tool-item item-btn upload-img" id="btn-add-img">
-                <span id="pickfiles">插入图片</span>
-            </div>
-            <div class="clearFloat"></div>
-        </div>
     </div>
     <div id="dialog">
         <div class="dialog-bg"></div>
@@ -131,7 +111,32 @@
             </div>
         </div>
     </div>
-
+    <div class="toolsbar-container">
+        <div class="toolsbar">
+            <div class="tool-item border-corner">
+                <select class="selector_mode">
+                    <% if(isEdit){ %>
+                    <option value="1" selected>Markdown</option>
+                    <% if(mode == 2){ %>
+                    <option value="2" selected>文本模式</option>
+                    <% }else{ %>
+                    <option value="2">文本模式</option>
+                    <% } %>
+                    <% }else{ %>
+                    <option value="1" selected>Markdown</option>
+                    <option value="2">文本模式</option>
+                    <% } %>
+                </select>
+            </div>
+            <div class="tool-item item-btn border-corner" id="btn-add-img">
+                <span id="pickfiles">插入图片</span>
+            </div>
+            <div class="tool-item item-btn border-corner" id="btn-add-html">
+                <span id="pickhtml">插入HTML</span>
+            </div>
+            <div class="clearFloat"></div>
+        </div>
+    </div>
 </div>
 
 <script src="/js/external/jquery1.3.2.js"></script>

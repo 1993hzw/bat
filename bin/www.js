@@ -13,8 +13,6 @@ var app = require('../app');
 var debug = require('debug')('myblog:server');
 var http = require('http');
 
-
-
 /*
   init初始化博客
  */
@@ -99,6 +97,6 @@ function onListening() {
   var bind = typeof addr === 'string'
     ? 'pipe ' + addr
     : 'port ' + addr.port;
-  console.log('Listening on http://localhost:' +addr.port )
+  console.log('Listening on http://localhost:' +addr.port );
   debug('Listening on ' + bind);
 }

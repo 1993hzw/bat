@@ -70,14 +70,14 @@
     width: 100%;
     height: auto;
     /*background: bisque;*/
-    padding: 30px;
+    padding: 15px;
     padding-left: 10px;
     padding-right:10px ;
     border-bottom: 1px dashed #eee;
 }
 .blog-title{
     display: inline-block;
-    font-size: 25px;
+    font-size: 22px;
     font-weight: bolder;
     min-width: 150px;
     color: #333;

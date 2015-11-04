@@ -1,4 +1,4 @@
-var dbholder = require('./DBHolder');
+var dbholder = require('./database');
 var Promise = require('bluebird');
 var utils = require('../utils/utils');
 var fields = dbholder.map;
@@ -24,7 +24,7 @@ var put = function (key, value, result) {
                 fields.value + ') values (?,?,?)';
             var arr = [utils.getTime(), key, value];
             result.db.run(sql, arr, function (err) {
-                if (err) return reject("insert " + err);
+                if (err) return reject(err);
                 resolve(result);
             })
         })
@@ -85,11 +85,11 @@ var modify = function (key, value, result) {
             sql += ' set ' + fields.modify_time + '=?,' + fields.value + '=?'
             sql += " where " + fields.key + "=?";
             result.db.run(sql, [utils.getTime(), value, key], function (err) {
-                if (err) return reject("modify " + err);
+                if (err) return reject(err);
                 resolve(result);
             })
         })
-    }
+    };
     return Promise.resolve()
         .then(function () {
             if(result) return Promise.resolve(result);
@@ -107,7 +107,7 @@ var getall = function (result) {
         return new Promise(function (resolve, reject) {
             var sql = 'select ' + fields.key + ' as key,' + fields.value + ' as value' + ' from ' + fields.tableName;
             result.db.all(sql, function (err, rows) {
-                if (err) return reject("getall " + err);
+                if (err) return reject(err);
                 result.rows = rows;
                 resolve(result);
             })

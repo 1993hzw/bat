@@ -1,4 +1,4 @@
-var dbHolder = require('./DBHolder');
+var dbHolder = require('./database');
 var Promise = require('bluebird');
 var utils = require('../utils/utils');
 var fields = dbHolder.blog;
@@ -21,7 +21,7 @@ var add = function (data, result) {
                 resolve(result);
             })
         });
-    }
+    };
     return Promise.resolve()
         .then(function () {
             if (result) return Promise.resolve(result);
@@ -32,7 +32,7 @@ var add = function (data, result) {
             return Promise.resolve()
         })
 
-}
+};
 
 var getById = function (startId, endId, result) {
     var _select = function (result) {
@@ -41,7 +41,7 @@ var getById = function (startId, endId, result) {
                 fields.id + "," + fields.insert_time + "," + fields.modify_time + ","
                 + fields.title + "," + fields.html + "," + fields.tags + ","
                 + fields.visits + "," + fields.brief + "," + fields.mode + ","
-                + fields.top + "," + fields.markdown +
+                + fields.top + "," + fields.markdown +"," + fields.status +
                 " from " + fields.tableName;
             if (endId) {
                 if (endId >= startId)
@@ -57,7 +57,7 @@ var getById = function (startId, endId, result) {
                 resolve(result);
             })
         })
-    }
+    };
     return Promise.resolve()
         .then(function () {
             if (result) return Promise.resolve(result);
@@ -68,36 +68,45 @@ var getById = function (startId, endId, result) {
             return Promise.resolve(result.rows);
         })
 
-}
+};
 
 //根据标签获取文章，按照置顶排序
-var getByTag = function (tag, offset, count, result) {
+var getByTag = function (condition, offset, count, result) {
+
+    var tag=condition.tag;
+    var status=condition.status;
+
     if (!offset || offset < 0) offset = 0;
     if (!count || count < 1) count = 1;
     var _select = function (result) {
         return new Promise(function (resolve, reject) {
-            var sql;
-            if (!tag) {//如果tag为空则返回最新文章
-                sql = "select " +
-                    fields.id + "," + fields.insert_time + "," + fields.modify_time + "," + fields.title +
-                    "," + fields.html + "," + fields.tags + "," + fields.visits + "," + fields.top + "," + fields.brief +
-                    " from " + fields.tableName;
-                sql += " order by " + fields.top + " desc ,"+ fields.id + " desc limit " + offset + ","+count;
-            } else {
-                sql = "select " +
-                    fields.id + "," + fields.insert_time + "," + fields.modify_time + "," + fields.title + "," + fields.html + ","
-                    + fields.tags + "," + fields.visits + "," + fields.top + "," + fields.brief +
-                    " from " + fields.tableName;
+            var sql = "select " +
+                fields.id + "," + fields.insert_time + "," + fields.modify_time + "," + fields.title +
+                "," + fields.html + "," + fields.tags + "," + fields.visits + "," + fields.top + ","
+                + fields.brief + ","+fields.status+
+                " from " + fields.tableName;
+            if(status!=undefined){
+                if (tag!=undefined){
+                    sql += " where " + fields.tags + "='" + tag + "' and "+fields.status+"="+status;
+                }else{
+                    sql += " where " + fields.status + "=" + status;
+                }
+            }else if (tag!=undefined){
+                //如果tag为空则返回最新文章
                 sql += " where " + fields.tags + "='" + tag + "'";
-                sql += " order by " + fields.top+" desc ,"+ fields.id + " desc limit " + offset + "," + count;
             }
+            //根据置顶排序，再根据插入时间降序排序
+            sql += " order by " + fields.top+" desc ,"+ fields.id + " desc limit " + offset + "," + count;
+
+
+
             result.db.all(sql, function (err, rows) {
                 if (err) return reject(err);
                 result.rows = rows;
                 resolve(result);
             })
         })
-    }
+    };
     return Promise.resolve()
         .then(function () {
             if (result) return Promise.resolve(result);
@@ -107,10 +116,10 @@ var getByTag = function (tag, offset, count, result) {
         .then(function (result) {
             return Promise.resolve(result.rows);
         })
-}
+};
 
 //获取最新文章
-var getLast = function (offset, count, result) {
+var getLast = function (condition,offset, count, result) {
     if (!offset || offset < 0) offset = 0;
     if (!count || count < 1) count = 1;
     var _select = function (result) {
@@ -119,6 +128,9 @@ var getLast = function (offset, count, result) {
                 fields.id + "," + fields.insert_time + "," + fields.modify_time + "," + fields.title +
                 "," + fields.html + "," + fields.tags + "," + fields.visits + "," + fields.top + "," + fields.brief +
                 " from " + fields.tableName;
+            if(condition.status!=undefined){
+                sql+=" where "+fields.status+"="+condition.status;
+            }
             sql += " order by " + fields.id + " desc limit " + offset + "," + count;
             result.db.all(sql, function (err, rows) {
                 if (err) return reject(err);
@@ -126,7 +138,7 @@ var getLast = function (offset, count, result) {
                 resolve(result);
             })
         })
-    }
+    };
     return Promise.resolve()
         .then(function () {
             if (result) return Promise.resolve(result);
@@ -136,9 +148,9 @@ var getLast = function (offset, count, result) {
         .then(function (result) {
             return Promise.resolve(result.rows);
         })
-}
+};
 
-var getHots = function (offset, count, result) {
+var getHots = function (condition,offset, count, result) {
     if (!offset || offset < 0) offset = 0;
     if (!count || count < 1) count = 1;
     var _select = function (result) {
@@ -146,6 +158,9 @@ var getHots = function (offset, count, result) {
             var sql = "select " +
                 fields.id + "," + fields.title + "," + fields.visits +
                 " from " + fields.tableName;
+            if(condition.status!=undefined){
+                sql+=" where "+fields.status+"="+condition.status;
+            }
             sql += " order by " + fields.visits + " desc limit " + offset + "," + count;
             result.db.all(sql, function (err, rows) {
                 if (err) return reject(err);
@@ -153,7 +168,7 @@ var getHots = function (offset, count, result) {
                 resolve(result);
             })
         })
-    }
+    };
     return Promise.resolve()
         .then(function () {
             if (result) return Promise.resolve(result);
@@ -164,7 +179,7 @@ var getHots = function (offset, count, result) {
             return Promise.resolve(result.rows);
         })
 
-}
+};
 
 var getTitleByArray = function (arr, result) {
     var _select = function (result) {
@@ -182,7 +197,7 @@ var getTitleByArray = function (arr, result) {
                 resolve(result);
             })
         })
-    }
+    };
     return Promise.resolve()
         .then(function () {
             if (result) return Promise.resolve(result);
@@ -193,7 +208,7 @@ var getTitleByArray = function (arr, result) {
             return Promise.resolve(result.rows);
         })
 
-}
+};
 
 var modifyById = function (id, data, result) {
     var _update = function (result) {
@@ -243,7 +258,7 @@ var modifyById = function (id, data, result) {
                 resolve(result);
             })
         })
-    }
+    };
     return Promise.resolve()
         .then(function () {
             if (result) return Promise.resolve(result);
@@ -254,7 +269,7 @@ var modifyById = function (id, data, result) {
             return Promise.resolve();
         })
 
-}
+};
 
 var modifyTags = function (tagSrc, tagDst, result) {
     var _update = function (result) {
@@ -268,7 +283,7 @@ var modifyTags = function (tagSrc, tagDst, result) {
                 resolve(result);
             })
         })
-    }
+    };
     return Promise.resolve()
         .then(function () {
             if (result) return Promise.resolve(result);
@@ -279,7 +294,7 @@ var modifyTags = function (tagSrc, tagDst, result) {
             return Promise.resolve();
         })
 
-}
+};
 
 var deleteById = function (id, result) {
     var _delete = function (result) {
@@ -301,7 +316,7 @@ var deleteById = function (id, result) {
         .then(function () {
             return Promise.resolve();
         })
-}
+};
 
 var visitsIncrement = function (id, result) {
     var _visits = function (result) {
@@ -312,7 +327,7 @@ var visitsIncrement = function (id, result) {
                 resolve(result);
             })
         })
-    }
+    };
     return Promise.resolve()
         .then(function () {
             if (result) return Promise.resolve(result);
@@ -322,7 +337,7 @@ var visitsIncrement = function (id, result) {
         .then(function () {
             return Promise.resolve();
         })
-}
+};
 
 
 var setTop = function (id, top, result) {
@@ -334,7 +349,7 @@ var setTop = function (id, top, result) {
                 resolve(result);
             })
         })
-    }
+    };
 
     return Promise.resolve()
         .then(function () {
@@ -345,7 +360,7 @@ var setTop = function (id, top, result) {
         .then(function () {
             return Promise.resolve();
         })
-}
+};
 
 
 exports.fields = fields;

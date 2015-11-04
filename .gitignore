@@ -8,3 +8,8 @@
 /public/res/*.jpeg
 /public/res/*.bmp
 /public/res/*.png
+/public/res/*.gif
+/public/res/*.htm
+/public/res/*.html
+/test/config
+/test/mytest.js

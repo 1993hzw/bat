@@ -3,7 +3,7 @@ body{
 }
 .topbar-container{
     width: 100%;
-    line-height: 60px;
+    /*line-height: 60px;*/
 }
 .logo{
     float: left;
@@ -34,6 +34,14 @@ body{
     width: 120px;
     height: 40px;
     margin-top: 13px;
+}
+
+.checkbox-private-container{
+    float: right;height: 20px;
+    width: 60px;line-height: 20px;
+    font-size: 16px;
+    margin-top: 32px;
+    color: grey;
 }
 
 .btn-publish,.btn-finish{
@@ -99,31 +107,13 @@ body{
     color: #333;
     padding:8px 0;
 }
-.inupt-container {
+.input-container {
     width: 50%;
     float: left;
     height: 100px;
     background: whitesmoke;
     border: none;
 }
-/*.upload-img{
-    cursor: pointer;
-    padding-left: 7px;
-    padding-right: 7px;
-    line-height: 30px;
-    position: relative;
-    top: -101%;
-    float: right;
-    font-size: 18px;
-    font-weight: bolder;
-    background: cornflowerblue;
-    filter: alpha(opacity=80);
-    -moz-opacity:0.8;
-    opacity: 0.8;
-}
-.upload-img:hover{
-    background: deepskyblue;
-}*/
 .resize-border {
     border: none;
     float: left;
@@ -190,16 +180,11 @@ body{
 
 .toolsbar-container{
     width: 100%;
-    position: fixed;
+    /*position: fixed;*/
     top: -0px;
     background: transparent;
     pointer-events: none;
-}
-.btn-tools{
-    width: 30px;
-    height: 30px;
-    cursor: pointer;
-
+    border-top: 1px solid grey;
 }
 .toolsbar{
     pointer-events: auto;
@@ -207,17 +192,18 @@ body{
     margin: 0 auto;
     background: white;
     display: table;
-    border: 1px solid grey;
-    border-radius: 10px;
+    /*border: 1px solid grey;*/
+    /*border-radius: 10px;*/
 }
 .tool-item{
     float: left;
-    /*margin-right: 10px;*/
+    margin-right: 2px;
     width: 100px;
     height: 20px;
 }
-.mode{
+.selector_mode{
     height: 20px;
+    width: 100%;
 }
 .item-btn{
     height: 20px;

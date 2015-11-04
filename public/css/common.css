@@ -31,7 +31,10 @@ textarea{
     clear: both;
 }
 .bg{
-    border-bottom: 1px solid #eee;
+
+    /*background: #add8e6;*/
+
+    /*border-bottom: 1px solid #eee;*/
     background:-moz-linear-gradient(top,#add8e6,#fefefe);
     background:-webkit-gradient(linear, 0% 0%, 0% 100%,from(#add8e6), to(#fefefe));
     filter:  progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='#add8e6', endColorstr='#fefefe');
@@ -48,4 +51,10 @@ textarea{
 .global-text-size{
     font-size: 16px;
     line-height: 25px;
+}
+/*圆角*/
+.border-corner{
+    border-radius: 2px;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
 }

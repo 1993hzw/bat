@@ -23,7 +23,7 @@
     <div id="blog" style="display:none"><%= id %></div>
     <div class="topbar-container bg">
         <a href="/" class="logo"><img src="/img/logo.png" style="height: 60px;float: left"></a>
-        <a href="/blogs?tag=<%= tag %>"><div class="btn-list">文章</div></a>
+        <a href="/blogs?tag=<%= tag %>"><div class="btn-list border-corner">文章</div></a>
         <% if(isLogined){ %>
         <a href="/blogs/publish"><div class="btn-new" title="新建文章">+</div></a>
         <% } %>
@@ -43,22 +43,27 @@
                 untopStyle='style="display:none"';
             }
             %>
-            <span class="options btn-top" id="top" onclick="setTop(1)" <%- topStyle %>>置&nbsp;顶</span>
-            <span class="options btn-top" id="untop" onclick="setTop(0)" <%- untopStyle %>>取消置顶</span>
-            <a href="/blogs/edit?id=<%= id %>"><span class="options">编&nbsp;辑</span></a>
+            <span class="options btn-top border-corner" id="top" onclick="setTop(1)" <%- topStyle %>>置&nbsp;顶</span>
+            <span class="options btn-top border-corner" id="untop" onclick="setTop(0)" <%- untopStyle %>>取消置顶</span>
+            <a href="/blogs/edit?id=<%= id %>"><span class="options border-corner">编&nbsp;辑</span></a>
             <span class="options btn-del">删&nbsp;除</span>
         </div>
-        <div class="box"></div>
+        <div class="box border-corner"></div>
         <% } %>
-        <%   var toptextStyle;
+        <%   var toptextStyle,privacyStyle;
             if(top==1){
                  toptextStyle='style="display:inline"';
             }else{
                  toptextStyle='style="display:none"';
             }
+            if(status==1){
+                privacyStyle='style="display:inline"';
+            }else{
+                privacyStyle='style="display:none"';
+            }
           %>
         <!--<div class="clearFloat"></div>-->
-        <div class="title-container"><span title="置顶" class="top-text" <%- toptextStyle %>>顶</span><%= title %></div>
+        <div class="title-container"><span title="私密" class="top-text" <%- privacyStyle %>>[私]</span><span title="置顶" class="top-text span_top" <%- toptextStyle %>>[顶]</span><%= title %></div>
         <div class="blog-details-container">
             <span class="tags" title="标签"><%= tags[tag] %></span>|<span class="blog-time" title="发布时间"><%= time %></span><span class="blog-time" title="阅读量">(<%= visits %>)</span>
         </div>
@@ -79,7 +84,7 @@
                 <div class="contact-container">
                     <input type="text" placeholder="您的联系邮箱（选填）" value="您的联系邮箱（选填）" class="input-contact">
                 </div>
-                    <input type="button" value="发&nbsp;送" class="btn-send">
+                    <input type="button" value="发&nbsp;送" class="btn-send border-corner">
             </div>
             </div>
             <div class="other-comment-container">

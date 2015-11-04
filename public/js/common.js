@@ -11,7 +11,7 @@ var formatHTML = function () {
         '>': '&gt;',
         '"': '&quot;',
         '\'': '&#39;'
-    }
+    };
     return function (html) {
         return html.replace(/[&<>"']/g, function (c) {
             return character[c];

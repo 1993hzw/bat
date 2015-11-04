@@ -7,7 +7,7 @@ var blog = {
     id: "f_id",
     insert_time: "f_insert_time",
     modify_time: "f_modify_time",
-    status:"f_status",//文章状态，暂未使用，以后可能添加公开和私密状态
+    status:"f_status",//0:默认（公开），1：私密
     title: "f_title",
     brief: "f_brief",//摘要
     markdown: "f_markdown",
@@ -16,7 +16,7 @@ var blog = {
     tags: "f_tags",//所属标签id
     top:"f_top",//0：默认，1：置顶
     visits: "f_visits"//文章访问量，查找热门文章的依据
-}
+};
 
 var comment = {
     tableName: "t_comment",
@@ -29,7 +29,7 @@ var comment = {
     blogId: "f_blog_id",//评论的文章id
     author: "f_author",//评论者
     contact: "f_contact"//联系方式
-}
+};
 
 var map = {
     tableName: "t_map",
@@ -141,9 +141,9 @@ var _createTagTable = function (result) {
             resolve(result);
         })
     })
-}
+};
 
-
+//开始事务
 var _beginTransaction = function (result) {
     return new Promise(function (resolve, reject) {
         result.db.run("BEGIN TRANSACTION", function (err) {
@@ -153,6 +153,7 @@ var _beginTransaction = function (result) {
     });
 };
 
+//提交事务
 var _commitTransaction = function (result) {
     return new Promise(function (resolve, reject) {
         result.db.run("COMMIT", function (err) {
@@ -179,7 +180,7 @@ var _checkIfExistsColumn = function (result, table, col, cb) {
 
 /*
   给指定的表添加新列，
-  table 表明
+  table 表名
   col 列名
    type_retrain 类型与约束
  */
@@ -187,7 +188,7 @@ var _addColumns = function (result, table,col,type_retrain) {
     return new Promise(function (resolve, reject) {
         _checkIfExistsColumn(result, table, col, function (error, res) {
             if (error) return reject(error);
-            if(res==false){
+            if(res==false){//列不存在
                 var sql = 'alter table ' + table + ' add '+col+' '+type_retrain;
                 result.db.run(sql, function (err) {
                     if (err) return reject(err);
@@ -198,7 +199,7 @@ var _addColumns = function (result, table,col,type_retrain) {
             }
         })
     })
-}
+};
 
 var initDB = function () {
     return _open_db()
@@ -215,7 +216,7 @@ var initDB = function () {
         .then(function(result){
             result.db.close();
         })
-}
+};
 exports.initDB = initDB;
 exports.beginTransaction = _beginTransaction;
 exports.commitTransaction = _commitTransaction;

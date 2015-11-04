@@ -64,6 +64,7 @@
 
 .btn-login:hover {
     background: deepskyblue;
+    cursor: pointer;
 }
 
 .line {

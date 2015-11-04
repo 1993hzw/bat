@@ -1,5 +1,5 @@
 var init=function(){
-    var dbHolder = require('../models/DBHolder');
+    var dbHolder = require('../models/database');
     var tags = require('../models/tags');
     var blogs=require('../models/blogs');
     var Promise=require('bluebird');
@@ -89,7 +89,7 @@ var init=function(){
             exports.tags=tagObj;
             exports.visits=visits;
             exports.upload_policy=upload_policy;
-            console.log(tagObj);
+            //console.log(tagObj);
             console.log(admin);
             console.log('visits:'+visits);
             console.log("init db success!");

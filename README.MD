@@ -30,6 +30,12 @@ Bat 是一个简易的博客系统，兼容ie8+、chrome、firefox以及手机�
 <b>-bin</b>
  --www.js  应用入口
 
+<b>-controller</b>  控制器，路由之后的各种逻辑操作
+  --admin.js
+  --blog.js
+  --comment.js
+  --tag.js
+
 <b>-data</b>  存放数据
  --guide  博客第一篇文章(使用教程),markdown
  --myblog.sqlite3  数据库，整个博客的信息都保存在此数据库
@@ -41,7 +47,7 @@ Bat 是一个简易的博客系统，兼容ie8+、chrome、firefox以及手机�
  --blogs.js  博客模型，
  --comments.js 评论模型
  --data-center.js  数据中心，里面的init方法初始化了博客信息，加载数据库，在www.js被调用
- --DBHolder.js  定义了数据库通用方法，创建数据库，创建表，事务提交
+ --database.js  定义了数据库通用方法，创建数据库，创建表，事务提交
  --maps.js  类似于map类，有put、get方法。主要用来存储博客设置信息，如上传策略，登录信息，博客信息。 
  --tags.js  标签模型
 
@@ -53,7 +59,7 @@ Bat 是一个简易的博客系统，兼容ie8+、chrome、firefox以及手机�
  --admin  跟后台管理页面有关的路由
  --api  接口，供前台js调用，_开头的接口为私有接口，必须登录使用
  --blogs  跟博客页面有关的路由
- --index.js  首页
+ --index.js
 
 <b>-utils</b> 工具包
 

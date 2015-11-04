@@ -1,29 +1,29 @@
 var isResizing = false;
 var downX;
-var isRendering = false;
+var isRendering = false;//是否正在渲染
 var mode = 1;//编辑模式
 
 var lastTagVal = 0;
-var isInput = false;
+var isInputting = false;//是否正在编辑区输入
 var timeoutObj;
-var isPreview = true;
-var isPc = true;
-var isAddingTag = false;
+var isPreview = true;//是否开启预览
+var isPc = true;//是否为pc端
+var isBusy = false;
 
 $(function () {
     isPc = checkIsPC();
     var textarea = $(".textarea");
     var preview = $(".preview");
-    var selectTag=$('.selector-tag');
-    var selectMode=$('.mode');
-    var btnPreview=$('.btn-preview');
+    var selectTag = $('.selector-tag');
+    var selectMode = $('.selector_mode');
+    var btnPreview = $('.btn-preview');
 
     setLayout();
     previewPassage(preview, textarea);
 
     //渲染预览区
     var render = function () {
-        if (!isInput || !isPreview) return;
+        if (!isInputting || !isPreview) return;
         isRendering = true;
         setTimeout(function () {
             previewPassage(preview, textarea);
@@ -32,15 +32,15 @@ $(function () {
             });
             render();
         }, 500)
-    }
+    };
     //监听textarea的输入事件
     textarea.bind('input propertychange', function () {
         if (!isPreview) return;
         clearTimeout(timeoutObj);
-        isInput = true;
+        isInputting = true;
         if (!isRendering) render();
         timeoutObj = setTimeout(function () {
-            isInput = false;
+            isInputting = false;
             isRendering = false;
         }, 1000);
     });
@@ -55,7 +55,7 @@ $(function () {
             preview.scrollTop(preview[0].scrollHeight);
         } else
             preview.scrollTop(preview[0].scrollHeight * percent)
-    })
+    });
 
     if (isPc)//pc端监听窗口变化
         $(window).resize(function () {
@@ -67,7 +67,7 @@ $(function () {
         if (!e) return;
         isResizing = true;
         downX = e.clientX;
-    })
+    });
     $(".edit-container").bind("mousemove", function (e) {
         if (!e || !isResizing) return;
         resize(e);
@@ -80,7 +80,7 @@ $(function () {
         var v = (selectTag.val() + "").trim();
         if (v == -1) {//新增标签
             $('#dialog').show();
-            $('#content').html('<div id="tip">请输入标签名</div>'+
+            $('#content').html('<div id="tip">请输入标签名</div>' +
                 '<input type="text" class="input-tag">');
             //重新绑定事件
             $('#enter').unbind('click').click(function () {
@@ -91,20 +91,21 @@ $(function () {
                 selectTag.val(lastTagVal);
                 $('.input-tag').val("").click();
             });
+            $('.input-tag').click(function () {
+                $("#tip").html('请输入标签名')
+            });
         } else {
             lastTagVal = v;//记住标签，防止显示新增标签
         }
     });
-    $('.input-tag').click(function () {
-        $("#tip").html('请输入标签名')
-    });
 
+    //预览切换
     btnPreview.click(function () {
         isPreview = !isPreview;
         if (isPreview) {
             setLayout();
             $('.resize-border').show();
-            btnPreview.text(" > ")
+            btnPreview.text(" > ");
             previewPassage(preview, textarea);
         } else {
             setLayout();
@@ -112,47 +113,62 @@ $(function () {
             btnPreview.text(" < ");
             preview.html("");
         }
-    })
+    });
     //监听编辑模式
     selectMode.change(function () {
         var m = selectMode.val();
         if (m == 1) {//markdown
             mode = 1;
             $('#btn-add-img').show();
-            $('.inupt-container').css({background: 'whitesmoke'})
+            $('#btn-add-html').show();
+            $('.input-container').css({background: 'whitesmoke'})
         } else if (m == 2) {//文本模式
             mode = 2;
             $('#btn-add-img').hide();
-            $('.inupt-container').css({background: 'white'})
+            $('#btn-add-html').hide();
+            $('.input-container').css({background: 'white'})
         } else {
             selectMode.val(1);
-            $('.inupt-container').css({background: 'whitesmoke'})
+            $('.input-container').css({background: 'whitesmoke'})
         }
         previewPassage(preview, textarea);
     }).change();
 
+    //私密选项监听
+    $('#checkbox-private').click(checkPrivateBox);
+    checkPrivateBox();
+
+
     lastTagVal = selectTag.val();
     if (!isPc) btnPreview.click();//移动端默认收起预览
 });
-
+//检测是否选中私密
+var checkPrivateBox=function () {
+    if ($('#checkbox-private')[0].checked) {
+        $('.checkbox-private-container').css({fontWeight: "bold", color: "red"});
+    } else {
+        $('.checkbox-private-container').css({fontWeight: "normal", color: "grey"});
+    }
+};
 
 var setLayout = function () {
     var height, width, editHeight;
     if (isPreview) {//预览
         height = $(window).height();
         width = $(window).width();
-        editHeight = height - $('.topbar-container').height();
+        //编辑区的高度
+        editHeight = height - $('.topbar-container').height() - $('.toolsbar-container').height();
         //var titleHeight=$(".title-container").height();
         //alert(width)
         $(".edit-container").height(editHeight).width(width);
         if (isPc) {//pc端
-            $(".inupt-container").height(editHeight).width(width / 2 - 10);
+            $(".input-container").height(editHeight).width(width / 2 - 10);
+            ////预览区域约为屏幕宽度的一半
             $(".preview-container").height(editHeight).width($(".edit-container").width() / 2 - 2);
         } else {//移动端
-            $(".inupt-container").height(editHeight).hide();
+            $(".input-container").height(editHeight).hide();
+            //预览区域约为屏幕宽度
             $(".preview-container").height(editHeight).width($(".edit-container").width() - 10);
-            //alert($(".edit-container").width())
-            //alert($(".preview-container").width()+" "+$(window).width())
         }
         $(".input-title-container").width(width);
         $(".input-title").width(width - $('.tag-container').width());
@@ -162,16 +178,18 @@ var setLayout = function () {
         width = $(window).width();
         editHeight = height - $('.topbar-container').height();
         $(".edit-container").height(editHeight).width(width);
-        $(".inupt-container").height(editHeight).width(width - 27).show();
+        $(".input-container").height(editHeight).width(width - 27).show();
         $(".preview-container").height(editHeight).width(27);
-        $(".input-title-container").width(width - $(".tag-container").width())
+        $(".input-title-container").width(width - $(".tag-container").width());
         $(".preview").html("")
     }
-}
+};
+
+//改变预览区域尺寸
 var resize = function (e) {
-    if (!isPc||!isPreview||isRendering) return;
+    if (!isPc || !isPreview || isRendering) return;
     isRendering = true;
-    var textarea = $(".inupt-container");
+    var textarea = $(".input-container");
     var preview = $(".preview-container");
     var width;
     var span = 20;
@@ -193,99 +211,126 @@ var resize = function (e) {
     }, 80)
 };
 
-var addTag=function(selectTag){
-    if (isAddingTag) return;
-    isAddingTag = true;
+//新增标签
+var addTag = function (selectTag) {
+    if (isBusy) return;
+    isBusy = true;
     var tag = ($('.input-tag').val()).trim();
     if (tag == "") {
-        $("#tip").html('<span style="color: red;font-size: 18px">标签名不能为空</span>')
-        isAddingTag = false;
+        $("#tip").html('<span style="color: red;font-size: 18px">标签名不能为空</span>');
+        isBusy = false;
     } else if (tag.length > 15) {
-        $("#tip").html('<span style="color: red;font-size: 18px">标签名长度不能大于15</span>')
-        isAddingTag = false;
+        $("#tip").html('<span style="color: red;font-size: 18px">标签名长度不能大于15</span>');
+        isBusy = false;
     } else {
-        $.post("/api/_add_tag", {tag: tag}, function (res) {
-            var v = JSON.parse(res);
-            if (v.state > 0) {
-                $('#dialog').hide();
-                $('.input-tag').val("").click();
-                var html = "";
-                for (var i in v.tags) {
-                    html += '<option selected value="' + i + '"> &nbsp;' + v.tags[i] + '</option>'
-                }
-                //html+='<option selected value="'+i+'"> &nbsp;'+ v.tags[i] +'</option>'
-                html += '<option style="color: gray;" value="-1">&nbsp;+新增 </option>'
-                selectTag.html(html);
-            } else {
-                if (v.state == -2) {
-                    $("#tip").html('<span style="color: red;font-size: 18px">已存在相同标签</span>')
+        $.ajax({
+            type: 'POST', url: "/api/_add_tag", dataType: 'json',
+            data: {tag: tag},
+            success: function (res) {
+                var v = res;
+                if (v.state > 0) {
+                    $('#dialog').hide();
+                    $('.input-tag').val("").click();
+                    var html = "";
+                    for (var i in v.tags) {
+                        html += '<option selected value="' + i + '"> &nbsp;' + v.tags[i] + '</option>'
+                    }
+                    html += '<option style="color: gray;" value="-1">&nbsp;+新增 </option>'
+                    selectTag.html(html);
                 } else {
-                    alert(res)
+                    if (v.state == -2) {
+                        $("#tip").html('<span style="color: red;font-size: 18px">已存在相同标签</span>')
+                    } else {
+                        alert(res)
+                    }
                 }
+                isBusy = false;
+            },
+            error: function (err) {
+                $("#tip").html('<span style="color: red;font-size: 18px">新增失败，请重试</span>');
+                isBusy = false;
             }
-            isAddingTag = false;
-        })
+        });
     }
-}
+};
 
-var isPublishing = false;
+//发布文章（新增模式下）
 var publish = function () {
-    if (isPublishing) return;
-    isPublishing = true;
+    if (isBusy) return;
+    isBusy = true;
     var title = $('.input-title').val().trim();
     var markdown = $('.textarea').val();
     var tag = $('.selector-tag').val().trim();
-    if (markdown == null || markdown == "") {
-        isPublishing = false;
+    var status=($('#checkbox-private')[0].checked)?1:0;//0：默认，1：私密
+    if (markdown == null || markdown.trim() == "") {
+        isBusy = false;
         return alert("内容不能为空");
     }
-    $('.btn-publish').val('发送中');
-    $.post('/api/_publish', {title: title, markdown: markdown, tag: tag, mode: mode}, function (res) {
-        var v = JSON.parse(res);
-        if (v.state > 0) {
-            if (v.id) {
-                location.href = "/blogs/" + v.id;
+    $('.btn-publish').val('发布中');
+    $.ajax({
+        type: 'POST', url: "/api/_publish", dataType: 'json',
+        data: {title: title, markdown: markdown, tag: tag, mode: mode,status:status},
+        success:  function (res) {
+            var v = res;
+            if (v.state > 0) {
+                if (v.id) {
+                    location.href = "/blogs/" + v.id;
+                } else {
+                    location.href = "/";
+                }
             } else {
-                location.href = "/";
+                alert("发布失败，请重试");
+                isBusy = false;
+                $('.btn-publish').val('发布');
             }
-        } else {
-            alert(v);
-            $('.btn-publish').val('发送');
+        },
+        error: function (err) {
+            alert("发布失败，请重试");
+            isBusy = false;
+            $('.btn-publish').val('发布');
         }
-    })
-}
+    });
+};
 
-var isSaving = false;
+//保存文章（编辑模式下）
 var finish = function () {
-    if (isSaving) return;
-    isSaving = true;
+    if (isBusy) return;
+    isBusy = true;
     var title = $('.input-title').val().trim();
     var markdown = $('.textarea').val();
     var tag = $('.selector-tag').val().trim();
-    if (markdown == null || markdown == "")
+    var status=($('#checkbox-private')[0].checked)?1:0;//0：默认，1：私密
+    if (markdown == null || markdown.trim() == "") {
+        isBusy=false;
         return alert("内容不能为空");
+    }
     $('.btn-finish').val('保存中');
-    $.post('/api/_save', {
-        id: $("#blog").text(),
-        title: title,
-        markdown: markdown,
-        tag: tag,
-        mode: mode
-    }, function (res) {
-        var v = JSON.parse(res);
-        if (v.state > 0) {
-            if (v.id) {
-                location.href = "/blogs/" + v.id;
+    $.ajax({
+        type: 'POST', url: "/api/_save", dataType: 'json',
+        data: {id: $("#blog").text(),title: title,markdown: markdown,tag: tag,
+            mode: mode,status:status},
+        success:  function (res) {
+            var v = res;
+            if (v.state > 0) {
+                if (v.id) {
+                    location.href = "/blogs/" + v.id;
+                } else {
+                    location.href = "/";
+                }
             } else {
-                location.href = "/";
+                alert('保存失败，请重试');
+                isBusy=false;
+                $('.btn-finish').val('保存');
             }
-        } else {
-            alert(v);
+        },
+        error: function (err) {
+            alert('保存失败，请重试');
+            isBusy=false;
             $('.btn-finish').val('保存');
         }
-    })
+    });
+};
 
-}
 //预览文章
 var previewPassage = function (preview, textarea) {
     if (!isPreview) return;
@@ -299,22 +344,27 @@ var previewPassage = function (preview, textarea) {
 };
 
 
-//在编辑框添加图片
-function addImgUrl(name, fileName) {
+//在编辑框添加图片或html
+function addImgOrHtml(name, fileName) {
     if (mode == 2) return;//文本模式
-    var downloadUrl = ($('#upload-domain').text().trim()) || location.protocol+'//'+location.host+'/res';
+    var downloadUrl = ($('#upload-domain').text().trim()) || location.protocol + '//' + location.host + '/res';
     var container = $('.textarea');
     var text = container.val();
-    container.val(text + '\n' + '![img](' + downloadUrl +'/'+ name + ' "' + fileName + '")');
-    container.scrollTop(container[0].scrollHeight);
+    if (/\.(htm|html)$/i.test(fileName)) {
+        container.val(text + '\n' + '<iframe style="width:100%;height:200px" src="' + downloadUrl + '/' + name + '"/>');
+    } else {
+        container.val(text + '\n' + '![img](' + downloadUrl + '/' + name + ' "' + fileName + '")');
+    }
+    container.scrollTop(container[0].scrollHeight);//滑动到底部
     previewPassage(undefined, container);
 };
 
+//上传组件初始化
 $(function () {
-    var domain=$('#upload-domain').text().trim();
-    var isUploading=false;
-    var auto_start= true;//立即上传
-    var options={
+    var domain = $('#upload-domain').text().trim();
+    var isUploading = false;
+    var auto_start = true;//立即上传
+    var options = {
         filters: {
             mime_types: [ //只允许上传图片
                 {title: "Image files", extensions: "jpg,bmp,png,jpeg,gif"}
@@ -330,25 +380,30 @@ $(function () {
         flash_swf_url: '/js/upload/Moxie.swf',
         dragdrop: true,
         chunk_size: '4mb',
-        multi_selection:false,//一次只能上传一张图片
+        multi_selection: false,//一次只能上传一张图片
         init: {
             'FilesAdded': function (up, files) {
+                if(isBusy) return;
+
                 $('#dialog').show();
-                $('#content').html('<div class="upload-info" style="width: 300px">正在上传<br>'+files[0].name+'</div>' +
+                $('#content').html('<div class="upload-info" style="width: 300px">正在上传<br>' + files[0].name + '</div>' +
                     '<div class="upload-progress"></div>');
                 //重新绑定事件
                 $('#enter').unbind('click').click(function () {
-                    if(! isUploading) $('#dialog').hide();
+                    if (!isUploading) $('#dialog').hide();
                 });
                 $('#cancel').unbind('click').click(function () {
                     uploader.stop();//停止上传
-                    uploader.splice(0,10);//从队列中移出
-                    isUploading=false;
+                    uploader.splice(0, 10);//从队列中移出
+                    uploaderHtml.stop();//停止上传
+                    uploaderHtml.splice(0, 10);//从队列中移出
+                    isUploading = false;
                     $("#dialog").hide();
                 });
-                if(auto_start) {//立即上传
-                    isUploading=true;
+                if (auto_start) {//立即上传
+                    isUploading = true;
                     uploader.start();
+                    uploaderHtml.start();
                 }
                 console.log("add")
             },
@@ -363,34 +418,62 @@ $(function () {
                 console.log('complete')
             },
             'FileUploaded': function (up, file, info) {
-                isUploading=false;
+                isUploading = false;
 
-                if(info.response&&JSON.parse(info.response).failed){//上传到本地服务器时，如果上传失败会返回错误信息
-                   return  $('#content').html('<span style="color:red">上传失败,请重试</span>');
+                if (info.response && JSON.parse(info.response).failed) {//上传到本地服务器时，如果上传失败会返回错误信息
+                    return $('#content').html('<span style="color:red">上传失败,请重试</span>');
                 }
 
-                //图片上传成功返回url
-                addImgUrl(file.target_name||JSON.parse(info.response).target_name, file.name);
-                uploader.splice(0,10);//从队列中移出
+                //插入图片或html
+                addImgOrHtml(file.target_name || JSON.parse(info.response).target_name, file.name);
+                uploader.splice(0, 10);//从队列中移出
+                uploaderHtml.splice(0, 10);//从队列中移出
                 console.log(file)
             },
             'Error': function (up, err, errTip) {
-                isUploading=false;
+                isUploading = false;
                 $('#content').html('<span style="color:red">上传失败,请重试</span>');
-                uploader.splice(0,10);//从队列中移出
+                uploader.splice(0, 10);//从队列中移出
+                uploaderHtml.splice(0, 10);//从队列中移出
                 console.log(errTip);
             }
         }
     };
-    var uploader;
-    if(domain){//上传到七牛，以下为七牛的参数
-        options.uptoken_url= '/api/_token';
-        options.domain= domain;
-        options.unique_names= true;//唯一名称
+
+    var uploader, uploaderHtml;
+    if (domain && domain != "") {//上传到七牛，以下为七牛的参数
+        options.uptoken_url = '/api/_token';
+        options.domain = domain;
+        options.unique_names = true;//唯一名称
         uploader = Qiniu.uploader(options);
-    }else{//上传到服务器端
-        options.url= '/api/_upload';
-        uploader=new plupload.Uploader(options);
+
+        //插入html
+        options.filters = {
+            mime_types: [ //只允许上传图片
+                {title: "Image filess", extensions: "html,htm"}
+            ],
+            max_file_size: '4mb', //最大只能上传2mb的文件
+            prevent_duplicates: true //不允许选取重复文件
+        };
+        options.browse_button = 'pickhtml';
+        uploaderHtml = Qiniu.uploader(options);
+
+    } else {//上传到服务器端
+        options.url = '/api/_upload';
+        uploader = new plupload.Uploader(options);
         uploader.init();
+
+        //插入html
+        options.filters = {
+            mime_types: [ //只允许上传图片
+                {title: "Image filess", extensions: "html,htm"}
+            ],
+            max_file_size: '4mb', //最大只能上传2mb的文件
+            prevent_duplicates: true //不允许选取重复文件
+        };
+        options.browse_button = 'pickhtml';
+
+        uploaderHtml = new plupload.Uploader(options);
+        uploaderHtml.init();
     }
 });

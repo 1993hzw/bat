@@ -62,6 +62,7 @@ body{
 }
 .btn-finish:hover{
     background: lightskyblue;
+    cursor: pointer;
 }
 #tip{
     height: 20px;

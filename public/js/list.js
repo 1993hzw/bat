@@ -9,7 +9,7 @@ $(document).ready(function(){
         $(window).resize(function(){
             setLayout()
         })
-    setLayout()
+    setLayout();
     setTimeout(function(){
         //setLayout()
     },1000)
@@ -35,10 +35,12 @@ var getBlogs=function(){
         var v=JSON.parse(res);
         var rows= v.rows;
         var html='';
-        var top='<span class="top-text" title="置顶">顶</span>';
+        var top='<span class="top-text" title="置顶">[顶]</span>';
+        var privacy='<span class="top-text" title="私密">[私]</span>';
         var temp;
         for(var i=0;i<rows.length;i++){
-            temp=rows[i].f_top?top:'';
+            temp=rows[i].f_status?privacy:'';
+            temp+=rows[i].f_top?top:'';
            html+= '<div class="blog-item">'+
                 '<a href="/blogs/'+rows[i].f_id+'">'+temp+'<div class="blog-title">'+rows[i].f_title+'</div></a>'+
                 '<div class="blog-brief">'+rows[i].f_brief+'</div>'+
