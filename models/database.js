@@ -213,9 +213,9 @@ var initDB = function () {
         /*.then(function(result){//增加新列
             return _addColumns(result,comment.tableName,'test','int default 0');
         })*/
-        .then(function(result){
+        /*.then(function(result){
             result.db.close();
-        })
+        })*/
 };
 exports.initDB = initDB;
 exports.beginTransaction = _beginTransaction;

@@ -1,5 +1,6 @@
 #dialog {
     display: none;
+    height: 100%;
 }
 
 .dialog-bg {
@@ -21,6 +22,7 @@
     left: 0;
     width: 100%;
     height: 100%;
+    overflow-y: auto;
 }
 
 .dialog-body {
@@ -74,3 +76,8 @@
     cursor: pointer;
 }
 
+@media(max-width: 800px)  {
+    .dialog-body {
+        margin-top: 30px;
+    }
+}

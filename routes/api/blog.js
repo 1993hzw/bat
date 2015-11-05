@@ -2,7 +2,7 @@ var router=require('express').Router();
 var blog = require('../../controller/blog');
 
 //发布文章
-router.post('/_publish', blog._publish_blog);
+router.post('/_publish', blog._publishBlog);
 
 //保存文章
 router.post('/_save', blog._save);

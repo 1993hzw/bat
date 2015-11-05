@@ -12,7 +12,7 @@ var qn = require('../models/storage/qiniu');
 var marked = require('../utils/marked');//使用修改后的marked
 
 //post 发布文章
-exports._publish_blog = function (req, res, next) {
+exports._publishBlog = function (req, res, next) {
     if (!req.session.hasLogined) return res.redirect("/");
     if (!req.body.markdown) return res.json({state: -1});
     var fields = dbHolder.blog;
@@ -36,18 +36,25 @@ exports._publish_blog = function (req, res, next) {
     data[fields.brief] = brief;
     var tag = (req.body.tag == null || req.body.tag == "") ? "默认" : req.body.tag;
     data[fields.tags] = tag;
-    blogs.add(data)
-        .then(function () {
-            blogs.getLast()
-                .then(function (rows) {//返回文章id
-                    return res.json({state: 1, id: rows[0][fields.id]})
+
+    var rows,result;
+    dbHolder.openDB()
+        .then(dbHolder.beginTransaction)//开启一个事务
+        .then(function(resultDB){
+            result=resultDB;
+        }).then(function(){
+            return blogs.add(data,result);
+        }).then(function () {
+            return blogs.getLast({},0,1,result)
+                .then(function (r) {//返回文章id
+                    rows=r;
                 })
-                .catch(function (err) {
-                    return res.json({state: -1})
-                });
-        })
-        .catch(function (err) {
-            console.log(err);
+        }).then(function () {//提交事务
+            return dbHolder.commitTransaction(result);
+        }).then(function () {
+            return res.json({state: 1, id: rows[0][fields.id]})
+        }).catch(function (err) {
+            console.log(err.stack);
             res.json({state: -1})
         });
 };
@@ -109,12 +116,10 @@ exports._delete = function (req, res, next) {
             return dbHolder.commitTransaction(result);
         })
         .then(function () {
-            result.db.close();
             return res.json({state: 1});
         })
         .catch(function (err) {
             console.log(err);
-            if (result && result.db) result.db.close();
             return res.json({state: -1});
         })
 };

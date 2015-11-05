@@ -1,7 +1,10 @@
+var MODE_MARKDOWN=1;
+var MODE_TEXT=2;
+
 var isResizing = false;
 var downX;
 var isRendering = false;//是否正在渲染
-var mode = 1;//编辑模式
+var mode = MODE_MARKDOWN;//编辑模式
 
 var lastTagVal = 0;
 var isInputting = false;//是否正在编辑区输入
@@ -117,18 +120,18 @@ $(function () {
     //监听编辑模式
     selectMode.change(function () {
         var m = selectMode.val();
-        if (m == 1) {//markdown
-            mode = 1;
+        if (m == MODE_MARKDOWN) {//markdown
+            mode = MODE_MARKDOWN;
             $('#btn-add-img').show();
             $('#btn-add-html').show();
             $('.input-container').css({background: 'whitesmoke'})
-        } else if (m == 2) {//文本模式
-            mode = 2;
+        } else if (m == MODE_TEXT) {//文本模式
+            mode = MODE_TEXT;
             $('#btn-add-img').hide();
             $('#btn-add-html').hide();
             $('.input-container').css({background: 'white'})
         } else {
-            selectMode.val(1);
+            selectMode.val(MODE_MARKDOWN);
             $('.input-container').css({background: 'whitesmoke'})
         }
         previewPassage(preview, textarea);
@@ -176,7 +179,7 @@ var setLayout = function () {
     } else {//关闭预览情况
         height = $(window).height();
         width = $(window).width();
-        editHeight = height - $('.topbar-container').height();
+        editHeight = height - $('.topbar-container').height() - $('.toolsbar-container').height();
         $(".edit-container").height(editHeight).width(width);
         $(".input-container").height(editHeight).width(width - 27).show();
         $(".preview-container").height(editHeight).width(27);
@@ -271,6 +274,7 @@ var publish = function () {
         type: 'POST', url: "/api/_publish", dataType: 'json',
         data: {title: title, markdown: markdown, tag: tag, mode: mode,status:status},
         success:  function (res) {
+            console.log(res)
             var v = res;
             if (v.state > 0) {
                 if (v.id) {
@@ -336,7 +340,7 @@ var previewPassage = function (preview, textarea) {
     if (!isPreview) return;
     preview = preview || $('.preview');
     textarea = textarea || $('.textarea');
-    if (mode == 2) {//纯文本
+    if (mode == MODE_TEXT) {//纯文本
         preview.html('<pre style="background: white;border: none;padding-top: 0px;">' + formatHTML(textarea.val()) + '</pre>');
     } else {
         preview.html(marked(textarea.val()));
@@ -351,7 +355,7 @@ function addImgOrHtml(name, fileName) {
     var container = $('.textarea');
     var text = container.val();
     if (/\.(htm|html)$/i.test(fileName)) {
-        container.val(text + '\n' + '<iframe style="width:100%;height:200px" src="' + downloadUrl + '/' + name + '"/>');
+        container.val(text + '\n' + '<iframe style="width:100%;height:200px" src="' + downloadUrl + '/' + name + '"></iframe>');
     } else {
         container.val(text + '\n' + '![img](' + downloadUrl + '/' + name + ' "' + fileName + '")');
     }
@@ -361,30 +365,11 @@ function addImgOrHtml(name, fileName) {
 
 //上传组件初始化
 $(function () {
-    var domain = $('#upload-domain').text().trim();
-    var isUploading = false;
-    var auto_start = true;//立即上传
-    var options = {
-        filters: {
-            mime_types: [ //只允许上传图片
-                {title: "Image files", extensions: "jpg,bmp,png,jpeg,gif"}
-            ],
-            max_file_size: '4mb', //最大只能上传2mb的文件
-            prevent_duplicates: true //不允许选取重复文件
-        },
-        runtimes: 'html5,flash,html4',
-        browse_button: 'pickfiles',
-        container: 'btn-add-img',
-        drop_element: 'drop_element',//拖拽区id
-        max_file_size: '4mb',
-        flash_swf_url: '/js/upload/Moxie.swf',
-        dragdrop: true,
-        chunk_size: '4mb',
-        multi_selection: false,//一次只能上传一张图片
-        init: {
+
+    var getUploaderInit=function(){
+        var init={
             'FilesAdded': function (up, files) {
                 if(isBusy) return;
-
                 $('#dialog').show();
                 $('#content').html('<div class="upload-info" style="width: 300px">正在上传<br>' + files[0].name + '</div>' +
                     '<div class="upload-progress"></div>');
@@ -415,9 +400,10 @@ $(function () {
                 console.log(file.percent + "%")
             },
             'UploadComplete': function () {
-                console.log('complete')
+                console.log(arguments)
             },
             'FileUploaded': function (up, file, info) {
+                console.log(info)
                 isUploading = false;
 
                 if (info.response && JSON.parse(info.response).failed) {//上传到本地服务器时，如果上传失败会返回错误信息
@@ -437,7 +423,30 @@ $(function () {
                 uploaderHtml.splice(0, 10);//从队列中移出
                 console.log(errTip);
             }
-        }
+        };
+        return init;
+    };
+
+    var domain = $('#upload-domain').text().trim();
+    var isUploading = false;
+    var auto_start = true;//立即上传
+    var options = {
+        filters: {
+            mime_types: [ //只允许上传图片
+                {title: "Image files", extensions: "jpg,bmp,png,jpeg,gif"}
+            ],
+            max_file_size: '4mb', //最大只能上传2mb的文件
+            prevent_duplicates: true //不允许选取重复文件
+        },
+        runtimes: 'html5,flash,html4',
+        browse_button: 'pickfiles',
+        container: 'btn-add-img',
+        drop_element: 'drop_element',//拖拽区id
+        max_file_size: '4mb',
+        flash_swf_url: '/js/upload/Moxie.swf',
+        dragdrop: true,
+        chunk_size: '4mb',
+        multi_selection: false,//一次只能上传一张图片
     };
 
     var uploader, uploaderHtml;
@@ -445,21 +454,24 @@ $(function () {
         options.uptoken_url = '/api/_token';
         options.domain = domain;
         options.unique_names = true;//唯一名称
+        options.init=getUploaderInit();
         uploader = Qiniu.uploader(options);
 
         //插入html
         options.filters = {
             mime_types: [ //只允许上传图片
-                {title: "Image filess", extensions: "html,htm"}
+                {title: "html files", extensions: "html,htm"}
             ],
             max_file_size: '4mb', //最大只能上传2mb的文件
             prevent_duplicates: true //不允许选取重复文件
         };
         options.browse_button = 'pickhtml';
+        options.init=getUploaderInit();
         uploaderHtml = Qiniu.uploader(options);
 
     } else {//上传到服务器端
         options.url = '/api/_upload';
+        options.init=getUploaderInit();
         uploader = new plupload.Uploader(options);
         uploader.init();
 
@@ -472,7 +484,7 @@ $(function () {
             prevent_duplicates: true //不允许选取重复文件
         };
         options.browse_button = 'pickhtml';
-
+        options.init=getUploaderInit();
         uploaderHtml = new plupload.Uploader(options);
         uploaderHtml.init();
     }

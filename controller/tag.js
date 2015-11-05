@@ -34,7 +34,6 @@ exports._add_tag=function(req,res,next){
                 })
         })
         .then(function(rows){
-            result.db.close();
             for(var i=0;i<rows.length;i++)
                 tagObj[rows[i].f_id]=rows[i].f_name;
             DC.tags=tagObj;
@@ -42,7 +41,6 @@ exports._add_tag=function(req,res,next){
         })
         .catch(function(err){
             console.log(err);
-            if(result&&result.db)  result.db.close();
             return res.json({state:-1});
         })
 };
@@ -101,14 +99,12 @@ exports._delete_tag=function(req,res,next){
            return dbHolder.commitTransaction(result);
         })
         .then(function(){
-            result.db.close();
             delete DC.tags[i];
             console.log(DC.tags)
             res.json({state:1});
         })
         .catch(function(err) {
             console.log(err)
-            if(result&&result.db)  result.db.close();
             return res.json({state: -1});
         })
 };

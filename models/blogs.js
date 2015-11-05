@@ -120,6 +120,7 @@ var getByTag = function (condition, offset, count, result) {
 
 //获取最新文章
 var getLast = function (condition,offset, count, result) {
+    if(!condition) condition={};
     if (!offset || offset < 0) offset = 0;
     if (!count || count < 1) count = 1;
     var _select = function (result) {

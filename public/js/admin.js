@@ -69,8 +69,8 @@ function modifyInfo() {
     $('#content').html(html);
     enter.click(function () {
         finishModifyInof();
-    })
-    $('#dialog').css({display: "block"})
+    });
+    $('#dialog').show();
 }
 
 var modify_upload_policy = function (policy) {
