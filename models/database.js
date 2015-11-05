@@ -51,7 +51,10 @@ var tag = {
 var _open_db = function () {
     return new Promise(function (resolve, reject) {
         var db = new sqlite.Database(APP_PATH + "/data/myblog.sqlite3", function (err) {
-            if (err) return reject("vv" + err);
+            if (err) return reject(err);
+            //http://www.sqlite.org/c3ref/busy_timeout.html
+            //设置连接的等待时间，有效预防Error: SQLITE_BUSY: database is locked
+            db.configure("busyTimeout", 10000);//ms
             resolve({db: db});
         })
     });

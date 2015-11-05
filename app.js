@@ -37,10 +37,13 @@ app.use(function (req, res, next) {//记录访问量
         req.session.readedBlogId = [];//记录阅读过的文章id，避免重复增加阅读量
         DC.visits++;//访问量加1
         req.session.hasVisited = true;
-        maps.put('visits', DC.visits)
-            .catch(function (err) {
-                console.log(err);
-            });
+        //避免频繁写入，每增加10次访问量才写入数据库
+        if(DC.visits%10==0) {
+            maps.put('visits', DC.visits)
+                .catch(function (err) {
+                    console.log(err);
+                });
+        }
     }
     next();
 });
