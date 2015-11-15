@@ -16,14 +16,25 @@ $(document).ready(function(){
     }).blur(function(){
         if(_trim(user.val())=="")
             user.val("管理账号").css({color:"#aaa"})
-    })
+    });
     $('.passwd').focus(function(){
         $(".tip").html("")
-    })
+    });
     $('.btn-login').click(function(){
         verify()
-    })
-    user.focus()
+    });
+
+    $('input').bind('keyup', function(event) {
+        var event = event || window.event;
+        var code = event.keyCode || event.which || event.charCode;
+        if (code == 13) {
+            //回车
+            verify();
+        }
+    });
+
+    //获取焦点
+    user.focus();
 
 });
 
@@ -31,7 +42,7 @@ function verify(){
    var user=$(".user").val();
     var passwd=$(".passwd").val();
     if(!user||_trim(user)==""||user=='管理账号'){
-       $(".tip").html("名账号不能为空")
+       $(".tip").html("账号不能为空")
     }else if(passwd==""){
         $(".tip").html("密码不能为空")
     }else if(passwd.length<6){

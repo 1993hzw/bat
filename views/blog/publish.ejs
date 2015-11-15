@@ -14,7 +14,7 @@
     <% }else{ %>
     <title>新建文章</title>
     <% } %>
-    <link rel="stylesheet" href="/css/highlight/github.css">
+    <link rel="stylesheet" href="/public/css/highlight/github.css">
     <style type="text/css">
         <%- include ../../public/css/common.css%>
         <%- include ../../public/css/markdown.css%>
@@ -32,7 +32,7 @@
     <div class="topbar-container">
         <div class="bg">
             <a href="/">
-                <a href="/" class="logo"><img src="/img/logo.png" style="height: 60px;float: left"></a>
+                <a href="/" class="logo"><img src="/public/img/logo.png" style="height: 60px;float: left"></a>
             </a>
             <% if(!isEdit){ %>
             <div class="btn-new border-corner">新建</div>
@@ -139,12 +139,12 @@
     </div>
 </div>
 
-<script src="/js/external/jquery1.3.2.js"></script>
-<script type="text/javascript" src="/js/upload/plupload.full.min.js"></script>
-<script type="text/javascript" src="/js/upload/zh_CN.js"></script>
-<script type="text/javascript" src="/js/upload/qiniu.js"></script>
-<script src="/js/external/highlight.pack.js"></script>
-<script src="/js/external/marked.js"></script>
+<script src="/public/js/external/jquery1.3.2.js"></script>
+<script type="text/javascript" src="/public/js/upload/plupload.full.min.js"></script>
+<script type="text/javascript" src="/public/js/upload/zh_CN.js"></script>
+<script type="text/javascript" src="/public/js/upload/qiniu.js"></script>
+<script src="/public/js/external/highlight.pack.js"></script>
+<script src="/public/js/external/marked.js"></script>
 <script type="text/javascript">
     <%- include ../../public/js/common.js%>
     <%- include ../../public/js/publish.js%>

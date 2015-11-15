@@ -6,7 +6,7 @@
 
 
 process.on('uncaughtException', function(err) {//捕捉全局错误
-  console.log(err.stack);
+  console.error(err.stack);
 });
 
 var app = require('../app');

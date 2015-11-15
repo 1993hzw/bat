@@ -201,52 +201,62 @@ exports.gotoBlogList = function (req, res, next) {
     }
 };
 
-exports.gotoBlog = function (req, res, next) {
-    //res.end("is "+JSON.stringify(req));
-    var id = parseInt(req.path.substr(1));
-    if (!id || id <= 0) return res.redirect('/blogs');
-    blogs.getById(id)
-        .then(function (rows) {
-            var fields = dbHolder.blog;
-            var blog = rows[0];
+exports.gotoBlog = (function(){
+    var increments={};//博客访问量增加值
+    return function (req, res, next) {
+        var id = parseInt(req.path.substr(1));
+        if (!id || id <= 0) return res.redirect('/blogs');
+        blogs.getById(id)
+            .then(function (rows) {
+                var fields = dbHolder.blog;
+                var blog = rows[0];
 
-            //私密文章，未登录用户不可查看
-            if (blog[fields.status] == 1 && !req.session.hasLogined) {
-                return res.redirect('/blogs');
-            }
+                //私密文章，未登录用户不可查看
+                if (blog[fields.status] == 1 && !req.session.hasLogined) {
+                    return res.redirect('/blogs');
+                }
 
-            var time = utils.formatTime(blog[fields.insert_time]);
-            var data = {
-                id: blog[fields.id],
-                title: blog[fields.title],
-                brief: blog[fields.brief],
-                html: blog[fields.html],
-                tag: blog[fields.tags],
-                top: blog[fields.top],
-                visits: blog[fields.visits],
-                status: blog[fields.status],
-                time: time,
-                isLogined: req.session.hasLogined
-            };
-            data.tags = DC.tags;
+                var time = utils.formatTime(blog[fields.insert_time]);
+                var data = {
+                    id: blog[fields.id],
+                    title: blog[fields.title],
+                    brief: blog[fields.brief],
+                    html: blog[fields.html],
+                    tag: blog[fields.tags],
+                    top: blog[fields.top],
+                    visits: blog[fields.visits],
+                    status: blog[fields.status],
+                    time: time,
+                    isLogined: req.session.hasLogined
+                };
+                data.tags = DC.tags;
 
-            var isAddVisits = (req.session.readedBlogId.indexOf(id) == -1);
-            if (isAddVisits) req.session.readedBlogId.push(id);//记录阅读过的文章id，避免重复增加阅读量
-            //req.session赋值必须在返回前台之前操作
-            res.render('blog/blog', data);
-            return isAddVisits;
-        })
-        .then(function (isAddVisits) {
-            if (isAddVisits) {//增加阅读量
-                blogs.visitsIncrement(id)
-                    .catch(console.log)
-            }
-        })
-        .catch(function (err) {
-            console.log(err);
-            return res.redirect('/blogs')
-        })
-};
+                var isAddVisits = (req.session.readedBlogId.indexOf(id) == -1);
+                if (isAddVisits) req.session.readedBlogId.push(id);//记录阅读过的文章id，避免重复增加阅读量
+                //req.session赋值必须在返回前台之前操作
+                res.render('blog/blog', data);
+                return isAddVisits;
+            })
+            .then(function (isAddVisits) {
+                if (isAddVisits) {//增加阅读量
+                    if(increments[id]){
+                        increments[id]++;
+                    }else{//15s后再修改访问量
+                        increments[id]=1;
+                        setTimeout(function(){
+                            blogs.visitsIncrement(id,increments[id])
+                                .catch(console.log);
+                            increments[id]=undefined;//重新记录
+                        },15000);
+                    }
+                }
+            })
+            .catch(function (err) {
+                console.log(err);
+                return res.redirect('/blogs')
+            })
+    }
+})();
 
 exports.gotoPublish = function (req, res, next) {
     if (!req.session.hasLogined) return res.redirect("/");

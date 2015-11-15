@@ -16,7 +16,7 @@ $(function () {
         container: 'btn-add-img',
         drop_element: 'drop_element',//拖拽区id
         max_file_size: '4mb',
-        flash_swf_url: '/js/upload/Moxie.swf',
+        flash_swf_url: '/public/js/upload/Moxie.swf',
         dragdrop: true,
         chunk_size: '4mb',
         unique_names: true,//唯一名称

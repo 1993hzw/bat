@@ -3,7 +3,7 @@ var path=require('path');
 
 var parse=function(req,cb){
     var form = new formidable.IncomingForm();
-    form.uploadDir = APP_PATH+"/public/res";//存放目录
+    form.uploadDir = APP_PATH+"/public/res";//存放目录,默认为系统临时文件
     form.keepExtensions = true;//保留后缀名
     form.multiples = false;//一次上传一个文件
     form.prefix='bat_';//前缀

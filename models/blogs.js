@@ -319,10 +319,13 @@ var deleteById = function (id, result) {
         })
 };
 
-var visitsIncrement = function (id, result) {
+var visitsIncrement = function (id,increment, result) {
+    increment=increment||1;
     var _visits = function (result) {
         return new Promise(function (resolve, reject) {
-            var sql = "update " + fields.tableName + " set " + fields.visits + "=" + fields.visits + "+1 where " + fields.id + "=" + id;
+            var sql = "update " + fields.tableName +
+                " set " + fields.visits + "=" + fields.visits + "+"+ increment +
+                " where " + fields.id + "=" + id;
             result.db.run(sql, function (err) {
                 //if(err) return reject(err);
                 resolve(result);

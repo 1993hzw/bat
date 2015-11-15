@@ -351,7 +351,7 @@ var previewPassage = function (preview, textarea) {
 //在编辑框添加图片或html
 function addImgOrHtml(name, fileName) {
     if (mode == 2) return;//文本模式
-    var downloadUrl = ($('#upload-domain').text().trim()) || location.protocol + '//' + location.host + '/res';
+    var downloadUrl = ($('#upload-domain').text().trim()) || location.protocol + '//' + location.host + '/public/res';
     var container = $('.textarea');
     var text = container.val();
     if (/\.(htm|html)$/i.test(fileName)) {
@@ -441,10 +441,10 @@ $(function () {
         runtimes: 'html5,flash,html4',
         browse_button: 'pickfiles',
         container: 'btn-add-img',
-        drop_element: 'drop_element',//拖拽区id
+        //drop_element: 'drop_element',//拖拽区id
         max_file_size: '4mb',
-        flash_swf_url: '/js/upload/Moxie.swf',
-        dragdrop: true,
+        flash_swf_url: '/public/js/upload/Moxie.swf',
+        dragdrop: false,//禁止拖拽
         chunk_size: '4mb',
         multi_selection: false,//一次只能上传一张图片
     };

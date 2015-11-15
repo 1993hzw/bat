@@ -7,4 +7,5 @@ router.get('/publish', blog.gotoPublish);
 router.get('/edit', blog.gotoEdit);
 
 
+
 module.exports = router;

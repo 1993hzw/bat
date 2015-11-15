@@ -21,6 +21,7 @@
     "qiniu": "~6.1.8",
     "formidable": "~1.0.17",
     "marked": "~0.3.5",
-    "highlight.js": "~8.7.0"
+    "highlight.js": "~8.7.0",
+    "lru-cache": "~2.7.0"
   }
 }
