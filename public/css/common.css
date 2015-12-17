@@ -2,9 +2,15 @@
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
-    word-wrap: break-word;/*允许长单词换行到下一行：*/
-    /*word-break:break-all; /!*任意*!/*/
+    word-wrap: break-word;/*允许长单词换行到下一行，如果下一行也不能容纳则断开*/
+    word-break:break-all; /*不换到下一行，直接断开*/
     font-family: "Microsoft YaHei", Verdana, sans-serif, "SimSun";
+}
+
+body,html{
+    width: 100%;
+    height: 100%;
+    min-width: 320px;
 }
 
 body {
@@ -13,11 +19,15 @@ body {
     border: 0;
     border: none;
     outline: none;
-    width: 100%;
-    height: 100%;
-    font-size: 14px;
     overflow-x: hidden;
+    font-size: 14px;
 }
+
+pre{
+    /* 保留空白，正常换行*/
+    white-space: pre-wrap;
+}
+
 a{
     color: black;
     outline: none;

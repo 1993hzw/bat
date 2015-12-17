@@ -76,6 +76,7 @@ router.get('/', (function(){
                     data.tags = DC.tags;
                     data.visits = DC.visits;
                     data.formatTime = utils.formatTime;
+                    data.formatHtml = utils.formatHTML;
                     data.name = DC.admin.name;
                     data.email = DC.admin.email;
                     data.blog = DC.admin.blog;

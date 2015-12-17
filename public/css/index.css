@@ -55,8 +55,10 @@
     padding-left: 30px;
 }
 .tag-item{
+    height: 35px;
     margin: 5px;
-    padding: 8px 10px 8px 10px;
+    padding: 0 10px;
+    line-height: 35px;
     background: lightgreen;
     display: table;
     float: left;
@@ -69,7 +71,6 @@
 .blog-item{
     width: 100%;
     height: auto;
-    /*background: bisque;*/
     padding: 15px;
     padding-left: 10px;
     padding-right:10px ;
@@ -90,6 +91,7 @@
 }
 .blog-brief{
     padding-top: 10px;
+    font-size: 14px;
 }
 .blog-details{
     padding-top: 10px;
@@ -113,7 +115,7 @@
 }
 .hotblogs-item{
     color: cornflowerblue;
-    padding-bottom: 5px;
+    padding-bottom: 8px;
     font-size: 16px;
 }
 .hotblogs-item:hover{
@@ -178,5 +180,15 @@
     .btn-new{
         float: right;
         margin-right: 10px;
+    }
+
+    .tag-item:hover{
+        background: lightgreen;
+    }
+    .blog-title:hover{
+        color: #333;
+    }
+    .hotblogs-item:hover{
+        color: cornflowerblue;
     }
 }

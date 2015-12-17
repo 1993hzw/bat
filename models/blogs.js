@@ -13,9 +13,10 @@ var add = function (data, result) {
                 fields.markdown + ',' +
                 fields.html + ',' +
                 fields.mode + ',' +
-                fields.tags + ') values (?,?,?,?,?,?,?)';
+                fields.status + ',' +
+                fields.tags + ') values (?,?,?,?,?,?,?,?)';
             var time = utils.getTime();
-            var arr = [time, data[fields.title], data[fields.brief], data[fields.markdown], data[fields.html], data[fields.mode], data[fields.tags]];
+            var arr = [time, data[fields.title], data[fields.brief], data[fields.markdown], data[fields.html], data[fields.mode], data[fields.status], data[fields.tags]];
             result.db.run(sql, arr, function (err) {
                 if (err) return reject(err);
                 resolve(result);

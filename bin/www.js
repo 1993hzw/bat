@@ -9,6 +9,10 @@ process.on('uncaughtException', function(err) {//捕捉全局错误
   console.error(err.stack);
 });
 
+process.on('exit', function(code) {//退出进程
+  process.exit(code);
+});
+
 var app = require('../app');
 var debug = require('debug')('myblog:server');
 var http = require('http');

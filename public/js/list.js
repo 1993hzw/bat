@@ -4,25 +4,22 @@ $(document).ready(function(){
         if(isLoading) return;
         $(".btn-more").text("加载中")
         getBlogs();
-    })
+    });
     if(checkIsPC())
         $(window).resize(function(){
             setLayout()
-        })
+        });
     setLayout();
-    setTimeout(function(){
-        //setLayout()
-    },1000)
 
-})
+});
 
 
 var setLayout= function () {
-    //var marginTop=$('.other-tags-container').height()-$('.cur-tag').height()*3/2;
-    var width=$('.tags-container').width()-$('.cur-tag').width()-85
-    //alert($(window).width()+" "+$('.tags-container').width()+"  "+$('.cur-tag').width())
-    $('.other-tags-container').width(width)
-    $('.cur-tag').css({height:$('.other-tags-container').height()+1,paddingTop:$('.other-tags-container').height()/2-10})
+    var width=$('.tags-container').width()-$('.cur-tag').width()-85;
+    $('.other-tags-container').width(width);
+    var h=$('.other-tags-container').height();
+    $('.cur-tag').height(h+1);
+    $('.cur-tag').css({lineHeight:h+'px'})
 }
 
 var length=0;

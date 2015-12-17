@@ -17,15 +17,16 @@
         <a href="/"><img src="/public/img/logo.png" class="logo"></a>
 
         <div class="name">Bat&nbsp;博客系统</div>
-         <img class="btn-logout"  title="注销" src="/public/img/logout.png" >
+        <img class="btn-logout" title="注销" src="/public/img/logout.png">
         <a href="/blogs/publish">
-            <div class="btn-new"  title="新建文章">+</div>
+            <div class="btn-new" title="新建文章">+</div>
         </a>
+
         <div class="clearFloat"></div>
     </div>
     <div class="content">
         <div class="seperator">博客信息</div>
-        <div style="display: none" id="blog-info"><%= JSON.stringify(admin,['blog','name','email','user'])%></div>
+        <div style="display: none" id="blog-info"><%= JSON.stringify(admin, ['blog', 'name', 'email', 'user']) %></div>
         <div class="inof-container">
             <div class="info-item"><span class="info-item-key">博客名称</span><%= admin.blog %></div>
             <div class="info-item"><span class="info-item-key">姓名</span><%= admin.name %></div>
@@ -37,15 +38,17 @@
         <div class="seperator">上传策略</div>
         <div class="upload-policy">
             <div class="upload-policy-cur">
-                <% if(policy==1){%>
+                <% if(policy == 1){ %>
                 <div>当前策略：上传到第三方（<a target="_blank" href="http://www.qiniu.com/" style="color: #0066ee">七牛</a>）</div>
-                <div>域名：<span id="domain"><%= domain%></span></div>
-                <div>空间名：<span id="bucket"><%= bucket%></span></div>
-                <% }else{%>
+                <div>域名：<span id="domain"><%= domain %></span></div>
+                <div>空间名：<span id="bucket"><%= bucket %></span></div>
+                <% }else{ %>
                 <div>当前策略：上传到本地服务器</div>
-                <% }%>
-                <div class="btn-modify-info" style="line-height: normal" onclick="modify_upload_policy(<%= policy%>)">修改</div>
-            <div class="clearFloat"></div>
+                <% } %>
+                <div class="btn-modify-info" style="line-height: normal" onclick="modify_upload_policy(<%= policy %>)">
+                    修改
+                </div>
+                <div class="clearFloat"></div>
             </div>
             <div class="upload-policy-info">
 
@@ -56,14 +59,16 @@
         <div>
             <!--<input type="button" value="上传数据库" class="btn" onclick="upload_db_to_qiniu()">
             <input type="button" value="下载数据库" class="btn" onclick="download_db_from_qiniu()">-->
-            <a href="/api/_download_db"><input type="button" value="导出数据库" class="btn"></a>
+            <a href="/api/_download_db">
+                <div class="btn">导出数据库</div>
+            </a>
         </div>
         <div class="seperator">标签</div>
         <div>
             <% for(var i in tags){ %>
             <div class="tag-item">
                 <div class="tag-option">
-                    <% if(i!=1){ %>
+                    <% if(i != 1){ %>
                     <span class="tag-option-item rename" onclick="renameTag(<%= i %>,'<%= tags[i] %>')">重命名</span>
                     <span class="tag-option-item delete" onclick="deleteTag(<%= i %>,'<%= tags[i] %>')">删除</span>
                     <% } %>
@@ -72,20 +77,24 @@
             </div>
             <% } %>
             <div class="tag-item">
-                <div class="add-tag" onclick="addTag()"  title="新增标签">+</div>
+                <div class="add-tag" onclick="addTag()" title="新增标签">+</div>
             </div>
             <div class="clearFloat"></div>
         </div>
         <div class="seperator">评论</div>
-        <select class="select-comment">
+        <select class="select-comment border-corner">
             <option value="1">未回复</option>
             <option value="2">已回复</option>
         </select>
+
         <div class="comment-container"></div>
-        <div class="more-blogs-container"><div class="btn-more">加载更多</div></div>
-        <div class="seperator">关于 Bat </div>
+        <div class="more-blogs-container">
+            <div class="btn-more">加载更多</div>
+        </div>
+        <div class="seperator">关于 Bat</div>
         <div>
-            <a href="https://github.com/1993hzw/bat" target="_blank" style="color: blue">https://github.com/1993hzw/bat</a>
+            <a href="https://github.com/1993hzw/bat" target="_blank"
+               style="color: blue">https://github.com/1993hzw/bat</a>
         </div>
         <br><br>
     </div>

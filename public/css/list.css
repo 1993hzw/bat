@@ -53,6 +53,7 @@
     /*background: bisque;*/
     padding: 20px;
     border-bottom: 1px solid antiquewhite;
+    font-size: 14px;
 }
 .blog-title{
     display: inline-block;
@@ -89,9 +90,11 @@
     padding-left: 10px;
 }
 .tag-item{
+    height: 35px;
     margin-left: 3px;
     margin-top: 3px;
-    padding: 8px 10px 8px 10px;
+    padding: 0 10px;
+    line-height: 35px;
     background: lightgreen;
     display: table;
     float: left;
@@ -109,9 +112,8 @@
     font-size: 20px;
     font-weight: bolder;
     margin-left: 20px;
-    padding: 8px 15px 8px 15px;
+    padding: 0px 15px 0px 15px;
     background: green;
-    display: table;
     text-align: center;
 }
 .more-blogs-container{
@@ -143,5 +145,11 @@
     .blog-item{
         padding-left: 10px;
         padding-right: 10px;
+    }
+    .blog-title:hover{
+        color: #333;
+    }
+    .tag-item:hover{
+        background: lightgreen;
     }
 }

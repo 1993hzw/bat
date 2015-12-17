@@ -5,15 +5,15 @@ var fields = dbholder.map;
 var map;//在内存中存放map数据
 
 //初始化，在内存中存放map数据
-var _init = function () {
-    return getall()
+var _init = function (result) {
+    return getall(result)
         .then(function (rows) {
             map={};
             for (var i = 0; i < rows.length; i++) {
                 map[rows[i].key] = rows[i].value;
             }
         })
-}
+};
 
 var put = function (key, value, result) {
     var _insert = function (result) {

@@ -77,12 +77,12 @@ var modify_upload_policy = function (policy) {
     var enter = $('#enter');
     enter.unbind('click');
     var html = '<div style="text-align: left;font-size: 16px;">' +
-            '<div id="upload_policy_tip" style="color: red;height: 20px;padding: 0px 15px;margin-bottom: 3px"></div>'+
+        '<div id="upload_policy_tip" style="color: red;height: 20px;padding: 0px 15px;margin-bottom: 3px"></div>' +
         '<div><input type="radio" name="select-upload-policy" id="upload-policy1" value="1"><label for="upload-policy1">' +
         '上传到第三方（<a href="http://www.qiniu.com" target="_blank" style="color: dodgerblue">七牛</a>）</label><span style="color: lawngreen;">推荐</span></div>' +
         '<div style="padding-left: 15px;font-weight: normal;font-size: 14px;display: none" id="upload-policy1-items">' +
-        '<div class="upload-policy1-item"><div>域&nbsp;名</div><div><input id="upload-policy-domain" type="text" value="'+($('#domain').text()||'http://')+'"></div></div>' +
-        '<div class="upload-policy1-item"><div>空间名(bucket)</div><div><input id="upload-policy-bucket" type="text"  value="'+($('#bucket').text()||'')+'"></div></div>' +
+        '<div class="upload-policy1-item"><div>域&nbsp;名</div><div><input id="upload-policy-domain" type="text" value="' + ($('#domain').text() || 'http://') + '"></div></div>' +
+        '<div class="upload-policy1-item"><div>空间名(bucket)</div><div><input id="upload-policy-bucket" type="text"  value="' + ($('#bucket').text() || '') + '"></div></div>' +
         '<div class="upload-policy1-item"><div>ACCESS_KEY</div><div><input id="upload-policy-access" type="text"></div></div>' +
         '<div class="upload-policy1-item"><div>SECRET_KEY</div><div><input id="upload-policy-secret" type="text"></div></div>' +
         '</div>' +
@@ -92,63 +92,63 @@ var modify_upload_policy = function (policy) {
         '<br>' +
         '</div>';
     $('#content').html(html);
-    $('input[name="select-upload-policy"]').change(function(){
+    $('input[name="select-upload-policy"]').change(function () {
         var p = $('input[name="select-upload-policy"]:checked').val();
-        if(p==1) {
+        if (p == 1) {
             $('#upload-policy1-items').show();
-        }else{
+        } else {
             $('#upload-policy1-items').hide();
             $('#upload_policy_tip').text('');
         }
     });
-    $('.upload-policy1-item input').focus(function(){
+    $('.upload-policy1-item input').focus(function () {
         $('#upload_policy_tip').text('');
     });
-    $('input[name="select-upload-policy"][value="'+policy+'"]').attr('checked',true).change();
-    var isSavingPolicy=false;
+    $('input[name="select-upload-policy"][value="' + policy + '"]').attr('checked', true).change();
+    var isSavingPolicy = false;
     enter.click(function () {
-        if(isSavingPolicy) return;
-        isSavingPolicy=true;
-        var tip=$('#upload_policy_tip');
+        if (isSavingPolicy) return;
+        isSavingPolicy = true;
+        var tip = $('#upload_policy_tip');
         var p = $('input[name="select-upload-policy"]:checked').val();
-        var data={};
-        data.policy=p;
-       if(p==1){
-           var domain=$('#upload-policy-domain').val().trim();
-           var bucket=$('#upload-policy-bucket').val().trim();
-           var access=$('#upload-policy-access').val().trim();
-           var secret=$('#upload-policy-secret').val().trim();
-           if(domain==''||domain.trim()=='http://'){
-               isSavingPolicy=false;
-               return tip.text('域名不能为空');
-           }else if(bucket==''){
-               isSavingPolicy=false;
-               return tip.text('空间名不能为空');
-           }else if(access==''){
-               isSavingPolicy=false;
-               return tip.text('ACCESS_KEY不能为空');
-           }else if(secret==''){
-               isSavingPolicy=false;
-               return tip.text('SECRET_KEY不能为空');
-           }else{
-               data.domain=domain;
-               data.bucket=bucket;
-               data.access=access;
-               data.secret=secret;
-           }
-       }
-        $.post('/api/_save_upload_policy',data,function(res){
-            var v=JSON.parse(res);
-            if(v.state>0){
+        var data = {};
+        data.policy = p;
+        if (p == 1) {
+            var domain = $('#upload-policy-domain').val().trim();
+            var bucket = $('#upload-policy-bucket').val().trim();
+            var access = $('#upload-policy-access').val().trim();
+            var secret = $('#upload-policy-secret').val().trim();
+            if (domain == '' || domain.trim() == 'http://') {
+                isSavingPolicy = false;
+                return tip.text('域名不能为空');
+            } else if (bucket == '') {
+                isSavingPolicy = false;
+                return tip.text('空间名不能为空');
+            } else if (access == '') {
+                isSavingPolicy = false;
+                return tip.text('ACCESS_KEY不能为空');
+            } else if (secret == '') {
+                isSavingPolicy = false;
+                return tip.text('SECRET_KEY不能为空');
+            } else {
+                data.domain = domain;
+                data.bucket = bucket;
+                data.access = access;
+                data.secret = secret;
+            }
+        }
+        $.post('/api/_save_upload_policy', data, function (res) {
+            var v = JSON.parse(res);
+            if (v.state > 0) {
                 location.href = '/bat';
-            }else{
-                if(v.state==-10){
+            } else {
+                if (v.state == -10) {
                     tip.text('填写的信息有误，无法上传文件');
-                }else{
+                } else {
                     alert(res);
                 }
             }
-            isSavingPolicy=false;
+            isSavingPolicy = false;
         })
     });
     $('#dialog').show();
@@ -265,10 +265,11 @@ var rename = function (name) {
     }
 }
 
+//删除标签
 var del = function (name) {
     if (isBusy) return;
     isBusy = true;
-    $.post('/api/_delete_tag', {tagSrc: name}, function (res) {
+    $.post('/api/_delete_tag', {tag: name}, function (res) {
         var v = JSON.parse(res);
         if (v.state > 0) {
             location.href = "/bat";
@@ -397,10 +398,10 @@ function getComment(id) {
             var replayHtml = '';
             if (c.f_reply) {
                 replayHtml = '<div class="textarea-replay">' + c.f_reply + '</div>' +
-                    '<input type="button" value="已回复" class="btn-replayed"><span class="replayed-time">' + formatTime(c.f_modify_time) + '</span>';
+                    '<div class="btn-replayed">已回复</div><span class="replayed-time">' + formatTime(c.f_modify_time) + '</span>';
             } else {
                 replayHtml = '<textarea class="textarea-replay"></textarea>' +
-                    '<input type="button" value="回复" class="btn-replay" onclick="replay(' + c.f_id + ')">';
+                    '<div class="btn-replay" onclick="replay(' + c.f_id + ')">回复</div>';
             }
             var html = '<div class="dialog-comment-details-container">' +
                 '<div class="dialog-comment-details-time">' + formatTime(c.f_insert_time) + '&nbsp;&nbsp;' + c.f_contact + '</div>' +

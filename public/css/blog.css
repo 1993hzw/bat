@@ -141,11 +141,14 @@
 .btn-send{
     cursor: pointer;
     border: none;
-    outline: none;font-size: 16px;
+    outline: none;
+    font-size: 16px;
     float: right;
     width: 120px;
     height: 30px;
-    background: cornflowerblue;
+    background: #6495ED;
+    text-align: center;
+    line-height: 30px;
 }
 .btn-send:hover{
     background: deepskyblue;

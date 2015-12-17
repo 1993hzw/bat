@@ -58,6 +58,8 @@
     background: cornflowerblue;
     width: 100%;
     height: 40px;
+    line-height: 40px;
+    text-align: center;
     font-size: 18px;
     font-weight: bold;
 }
@@ -80,5 +82,9 @@
 
     .name {
         margin-left: 10px;
+    }
+
+    .form-login {
+        margin-top: 100px;
     }
 }

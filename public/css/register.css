@@ -57,6 +57,8 @@ body{
     border: none;
     outline: none;
     height: 40px;
+    line-height: 40px;
+    text-align: center;
     cursor: pointer;
     background: cornflowerblue;
 }
@@ -69,4 +71,11 @@ body{
     color: red;
     margin: 3px 0;
     text-align: right;
+}
+
+@media (max-width: 800px) {
+    .form-container{
+        padding-top: 20px;
+
+    }
 }

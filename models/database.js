@@ -158,6 +158,7 @@ var _beginTransaction = function (result) {
 
 //提交事务
 var _commitTransaction = function (result) {
+    if(!result) return;
     return new Promise(function (resolve, reject) {
         result.db.run("COMMIT", function (err) {
             if (err) return reject(err);
@@ -204,8 +205,12 @@ var _addColumns = function (result, table,col,type_retrain) {
     })
 };
 
-var initDB = function () {
-    return _open_db()
+var initDB = function (result) {
+    return Promise.resolve()
+        .then(function(){
+            if(result) return Promise.resolve(result);
+            return _open_db();
+        })
         .then(_createBlogTable)
         .then(_createCommentTable)
         .then(_createTagTable)

@@ -44,13 +44,13 @@ for(var i in tags) {
                 <% } %>
                 <div style="clear: both"></div>
             </div>
-            <div style="display: table;padding-top: 20px">
                 <div class="seperator">最新文章</div>
                 <div class="blogs-list-container">
-
                     <% for(var i=0;i<rows.length;i++){ %>
-                    <div class="blog-item">
-                        <a href="/blogs/<%= rows[i].f_id %>"><div class="blog-title"><%= rows[i].f_title %></div></a>
+                       <div class="blog-item">
+                        <a href="/blogs/<%= rows[i].f_id %>">
+                            <div class="blog-title"><%= rows[i].f_title %></div>
+                        </a>
                         <div class="blog-brief"><%= rows[i].f_brief %></div>
                         <div class="blog-details">
                             <span class="blog-tags" title="标签"><%= tags[rows[i].f_tags] %></span>|
@@ -59,9 +59,7 @@ for(var i in tags) {
                         </div>
                         </div>
                     <% } %>
-
                 </div>
-            </div>
         </div>
         <div class="right">
             <div>

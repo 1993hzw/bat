@@ -24,6 +24,10 @@ $(function () {
     setLayout();
     previewPassage(preview, textarea);
 
+    window.onbeforeunload = function(){
+        return "内容没有保存，确定离开该页面？";
+    };
+
     //渲染预览区
     var render = function () {
         if (!isInputting || !isPreview) return;

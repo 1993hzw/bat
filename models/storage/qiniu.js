@@ -5,16 +5,32 @@ var Promise = require('bluebird');
 var resource_bucket="";
 var domain='';//resources
 
-function init(data,cb){
-    resource_bucket=data.bucket;
-    domain=data.domain;
-    qiniu.conf.ACCESS_KEY=data.access;
-    qiniu.conf.SECRET_KEY=data.secret;
+function _init(opts){
+    resource_bucket=opts.bucket;
+    domain=opts.domain;
+    qiniu.conf.ACCESS_KEY=opts.access;
+    qiniu.conf.SECRET_KEY=opts.secret;
+}
+
+//设置参数
+function setOptions(opts,cb){
     if(cb){//检测是否可以成功上传
+        var o={//保存原来配置
+            bucket:resource_bucket,
+            domain:domain,
+            access:qiniu.conf.ACCESS_KEY,
+            secret:qiniu.conf.SECRET_KEY
+        };
+        _init(opts);
         uploadFile(APP_PATH+'/public/img/logo.png','upload_test_logo.png',
             getToken(resource_bucket),function(err){
-            return cb(err);
+                if(err){
+                   _init(o);//设置无效，还原配置
+                }
+               return cb(err);
         })
+    }else{
+        _init(opts);
     }
 }
 
@@ -63,4 +79,4 @@ exports.downloadUrl=downloadUrl;
 exports.getBucket=getBucket;
 exports.getDomain=getDomain;
 
-exports.init=init;
+exports.setOptions=setOptions;

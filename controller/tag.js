@@ -73,27 +73,28 @@ exports._rename_tag=function(req,res,next){
     if(!hasFound) return res.json({state:-1});
 };
 
-//post 删除标签
+//post 删除标签，默认标签不可删除
 exports._delete_tag=function(req,res,next){
-    var tagSrc=req.body.tagSrc;
-    if(!tagSrc||tagSrc=='默认') return res.json({state:-1})
-    var tagSrcId;
+    var tag=req.body.tag;
+    if(!tag||tag=='默认') return res.json({state:-1});
+    var tagId;
     for(var i in DC.tags){
-        if(tagSrc==DC.tags[i]){
-             tagSrcId=i;
+        if(tag==DC.tags[i]){
+             tagId=i;
             break;
         }
     }
-    if(tagSrcId==undefined||tagSrcId==1) return res.json({state:-1})
+    if(tagId==undefined||tagId==1) return res.json({state:-1});
     var result;
     dbHolder.openDB()
         .then(dbHolder.beginTransaction)
         .then(function(res){
             result=res;
-            return blogs.modifyTags(tagSrcId,1,result);
+            //删除标签前，该标签下的文章移到默认标签下
+            return blogs.modifyTags(tagId,1,result);
         })
         .then(function(){
-            return tags.deleteById(tagSrcId,result)
+            return tags.deleteById(tagId,result)
         })
         .then(function(){
            return dbHolder.commitTransaction(result);

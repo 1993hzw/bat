@@ -29,7 +29,7 @@ exports._publishBlog = function (req, res, next) {
         brief = htmlToText.fromString(data[fields.html], {wordwrap: 130}).substr(0, 150);
     } else {//文本模式,对内容进行html标签转义
         var html = utils.formatHTML(req.body.markdown);
-        data[fields.html] = '<pre style="background: white;border: none;padding-top: 0px;">' + html + '</pre>';
+        data[fields.html] = '<pre style="border: none;padding-top: 0px;">' + html + '</pre>';
         brief = html.substr(0, 150);
     }
 
@@ -45,14 +45,16 @@ exports._publishBlog = function (req, res, next) {
         }).then(function(){
             return blogs.add(data,result);
         }).then(function () {
+            //获取新插入文章的id
             return blogs.getLast({},0,1,result)
-                .then(function (r) {//返回文章id
+                .then(function (r) {
                     rows=r;
                 })
         }).then(function () {//提交事务
             return dbHolder.commitTransaction(result);
         }).then(function () {
-            return res.json({state: 1, id: rows[0][fields.id]})
+            //返回文章id
+            return res.json({state: 1, id: rows[0][fields.id]});
         }).catch(function (err) {
             console.log(err.stack);
             res.json({state: -1})
@@ -80,7 +82,7 @@ exports._save = function (req, res, next) {
         brief = htmlToText.fromString(data[fields.html], {wordwrap: 130}).substr(0, 150);
     } else {//文本模式
         var html = utils.formatHTML(req.body.markdown);
-        data[fields.html] = '<pre style="background: white;border: none;padding-top: 0px;">' + html + '</pre>';
+        data[fields.html] = '<pre style="border: none;padding-top: 0px;">' + html + '</pre>';
         brief = html.substr(0, 150);
     }
 

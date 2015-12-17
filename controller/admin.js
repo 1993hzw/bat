@@ -102,6 +102,7 @@ exports.register=function (req, res, next) {
         })
 };
 
+//修改上传策略
 exports._save_upload_policy=function(req,res,next){
     var policy=req.body.policy;
     var domain=req.body.domain||'';
@@ -111,22 +112,30 @@ exports._save_upload_policy=function(req,res,next){
     if(policy!=1&&policy!=2){
         return res.json({state:-2});
     }
+    //qiniu
     if(policy==1){
         if(domain.trim()===''||bucket.trim()===''||access.trim()===''||secret.trim()===''){
             return res.json({state:-1});
         }
         var json={policy:1,domain:domain,bucket:bucket,access:access,secret:secret};
-        maps.put("upload_policy",JSON.stringify(json))
-            .then(function(){
-                qn.init(json,function(err){
-                    if(err){
-                        console.log(err);
-                        return res.json({state:-10});//填写的信息有误，无法上传
-                    }
+        //设置
+        qn.setOptions(json,function(err){
+            if(err){
+                console.log(err.stack);
+                return res.json({state:-10});//填写的信息有误，无法上传
+            }
+            var policy=maps.get("upload_policy");
+            maps.put("upload_policy",JSON.stringify(json))
+                .then(function(){
                     DC.upload_policy=1;
                     res.json({state:1});
-                });
-            });
+                })
+                .catch(function(err){
+                    console.log(err.stack);
+                    qn.setOptions(JSON.parse(policy));
+                    return res.json({state:-11});
+               });
+        });
     }else{
         maps.put("upload_policy",JSON.stringify({policy:2}))
             .then(function(){
@@ -136,7 +145,7 @@ exports._save_upload_policy=function(req,res,next){
     }
 };
 
-//post
+//post 上传文件到服务器
 exports._upload=function(req,res,next){
     local.parse(req,function(err,filename){
         if(err) return res.json({failed:'upload failed'});//上传失败

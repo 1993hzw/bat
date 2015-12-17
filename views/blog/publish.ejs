@@ -41,9 +41,9 @@
             <% } %>
             <div class="options-container">
                 <% if(!isEdit){ %>
-                <input type="button" class="btn-publish border-corner" onclick="publish()" value="发&nbsp;布">
+                <div class="btn-publish border-corner" onclick="publish()">发&nbsp;布</div>
                 <% }else{ %>
-                <input type="button" class="btn-finish border-corner" onclick="finish()" value="保&nbsp;存">
+                <div class="btn-finish border-corner" onclick="finish()">保&nbsp;存</div>
                 <% } %>
             </div>
             <div class="checkbox-private-container">
@@ -114,7 +114,7 @@
     <div class="toolsbar-container">
         <div class="toolsbar">
             <div class="tool-item border-corner">
-                <select class="selector_mode">
+                <select class="selector_mode ">
                     <% if(isEdit){ %>
                     <option value="1" selected>Markdown</option>
                     <% if(mode == 2){ %>
