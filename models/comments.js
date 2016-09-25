@@ -125,7 +125,7 @@ var getLastComments = function (condition, offset, count, result) {
                 var blog = require('./database').blog;
                 sql = 'select ' + fields.tableName + '.' + fields.id + ',' + fields.content + ',' + fields.reply + ',' + fields.tableName + '.' + fields.insert_time + ',' + fields.blogId +
                     ' from ' + fields.tableName + ',' + blog.tableName +
-                    " where " + blog.tableName + "." + blog.id + "=" + fields.blogId + " and " +
+                    " where "  +
                     blog.tableName + "." + blog.status + "=" + condition.status;
             } else {
                 sql = 'select ' + fields.id + ',' + fields.content + ',' + fields.reply + ',' + fields.insert_time + ',' + fields.blogId +

@@ -1,5 +1,5 @@
-var MODE_MARKDOWN=1;
-var MODE_TEXT=2;
+var MODE_MARKDOWN = 1;
+var MODE_TEXT = 2;
 
 var isResizing = false;
 var downX;
@@ -24,7 +24,10 @@ $(function () {
     setLayout();
     previewPassage(preview, textarea);
 
-    window.onbeforeunload = function(){
+    window.onbeforeunload = function () {
+        if (isBusy) {
+            return;
+        }
         return "内容没有保存，确定离开该页面？";
     };
 
@@ -150,7 +153,7 @@ $(function () {
     if (!isPc) btnPreview.click();//移动端默认收起预览
 });
 //检测是否选中私密
-var checkPrivateBox=function () {
+var checkPrivateBox = function () {
     if ($('#checkbox-private')[0].checked) {
         $('.checkbox-private-container').css({fontWeight: "bold", color: "red"});
     } else {
@@ -268,7 +271,7 @@ var publish = function () {
     var title = $('.input-title').val().trim();
     var markdown = $('.textarea').val();
     var tag = $('.selector-tag').val().trim();
-    var status=($('#checkbox-private')[0].checked)?1:0;//0：默认，1：私密
+    var status = ($('#checkbox-private')[0].checked) ? 1 : 0;//0：默认，1：私密
     if (markdown == null || markdown.trim() == "") {
         isBusy = false;
         return alert("内容不能为空");
@@ -276,8 +279,8 @@ var publish = function () {
     $('.btn-publish').val('发布中');
     $.ajax({
         type: 'POST', url: "/api/_publish", dataType: 'json',
-        data: {title: title, markdown: markdown, tag: tag, mode: mode,status:status},
-        success:  function (res) {
+        data: {title: title, markdown: markdown, tag: tag, mode: mode, status: status},
+        success: function (res) {
             console.log(res)
             var v = res;
             if (v.state > 0) {
@@ -307,17 +310,19 @@ var finish = function () {
     var title = $('.input-title').val().trim();
     var markdown = $('.textarea').val();
     var tag = $('.selector-tag').val().trim();
-    var status=($('#checkbox-private')[0].checked)?1:0;//0：默认，1：私密
+    var status = ($('#checkbox-private')[0].checked) ? 1 : 0;//0：默认，1：私密
     if (markdown == null || markdown.trim() == "") {
-        isBusy=false;
+        isBusy = false;
         return alert("内容不能为空");
     }
     $('.btn-finish').val('保存中');
     $.ajax({
         type: 'POST', url: "/api/_save", dataType: 'json',
-        data: {id: $("#blog").text(),title: title,markdown: markdown,tag: tag,
-            mode: mode,status:status},
-        success:  function (res) {
+        data: {
+            id: $("#blog").text(), title: title, markdown: markdown, tag: tag,
+            mode: mode, status: status
+        },
+        success: function (res) {
             var v = res;
             if (v.state > 0) {
                 if (v.id) {
@@ -327,13 +332,13 @@ var finish = function () {
                 }
             } else {
                 alert('保存失败，请重试');
-                isBusy=false;
+                isBusy = false;
                 $('.btn-finish').val('保存');
             }
         },
         error: function (err) {
             alert('保存失败，请重试');
-            isBusy=false;
+            isBusy = false;
             $('.btn-finish').val('保存');
         }
     });
@@ -370,10 +375,10 @@ function addImgOrHtml(name, fileName) {
 //上传组件初始化
 $(function () {
 
-    var getUploaderInit=function(){
-        var init={
+    var getUploaderInit = function () {
+        var init = {
             'FilesAdded': function (up, files) {
-                if(isBusy) return;
+                if (isBusy) return;
                 $('#dialog').show();
                 $('#content').html('<div class="upload-info" style="width: 300px">正在上传<br>' + files[0].name + '</div>' +
                     '<div class="upload-progress"></div>');
@@ -458,7 +463,7 @@ $(function () {
         options.uptoken_url = '/api/_token';
         options.domain = domain;
         options.unique_names = true;//唯一名称
-        options.init=getUploaderInit();
+        options.init = getUploaderInit();
         uploader = Qiniu.uploader(options);
 
         //插入html
@@ -470,12 +475,12 @@ $(function () {
             prevent_duplicates: true //不允许选取重复文件
         };
         options.browse_button = 'pickhtml';
-        options.init=getUploaderInit();
+        options.init = getUploaderInit();
         uploaderHtml = Qiniu.uploader(options);
 
     } else {//上传到服务器端
         options.url = '/api/_upload';
-        options.init=getUploaderInit();
+        options.init = getUploaderInit();
         uploader = new plupload.Uploader(options);
         uploader.init();
 
@@ -488,7 +493,7 @@ $(function () {
             prevent_duplicates: true //不允许选取重复文件
         };
         options.browse_button = 'pickhtml';
-        options.init=getUploaderInit();
+        options.init = getUploaderInit();
         uploaderHtml = new plupload.Uploader(options);
         uploaderHtml.init();
     }
