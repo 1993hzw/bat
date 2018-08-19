@@ -126,15 +126,15 @@ var getLastComments = function (condition, offset, count, result) {
                 sql = 'select ' + fields.tableName + '.' + fields.id + ',' + fields.content + ',' + fields.reply + ',' + fields.tableName + '.' + fields.insert_time + ',' + fields.blogId +
                     ' from ' + fields.tableName + ',' + blog.tableName +
                     " where "  +
-                    blog.tableName + "." + blog.status + "=" + condition.status;
+                    blog.tableName + "." + blog.status + "=" + condition.status + " and " + fields.blogId + "=" + blog.tableName + "." + blog.id;
             } else {
                 sql = 'select ' + fields.id + ',' + fields.content + ',' + fields.reply + ',' + fields.insert_time + ',' + fields.blogId +
                     ' from ' + fields.tableName;
             }
             sql += " order by " + fields.tableName + '.' + fields.id + " desc limit " + offset + "," + count;
-            result.db.all(sql, function (err, rows) {
+            result.db.all(sql, function (err, commentRows) {
                 if (err) return reject(err);
-                result.rows = rows;
+                result.commentRows = commentRows;
                 resolve(result);
             })
         })
@@ -146,7 +146,7 @@ var getLastComments = function (condition, offset, count, result) {
         })
         .then(_select)
         .then(function (result) {
-            return Promise.resolve(result.rows);
+            return Promise.resolve(result.commentRows);
         })
 };
 

@@ -134,9 +134,9 @@ var getLast = function (condition,offset, count, result) {
                 sql+=" where "+fields.status+"="+condition.status;
             }
             sql += " order by " + fields.id + " desc limit " + offset + "," + count;
-            result.db.all(sql, function (err, rows) {
+            result.db.all(sql, function (err, blogRows) {
                 if (err) return reject(err);
-                result.rows = rows;
+                result.blogRows = blogRows;
                 resolve(result);
             })
         })
@@ -148,7 +148,7 @@ var getLast = function (condition,offset, count, result) {
         })
         .then(_select)
         .then(function (result) {
-            return Promise.resolve(result.rows);
+            return Promise.resolve(result.blogRows);
         })
 };
 
